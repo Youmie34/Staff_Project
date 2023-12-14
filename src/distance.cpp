@@ -29,11 +29,12 @@ void ultrasonic()
 
         // Formel zum Berechnen der Entfernung basierend auf der Schallgeschwindigkeit
         distance = duration / 58.2;
+        Serial.println("Distanz: " + distance);
 
         if (distance <= minimumRange)
         {
+            Serial.println("Distanz: " + distance);
             // Signalisiert "außer Reichweite" indem -1 an den Computer ausgegeben wird und die LED aufleuchtet
-            Serial.println("ich leuchte :D");
             digitalWrite(LEDPin, HIGH);
         }
     }
