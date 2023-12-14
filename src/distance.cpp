@@ -33,7 +33,6 @@ void ultrasonic()
 
         if (distance <= minimumRange)
         {
-            Serial.println("Distanz: " + distance);
             // Signalisiert "außer Reichweite" indem -1 an den Computer ausgegeben wird und die LED aufleuchtet
             digitalWrite(LEDPin, HIGH);
         }
