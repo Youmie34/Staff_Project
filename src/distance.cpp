@@ -1,15 +1,12 @@
+/*distance.cpp*/
+
 #include <Arduino.h>
-#include "neopixel.cpp"
-
-#define echoPin 16 // Echo Pin
-#define trigPin 17 // Trigger Pin
-#define LEDPin 5   // Pin der LED
-
-int minimumRange = 4;    // Minimale Reichweite
-long duration, distance; // Dauer zum Berechnen der Reichweite
+#include "distance.hpp"
 
 void ultrasonic()
 {
+    long duration = 0; // Dauer zum Berechnen der Reichweite
+    long distance = 0.0;
     Serial.begin(115200);     // Im Serialmonitor die Baudrate auf 9600 einstellen
     pinMode(trigPin, OUTPUT); // Pins werden deklariert
     pinMode(echoPin, INPUT);
@@ -25,16 +22,26 @@ void ultrasonic()
         delayMicroseconds(10);
 
         digitalWrite(trigPin, LOW);
+        delayMicroseconds(10);
         duration = pulseIn(echoPin, HIGH);
 
         // Formel zum Berechnen der Entfernung basierend auf der Schallgeschwindigkeit
         distance = duration / 58.2;
-        Serial.println("Distanz: " + distance);
+        Serial.print("Duration: ");
+        Serial.println(duration);
+        Serial.print("Distanz: ");
+        Serial.println(distance);
 
-        if (distance <= minimumRange)
+        if (distance > 0 && distance <= minimumRange)
         {
             // Signalisiert "außer Reichweite" indem -1 an den Computer ausgegeben wird und die LED aufleuchtet
             digitalWrite(LEDPin, HIGH);
+        }
+
+        else
+        {
+            // Turn off the LED when distance is greater than minimumRange
+            digitalWrite(LEDPin, LOW);
         }
     }
 }
