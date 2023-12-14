@@ -11,6 +11,9 @@ Code for Linoan's staff. Consists of a ESP32 with
 ## Main
 Combines everything
 
+## Bluetooth
+Code for Connection to phone via bluetooth
+
 ## Distance
 Code for the HC-SR04 Ultrasonic-Distance-sensor. If in specific reach a signal is given to turn on a LED
 
