@@ -5,13 +5,14 @@
 #include "audio.cpp"
 #include "accelerometer.cpp"
 #include "distance.hpp"
-#include "neopixel.cpp"
+#include "neopixel.hpp"
 
 
 void setup()
 {
   // put your setup code here, to run once:
-  ultrasonic();
+  //ultrasonic();
+  neopixelStart();
 }
 
 void loop()
