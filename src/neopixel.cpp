@@ -2,11 +2,8 @@
 
 #include <Arduino.h>
 #include "neopixel.hpp"
-#ifdef __AVR__
-#include <avr/power.h>
-#endif
 
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(12, PIN, NEO_RGB + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(12, PIN, NEO_GRB + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
@@ -16,25 +13,42 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(12, PIN, NEO_RGB + NEO_KHZ800);
 void neopixelStart()
 {
     strip.begin();
-    strip.setBrightness(50);
     strip.show(); // Initialize all pixels to 'off'
+    strip.setBrightness(0);
 
     while (1)
     {
-        // Some example procedures showing how to display to the pixels:
-        colorWipe(strip.Color(255, 0, 0), 50); // Red
-        colorWipe(strip.Color(0, 255, 0), 50); // Green
-        colorWipe(strip.Color(0, 0, 255), 50); // Blue
-                                               // colorWipe(strip.Color(0, 0, 0, 255), 50); // White RGBW
-        //  Send a theater pixel chase in...
-        theaterChase(strip.Color(127, 127, 127), 50); // White
-        theaterChase(strip.Color(127, 0, 0), 50);     // Red
-        theaterChase(strip.Color(0, 0, 127), 50);     // Blue
-
-        rainbow(20);
-        rainbowCycle(20);
-        theaterChaseRainbow(50);
+        // healing();
+        /*
+                // Some example procedures showing how to display to the pixels:
+                colorWipe(strip.Color(0, 255, 0), 50);   // Green
+                colorWipe(strip.Color(255, 0, 0), 50);   // Red
+                colorWipe(strip.Color(0, 0, 255), 50);   // Blue
+                colorWipe(strip.Color(194, 30, 86), 50); // Rose Red
+                //  Send a theater pixel chase in...
+                theaterChase(strip.Color(216, 96, 27), 50);   // Pink
+                theaterChase(strip.Color(35, 26, 126), 100);  // Indigo
+        */
+        healing();
+        /*
+        attack();
+        default_LED();
+        */
     }
+}
+
+void healing()
+{
+    increaseBrightness(0);
+    decreaseBrightness(250);
+}
+
+void attack()
+{
+}
+
+void default_LED()
+{
 }
 
 // Fill the dots one after the other with a color
@@ -63,16 +77,15 @@ void rainbow(uint8_t wait)
     }
 }
 
-// Slightly different, this makes the rainbow equally distributed throughout
-void rainbowCycle(uint8_t wait)
+void reverseRainbow(uint8_t wait)
 {
     uint16_t i, j;
 
-    for (j = 0; j < 256 * 5; j++)
-    { // 5 cycles of all colors on wheel
-        for (i = 0; i < strip.numPixels(); i++)
+    for (int j = 255; j >= 0; j--)
+    { // Count down from 255 to 0
+        for (int i = 0; i < strip.numPixels(); i++)
         {
-            strip.setPixelColor(i, Wheel(((i * 256 / strip.numPixels()) + j) & 255));
+            strip.setPixelColor(i, Wheel((i + j) & 255));
         }
         strip.show();
         delay(wait);
@@ -102,26 +115,25 @@ void theaterChase(uint32_t c, uint8_t wait)
     }
 }
 
-// Theatre-style crawling lights with rainbow effect
-void theaterChaseRainbow(uint8_t wait)
+void increaseBrightness(uint8_t brightness)
 {
-    for (int j = 0; j < 256; j++)
-    { // cycle all 256 colors in the wheel
-        for (int q = 0; q < 3; q++)
-        {
-            for (uint16_t i = 0; i < strip.numPixels(); i = i + 3)
-            {
-                strip.setPixelColor(i + q, Wheel((i + j) % 255)); // turn every third pixel on
-            }
-            strip.show();
+    while (brightness < 250)
+    {
+        strip.setBrightness(brightness);
+        rainbow(5);
+        brightness += 10;
+        printf("Increase: %d\n", brightness);
+    }
+}
 
-            delay(wait);
-
-            for (uint16_t i = 0; i < strip.numPixels(); i = i + 3)
-            {
-                strip.setPixelColor(i + q, 0); // turn every third pixel off
-            }
-        }
+void decreaseBrightness(uint8_t brightness)
+{
+    while (brightness > 0)
+    {
+        strip.setBrightness(brightness);
+        reverseRainbow(5);
+        brightness-=10;
+        printf("Decrease: %d\n", brightness);
     }
 }
 
