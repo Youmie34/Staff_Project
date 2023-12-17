@@ -2,7 +2,7 @@
 #define NEOPIXEL_H
 
 #include <Adafruit_NeoPixel.h>
-#include <math.h>
+#include <cmath>
 #ifdef __AVR__
 #include <avr/power.h>
 #endif
@@ -10,7 +10,6 @@
 // Global variables
 extern uint8_t minValue;
 extern uint8_t maxValue;
-extern 
 
 // Define main colours
 
@@ -32,8 +31,9 @@ void colorWipe(uint32_t c, uint8_t wait);
 void rainbow(uint8_t wait);
 void reverseRainbow(uint8_t wait);
 void theaterChase(uint32_t c, uint8_t wait);
-void increaseBrightness(uint8_t brightness);
-void decreaseBrightness(uint8_t brightness);
+void quadIncreaseBrightness(uint8_t brightness);
+void quadDecreaseBrightness(uint8_t brightness);
+
 void colorTransition(int startR, int startG, int startB, int endR, int endG, int endB, int duration);
 void colorTransitionReverse(int startR, int startG, int startB, int endR, int endG, int endB, int duration);
 
