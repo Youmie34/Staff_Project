@@ -20,16 +20,17 @@ void neopixelStart()
 
     while (1)
     {
-        /*
-        // Some example procedures showing how to display to the pixels:
-        colorWipe(strip.Color(255, 0, 200), 50); // pink
-        colorWipe(strip.Color(255, 0, 0), 50);   // red
-        colorWipe(strip.Color(255, 220, 0), 50); // yellow
-        */
 
-        healing();
-        // attack();
-        // default_LED();
+        // Some example procedures showing how to display to the pixels:
+        // colorWipe(strip.Color(255, 0, 200), 100); // pink
+        // theaterChase(strip.Color(255, 109, 84), 120); // White
+        // theaterChase(strip.Color(255, 100, 00), 120); // yellow
+        // colorWipe(strip.Color(255, 0, 0), 120);   // red
+        // colorWipe(strip.Color(255, 220, 0), 50); // yellow
+
+        // healing();
+        attack();
+        //  default_LED();
     }
 }
 
@@ -41,6 +42,11 @@ void healing()
 
 void attack()
 {
+    theaterChase(strip.Color(200, 0, 255), 120); // violet
+    theaterChase(strip.Color(255, 0, 40), 120);  // pink
+    theaterChase(strip.Color(255, 0, 0), 120);   // red
+    theaterChase(strip.Color(200, 0, 255), 120); // violet
+    theaterChase(strip.Color(200, 0, 255), 120); // violet
 }
 
 void default_LED()
@@ -55,10 +61,10 @@ void quadIncreaseBrightness(uint8_t brightness)
     while (brightness < 250)
     {
         strip.setBrightness(brightness);
-        colorTransition(255, 255, 0, 255, 0, 255, 1000); // Transition from Yellow to Pink, letzte Aktion bevor break!
+        colorTransition(255, 255, 0, 0, 255, 255, 1000); // Transition from Yellow to Teal, letzte Aktion bevor break!
         delay(500);
         // Delay for visibility (adjust as needed)
-        brightness = brightness + uint8_t(pow(2,x));
+        brightness = brightness + uint8_t(pow(2, x));
         x++;
         printf("Increase1: %d\n", brightness);
 
@@ -68,10 +74,10 @@ void quadIncreaseBrightness(uint8_t brightness)
         }
 
         strip.setBrightness(brightness);
-        colorTransition(255, 0, 255, 255, 0, 0, 1000); // Transition from Pink to Red
+        colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
         delay(500);
         // Delay for visibility (adjust as needed)
-        brightness = brightness + uint8_t(pow(2,x));
+        brightness = brightness + uint8_t(pow(2, x));
         printf("Increase2: %d\n", brightness);
 
         if (brightness > 250)
@@ -80,10 +86,10 @@ void quadIncreaseBrightness(uint8_t brightness)
         }
 
         strip.setBrightness(brightness);
-        colorTransition(255, 0, 0, 255, 0, 255, 1000); // Transition from Red to Pink
+        colorTransition(255, 0, 255, 0, 255, 255, 1000); // Transition from Pink to Teal
         delay(500);
         // Delay for visibility (adjust as needed)
-        brightness = brightness + uint8_t(pow(2,x));
+        brightness = brightness + uint8_t(pow(2, x));
         x++;
         printf("Increase3: %d\n", brightness);
 
@@ -93,10 +99,10 @@ void quadIncreaseBrightness(uint8_t brightness)
         }
 
         strip.setBrightness(brightness);
-        colorTransition(255, 0, 255, 255, 255, 0, 1000); // Transition from Pink to Yellow
+        colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
         delay(500);
         // Delay for visibility (adjust as needed)
-        brightness = brightness + uint8_t(pow(2,x));
+        brightness = brightness + uint8_t(pow(2, x));
         printf("Increase4: %d\n", brightness);
 
         if (brightness > 250)
@@ -107,19 +113,18 @@ void quadIncreaseBrightness(uint8_t brightness)
     printf("Ende Schleife: %d\n", brightness);
 }
 
-
 void quadDecreaseBrightness(uint8_t brightness)
 {
     printf("Beginn Decrease\n");
     int x = 6;
 
-    while (brightness >=1)
+    while (brightness >= 1)
     {
         strip.setBrightness(brightness);
-        colorTransition(255, 0, 255, 255, 0, 0, 1000); // Transition from Pink to Red
+        colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
         delay(500);
         // Delay for visibility (adjust as needed)
-        brightness = brightness - uint8_t(pow(2,x));       
+        brightness = brightness - uint8_t(pow(2, x));
         printf("Decrease1: %d\n", brightness);
 
         if (brightness == 1)
@@ -128,10 +133,10 @@ void quadDecreaseBrightness(uint8_t brightness)
         }
 
         strip.setBrightness(brightness);
-        colorTransition(255, 0, 0, 255, 0, 255, 1000); // Transition from Red to Pink
+        colorTransition(255, 0, 255, 0, 255, 255, 1000); // Transition from Pink to Teal
         delay(500);
         // Delay for visibility (adjust as needed)
-        brightness = brightness - uint8_t(pow(2,x));
+        brightness = brightness - uint8_t(pow(2, x));
         x--;
         printf("Decrease2: %d\n", brightness);
 
@@ -141,10 +146,10 @@ void quadDecreaseBrightness(uint8_t brightness)
         }
 
         strip.setBrightness(brightness);
-        colorTransition(255, 0, 255, 255, 255, 0, 1000); // Transition from Pink to Yellow
+        colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
         delay(500);
         // Delay for visibility (adjust as needed)
-        brightness = brightness - uint8_t(pow(2,x));
+        brightness = brightness - uint8_t(pow(2, x));
         printf("Decrease3: %d\n", brightness);
 
         if (brightness == 1)
@@ -153,10 +158,10 @@ void quadDecreaseBrightness(uint8_t brightness)
         }
 
         strip.setBrightness(brightness);
-        colorTransition(255, 255, 0, 255, 0, 255, 1000); // Transition from Yellow to Pink
+        colorTransition(255, 255, 0, 0, 255, 255, 1000); // Transition from Yellow to Teal
         delay(500);
         // Delay for visibility (adjust as needed)
-        brightness = brightness - uint8_t(pow(2,x));
+        brightness = brightness - uint8_t(pow(2, x));
         x--;
         if (brightness == 1)
         {
