@@ -10,7 +10,6 @@
             "includePath": [
                 "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/include",
                 "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/src",
-                "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/Adafruit NeoPixel",
                 "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/Adafruit LIS3DH",
                 "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/Adafruit Unified Sensor",
                 "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/Adafruit BusIO",
@@ -207,7 +206,6 @@
                 "C:/Users/schwe/.platformio/packages/framework-arduinoespressif32/cores/esp32",
                 "C:/Users/schwe/.platformio/packages/framework-arduinoespressif32/variants/esp32",
                 "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/lib/ESP32-A2DP/src",
-                "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/ESP8266Audio/src",
                 "C:/Users/schwe/.platformio/packages/framework-arduinoespressif32/libraries/ArduinoOTA/src",
                 "C:/Users/schwe/.platformio/packages/framework-arduinoespressif32/libraries/AsyncUDP/src",
                 "C:/Users/schwe/.platformio/packages/framework-arduinoespressif32/libraries/BLE/src",
@@ -246,7 +244,6 @@
                 "path": [
                     "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/include",
                     "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/src",
-                    "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/Adafruit NeoPixel",
                     "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/Adafruit LIS3DH",
                     "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/Adafruit Unified Sensor",
                     "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/Adafruit BusIO",
@@ -443,7 +440,6 @@
                     "C:/Users/schwe/.platformio/packages/framework-arduinoespressif32/cores/esp32",
                     "C:/Users/schwe/.platformio/packages/framework-arduinoespressif32/variants/esp32",
                     "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/lib/ESP32-A2DP/src",
-                    "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/ESP8266Audio/src",
                     "C:/Users/schwe/.platformio/packages/framework-arduinoespressif32/libraries/ArduinoOTA/src",
                     "C:/Users/schwe/.platformio/packages/framework-arduinoespressif32/libraries/AsyncUDP/src",
                     "C:/Users/schwe/.platformio/packages/framework-arduinoespressif32/libraries/BLE/src",
