@@ -1,12 +1,9 @@
 #include <Arduino.h>
-#include "audio.cpp"
-#include "accelerometer.cpp"
-#include "distance.cpp"
-#include "neopixel.cpp"
+#include "accelerometer.hpp"
 
 void setup() {
   // put your setup code here, to run once:
-  
+  accStart();
 }
 
 void loop() {
