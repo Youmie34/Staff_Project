@@ -1,15 +1,19 @@
 /*main.cpp*/
 
 #include <Arduino.h>
+#include "accelerometer.hpp"
 #include "audio.cpp"
-#include "accelerometer.cpp"
+#include "accelerometer.hpp"
 #include "distance.hpp"
-#include "neopixel.cpp"
+#include "neopixel.hpp"
+
 
 void setup()
 {
   // put your setup code here, to run once:
-  ultrasonic();
+  accStart();
+  //ultrasonic();
+  neopixelStart();
 }
 
 void loop()
