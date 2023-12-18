@@ -3,6 +3,8 @@
 #include <Arduino.h>
 #include "neopixel.hpp"
 
+uint8_t minValue = 0;
+uint8_t maxValue = 253;
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(12, PIN, NEO_GRB + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
@@ -14,41 +16,180 @@ void neopixelStart()
 {
     strip.begin();
     strip.show(); // Initialize all pixels to 'off'
-    strip.setBrightness(0);
+    strip.setBrightness(70);
 
     while (1)
     {
+
+        // Some example procedures showing how to display to the pixels:
+        // colorWipe(strip.Color(255, 0, 200), 100); // pink
+        // theaterChase(strip.Color(255, 109, 84), 120); // White
+        // theaterChase(strip.Color(255, 100, 00), 120); // yellow
+        // colorWipe(strip.Color(255, 0, 0), 120);   // red
+        // colorWipe(strip.Color(255, 220, 0), 50); // yellow
+
         // healing();
-        /*
-                // Some example procedures showing how to display to the pixels:
-                colorWipe(strip.Color(0, 255, 0), 50);   // Green
-                colorWipe(strip.Color(255, 0, 0), 50);   // Red
-                colorWipe(strip.Color(0, 0, 255), 50);   // Blue
-                colorWipe(strip.Color(194, 30, 86), 50); // Rose Red
-                //  Send a theater pixel chase in...
-                theaterChase(strip.Color(216, 96, 27), 50);   // Pink
-                theaterChase(strip.Color(35, 26, 126), 100);  // Indigo
-        */
-        healing();
-        /*
         attack();
-        default_LED();
-        */
+        //  default_LED();
     }
 }
 
 void healing()
 {
-    increaseBrightness(0);
-    decreaseBrightness(250);
+    quadIncreaseBrightness(minValue);
+    quadDecreaseBrightness(maxValue);
 }
 
 void attack()
 {
+    theaterChase(strip.Color(200, 0, 255), 120); // violet
+    theaterChase(strip.Color(255, 0, 40), 120);  // pink
+    theaterChase(strip.Color(255, 0, 0), 120);   // red
+    theaterChase(strip.Color(200, 0, 255), 120); // violet
+    theaterChase(strip.Color(200, 0, 255), 120); // violet
 }
 
 void default_LED()
 {
+}
+
+void quadIncreaseBrightness(uint8_t brightness)
+{
+    printf("Beginn Increase\n");
+    int x = 0;
+
+    while (brightness < 250)
+    {
+        strip.setBrightness(brightness);
+        colorTransition(255, 255, 0, 0, 255, 255, 1000); // Transition from Yellow to Teal, letzte Aktion bevor break!
+        delay(500);
+        // Delay for visibility (adjust as needed)
+        brightness = brightness + uint8_t(pow(2, x));
+        x++;
+        printf("Increase1: %d\n", brightness);
+
+        if (brightness > 250)
+        {
+            break; // Exit the loop when brightness reaches the desired value
+        }
+
+        strip.setBrightness(brightness);
+        colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
+        delay(500);
+        // Delay for visibility (adjust as needed)
+        brightness = brightness + uint8_t(pow(2, x));
+        printf("Increase2: %d\n", brightness);
+
+        if (brightness > 250)
+        {
+            break; // Exit the loop when brightness reaches the desired value
+        }
+
+        strip.setBrightness(brightness);
+        colorTransition(255, 0, 255, 0, 255, 255, 1000); // Transition from Pink to Teal
+        delay(500);
+        // Delay for visibility (adjust as needed)
+        brightness = brightness + uint8_t(pow(2, x));
+        x++;
+        printf("Increase3: %d\n", brightness);
+
+        if (brightness > 250)
+        {
+            break; // Exit the loop when brightness reaches the desired value
+        }
+
+        strip.setBrightness(brightness);
+        colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
+        delay(500);
+        // Delay for visibility (adjust as needed)
+        brightness = brightness + uint8_t(pow(2, x));
+        printf("Increase4: %d\n", brightness);
+
+        if (brightness > 250)
+        {
+            break; // Exit the loop when brightness reaches the desired value
+        }
+    }
+    printf("Ende Schleife: %d\n", brightness);
+}
+
+void quadDecreaseBrightness(uint8_t brightness)
+{
+    printf("Beginn Decrease\n");
+    int x = 6;
+
+    while (brightness >= 1)
+    {
+        strip.setBrightness(brightness);
+        colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
+        delay(500);
+        // Delay for visibility (adjust as needed)
+        brightness = brightness - uint8_t(pow(2, x));
+        printf("Decrease1: %d\n", brightness);
+
+        if (brightness == 1)
+        {
+            break; // Exit the loop when brightness reaches the desired value
+        }
+
+        strip.setBrightness(brightness);
+        colorTransition(255, 0, 255, 0, 255, 255, 1000); // Transition from Pink to Teal
+        delay(500);
+        // Delay for visibility (adjust as needed)
+        brightness = brightness - uint8_t(pow(2, x));
+        x--;
+        printf("Decrease2: %d\n", brightness);
+
+        if (brightness == 1)
+        {
+            break; // Exit the loop when brightness reaches the desired value
+        }
+
+        strip.setBrightness(brightness);
+        colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
+        delay(500);
+        // Delay for visibility (adjust as needed)
+        brightness = brightness - uint8_t(pow(2, x));
+        printf("Decrease3: %d\n", brightness);
+
+        if (brightness == 1)
+        {
+            break; // Exit the loop when brightness reaches the desired value
+        }
+
+        strip.setBrightness(brightness);
+        colorTransition(255, 255, 0, 0, 255, 255, 1000); // Transition from Yellow to Teal
+        delay(500);
+        // Delay for visibility (adjust as needed)
+        brightness = brightness - uint8_t(pow(2, x));
+        x--;
+        if (brightness == 1)
+        {
+            break; // Exit the loop when brightness reaches the desired value
+        }
+    }
+    printf("Ende Schleife: %d\n", brightness);
+}
+
+void colorTransition(int startR, int startG, int startB, int endR, int endG, int endB, int duration)
+{
+    int steps = 100; // Number of steps in the transition
+    int delayTime = duration / steps;
+
+    for (int i = 0; i <= steps; i++)
+    {
+        int currentR = map(i, 0, steps, startR, endR);
+        int currentG = map(i, 0, steps, startG, endG);
+        int currentB = map(i, 0, steps, startB, endB);
+
+        for (int j = 0; j < strip.numPixels(); j++)
+        {
+            strip.setPixelColor(j, strip.Color(currentR, currentG, currentB));
+        }
+
+        strip.show();
+        delay(delayTime);
+    }
 }
 
 // Fill the dots one after the other with a color
@@ -57,36 +198,6 @@ void colorWipe(uint32_t c, uint8_t wait)
     for (uint16_t i = 0; i < strip.numPixels(); i++)
     {
         strip.setPixelColor(i, c);
-        strip.show();
-        delay(wait);
-    }
-}
-
-void rainbow(uint8_t wait)
-{
-    uint16_t i, j;
-
-    for (j = 0; j < 256; j++)
-    {
-        for (i = 0; i < strip.numPixels(); i++)
-        {
-            strip.setPixelColor(i, Wheel((i + j) & 255));
-        }
-        strip.show();
-        delay(wait);
-    }
-}
-
-void reverseRainbow(uint8_t wait)
-{
-    uint16_t i, j;
-
-    for (int j = 255; j >= 0; j--)
-    { // Count down from 255 to 0
-        for (int i = 0; i < strip.numPixels(); i++)
-        {
-            strip.setPixelColor(i, Wheel((i + j) & 255));
-        }
         strip.show();
         delay(wait);
     }
@@ -112,28 +223,6 @@ void theaterChase(uint32_t c, uint8_t wait)
                 strip.setPixelColor(i + q, 0); // turn every third pixel off
             }
         }
-    }
-}
-
-void increaseBrightness(uint8_t brightness)
-{
-    while (brightness < 250)
-    {
-        strip.setBrightness(brightness);
-        rainbow(5);
-        brightness += 10;
-        printf("Increase: %d\n", brightness);
-    }
-}
-
-void decreaseBrightness(uint8_t brightness)
-{
-    while (brightness > 0)
-    {
-        strip.setBrightness(brightness);
-        reverseRainbow(5);
-        brightness-=10;
-        printf("Decrease: %d\n", brightness);
     }
 }
 
