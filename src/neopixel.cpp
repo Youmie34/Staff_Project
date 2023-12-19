@@ -1,121 +1,245 @@
+/*neopixel.cpp*/
+
 #include <Arduino.h>
-#include <Adafruit_NeoPixel.h>
-#ifdef __AVR__
-  #include <avr/power.h>
-#endif
+#include "neopixel.hpp"
 
-#define PIN 16
-
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(12, PIN, NEO_RGB + NEO_KHZ800);
+uint8_t minValue = 0;
+uint8_t maxValue = 253;
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(12, PIN, NEO_GRB + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
 // and minimize distance between Arduino and first pixel.  Avoid connecting
 // on a live circuit...if you must, connect GND first.
 
-void setup() {
-  strip.begin();
-  strip.setBrightness(50);
-  strip.show(); // Initialize all pixels to 'off'
+void neopixelStart()
+{
+    strip.begin();
+    strip.show(); // Initialize all pixels to 'off'
+    strip.setBrightness(70);
+
+    while (1)
+    {
+
+        // Some example procedures showing how to display to the pixels:
+        // colorWipe(strip.Color(255, 0, 200), 100); // pink
+        // theaterChase(strip.Color(255, 109, 84), 120); // White
+        // theaterChase(strip.Color(255, 100, 00), 120); // yellow
+        // colorWipe(strip.Color(255, 0, 0), 120);   // red
+        // colorWipe(strip.Color(255, 220, 0), 50); // yellow
+
+        // healing();
+        attack();
+        //  default_LED();
+    }
 }
 
-void loop() {
-  // Some example procedures showing how to display to the pixels:
-  colorWipe(strip.Color(255, 0, 0), 50); // Red
-  colorWipe(strip.Color(0, 255, 0), 50); // Green
-  colorWipe(strip.Color(0, 0, 255), 50); // Blue
-//colorWipe(strip.Color(0, 0, 0, 255), 50); // White RGBW
-  // Send a theater pixel chase in...
-  theaterChase(strip.Color(127, 127, 127), 50); // White
-  theaterChase(strip.Color(127, 0, 0), 50); // Red
-  theaterChase(strip.Color(0, 0, 127), 50); // Blue
+void healing()
+{
+    quadIncreaseBrightness(minValue);
+    quadDecreaseBrightness(maxValue);
+}
 
-  rainbow(20);
-  rainbowCycle(20);
-  theaterChaseRainbow(50);
+void attack()
+{
+    theaterChase(strip.Color(200, 0, 255), 120); // violet
+    theaterChase(strip.Color(255, 0, 40), 120);  // pink
+    theaterChase(strip.Color(255, 0, 0), 120);   // red
+    theaterChase(strip.Color(200, 0, 255), 120); // violet
+    theaterChase(strip.Color(200, 0, 255), 120); // violet
+}
+
+void default_LED()
+{
+}
+
+void quadIncreaseBrightness(uint8_t brightness)
+{
+    printf("Beginn Increase\n");
+    int x = 0;
+
+    while (brightness < 250)
+    {
+        strip.setBrightness(brightness);
+        colorTransition(255, 255, 0, 0, 255, 255, 1000); // Transition from Yellow to Teal, letzte Aktion bevor break!
+        delay(500);
+        // Delay for visibility (adjust as needed)
+        brightness = brightness + uint8_t(pow(2, x));
+        x++;
+        printf("Increase1: %d\n", brightness);
+
+        if (brightness > 250)
+        {
+            break; // Exit the loop when brightness reaches the desired value
+        }
+
+        strip.setBrightness(brightness);
+        colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
+        delay(500);
+        // Delay for visibility (adjust as needed)
+        brightness = brightness + uint8_t(pow(2, x));
+        printf("Increase2: %d\n", brightness);
+
+        if (brightness > 250)
+        {
+            break; // Exit the loop when brightness reaches the desired value
+        }
+
+        strip.setBrightness(brightness);
+        colorTransition(255, 0, 255, 0, 255, 255, 1000); // Transition from Pink to Teal
+        delay(500);
+        // Delay for visibility (adjust as needed)
+        brightness = brightness + uint8_t(pow(2, x));
+        x++;
+        printf("Increase3: %d\n", brightness);
+
+        if (brightness > 250)
+        {
+            break; // Exit the loop when brightness reaches the desired value
+        }
+
+        strip.setBrightness(brightness);
+        colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
+        delay(500);
+        // Delay for visibility (adjust as needed)
+        brightness = brightness + uint8_t(pow(2, x));
+        printf("Increase4: %d\n", brightness);
+
+        if (brightness > 250)
+        {
+            break; // Exit the loop when brightness reaches the desired value
+        }
+    }
+    printf("Ende Schleife: %d\n", brightness);
+}
+
+void quadDecreaseBrightness(uint8_t brightness)
+{
+    printf("Beginn Decrease\n");
+    int x = 6;
+
+    while (brightness >= 1)
+    {
+        strip.setBrightness(brightness);
+        colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
+        delay(500);
+        // Delay for visibility (adjust as needed)
+        brightness = brightness - uint8_t(pow(2, x));
+        printf("Decrease1: %d\n", brightness);
+
+        if (brightness == 1)
+        {
+            break; // Exit the loop when brightness reaches the desired value
+        }
+
+        strip.setBrightness(brightness);
+        colorTransition(255, 0, 255, 0, 255, 255, 1000); // Transition from Pink to Teal
+        delay(500);
+        // Delay for visibility (adjust as needed)
+        brightness = brightness - uint8_t(pow(2, x));
+        x--;
+        printf("Decrease2: %d\n", brightness);
+
+        if (brightness == 1)
+        {
+            break; // Exit the loop when brightness reaches the desired value
+        }
+
+        strip.setBrightness(brightness);
+        colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
+        delay(500);
+        // Delay for visibility (adjust as needed)
+        brightness = brightness - uint8_t(pow(2, x));
+        printf("Decrease3: %d\n", brightness);
+
+        if (brightness == 1)
+        {
+            break; // Exit the loop when brightness reaches the desired value
+        }
+
+        strip.setBrightness(brightness);
+        colorTransition(255, 255, 0, 0, 255, 255, 1000); // Transition from Yellow to Teal
+        delay(500);
+        // Delay for visibility (adjust as needed)
+        brightness = brightness - uint8_t(pow(2, x));
+        x--;
+        if (brightness == 1)
+        {
+            break; // Exit the loop when brightness reaches the desired value
+        }
+    }
+    printf("Ende Schleife: %d\n", brightness);
+}
+
+void colorTransition(int startR, int startG, int startB, int endR, int endG, int endB, int duration)
+{
+    int steps = 100; // Number of steps in the transition
+    int delayTime = duration / steps;
+
+    for (int i = 0; i <= steps; i++)
+    {
+        int currentR = map(i, 0, steps, startR, endR);
+        int currentG = map(i, 0, steps, startG, endG);
+        int currentB = map(i, 0, steps, startB, endB);
+
+        for (int j = 0; j < strip.numPixels(); j++)
+        {
+            strip.setPixelColor(j, strip.Color(currentR, currentG, currentB));
+        }
+
+        strip.show();
+        delay(delayTime);
+    }
 }
 
 // Fill the dots one after the other with a color
-void colorWipe(uint32_t c, uint8_t wait) {
-  for(uint16_t i=0; i<strip.numPixels(); i++) {
-    strip.setPixelColor(i, c);
-    strip.show();
-    delay(wait);
-  }
+void colorWipe(uint32_t c, uint8_t wait)
+{
+    for (uint16_t i = 0; i < strip.numPixels(); i++)
+    {
+        strip.setPixelColor(i, c);
+        strip.show();
+        delay(wait);
+    }
 }
 
-void rainbow(uint8_t wait) {
-  uint16_t i, j;
+// Theatre-style crawling lights.
+void theaterChase(uint32_t c, uint8_t wait)
+{
+    for (int j = 0; j < 10; j++)
+    { // do 10 cycles of chasing
+        for (int q = 0; q < 3; q++)
+        {
+            for (uint16_t i = 0; i < strip.numPixels(); i = i + 3)
+            {
+                strip.setPixelColor(i + q, c); // turn every third pixel on
+            }
+            strip.show();
 
-  for(j=0; j<256; j++) {
-    for(i=0; i<strip.numPixels(); i++) {
-      strip.setPixelColor(i, Wheel((i+j) & 255));
+            delay(wait);
+
+            for (uint16_t i = 0; i < strip.numPixels(); i = i + 3)
+            {
+                strip.setPixelColor(i + q, 0); // turn every third pixel off
+            }
+        }
     }
-    strip.show();
-    delay(wait);
-  }
-}
-
-// Slightly different, this makes the rainbow equally distributed throughout
-void rainbowCycle(uint8_t wait) {
-  uint16_t i, j;
-
-  for(j=0; j<256*5; j++) { // 5 cycles of all colors on wheel
-    for(i=0; i< strip.numPixels(); i++) {
-      strip.setPixelColor(i, Wheel(((i * 256 / strip.numPixels()) + j) & 255));
-    }
-    strip.show();
-    delay(wait);
-  }
-}
-
-//Theatre-style crawling lights.
-void theaterChase(uint32_t c, uint8_t wait) {
-  for (int j=0; j<10; j++) {  //do 10 cycles of chasing
-    for (int q=0; q < 3; q++) {
-      for (uint16_t i=0; i < strip.numPixels(); i=i+3) {
-        strip.setPixelColor(i+q, c);    //turn every third pixel on
-      }
-      strip.show();
-
-      delay(wait);
-
-      for (uint16_t i=0; i < strip.numPixels(); i=i+3) {
-        strip.setPixelColor(i+q, 0);        //turn every third pixel off
-      }
-    }
-  }
-}
-
-//Theatre-style crawling lights with rainbow effect
-void theaterChaseRainbow(uint8_t wait) {
-  for (int j=0; j < 256; j++) {     // cycle all 256 colors in the wheel
-    for (int q=0; q < 3; q++) {
-      for (uint16_t i=0; i < strip.numPixels(); i=i+3) {
-        strip.setPixelColor(i+q, Wheel( (i+j) % 255));    //turn every third pixel on
-      }
-      strip.show();
-
-      delay(wait);
-
-      for (uint16_t i=0; i < strip.numPixels(); i=i+3) {
-        strip.setPixelColor(i+q, 0);        //turn every third pixel off
-      }
-    }
-  }
 }
 
 // Input a value 0 to 255 to get a color value.
 // The colours are a transition r - g - b - back to r.
-uint32_t Wheel(byte WheelPos) {
-  WheelPos = 255 - WheelPos;
-  if(WheelPos < 85) {
-    return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
-  }
-  if(WheelPos < 170) {
-    WheelPos -= 85;
-    return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
-  }
-  WheelPos -= 170;
-  return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+uint32_t Wheel(byte WheelPos)
+{
+    WheelPos = 255 - WheelPos;
+    if (WheelPos < 85)
+    {
+        return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+    }
+    if (WheelPos < 170)
+    {
+        WheelPos -= 85;
+        return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+    }
+    WheelPos -= 170;
+    return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
 }
