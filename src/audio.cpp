@@ -1,51 +1,81 @@
-#include <Arduino.h>
+/*audio.cpp*/
+
 #include "audio.hpp"
+
+// Called when a metadata event occurs (i.e. an ID3 tag, an ICY block, etc.
+void MDCallback(void *cbData, const char *type, bool isUnicode, const char *string)
+{
+  const char *ptr = reinterpret_cast<const char *>(cbData);
+  (void) isUnicode; // Punt this ball for now
+  // Note that the type and string may be in PROGMEM, so copy them to RAM for printf
+  char s1[32], s2[64];
+  strncpy_P(s1, type, sizeof(s1));
+  s1[sizeof(s1)-1]=0;
+  strncpy_P(s2, string, sizeof(s2));
+  s2[sizeof(s2)-1]=0;
+  Serial.printf("METADATA(%s) '%s' = '%s'\n", ptr, s1, s2);
+  Serial.flush();
+}
+
+// Called when there's a warning or error (like a buffer underflow or decode hiccup)
+void StatusCallback(void *cbData, int code, const char *string)
+{
+  const char *ptr = reinterpret_cast<const char *>(cbData);
+  // Note that the string may be in PROGMEM, so copy it to RAM for printf
+  char s1[64];
+  strncpy_P(s1, string, sizeof(s1));
+  s1[sizeof(s1)-1]=0;
+  Serial.printf("STATUS(%s) '%d' = '%s'\n", ptr, code, s1);
+  Serial.flush();
+}
+
 
 void audioStart()
 {
-  WiFi.mode(WIFI_OFF); 
   Serial.begin(115200);
   delay(1000);
-  Serial.printf("WAV start\n");
+  Serial.println("Connecting to WiFi");
+
+  WiFi.disconnect();
+  WiFi.softAPdisconnect(true);
+  WiFi.mode(WIFI_STA);
+  
+  WiFi.begin(ssid, password);
+
+  // Try forever
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.println("...Connecting to WiFi");
+    delay(1000);
+  }
+  Serial.println("Connected");
 
   audioLogger = &Serial;
-  file[0] = new AudioFileSourcePROGMEM( viola, sizeof(viola) );
-  out = new AudioOutputI2S();
-  mixer = new AudioOutputMixer(32, out);
-  stub[0] = mixer->NewInput();
-  stub[0]->SetGain(0.3);
-  wav[0] = new AudioGeneratorWAV();
-  wav[0]->begin(file[0], stub[0]);
-  // Begin wav[1] later in loop()
-  Serial.printf("starting 1\n");
+  file = new AudioFileSourceICYStream(URL);
+  file->RegisterMetadataCB(MDCallback, (void*)"ICY");
+  buff = new AudioFileSourceBuffer(file, 2048);
+  buff->RegisterStatusCB(StatusCallback, (void*)"buffer");
+  out = new AudioOutputI2SNoDAC();
+  mp3 = new AudioGeneratorMP3();
+  mp3->RegisterStatusCB(StatusCallback, (void*)"mp3");
+  mp3->begin(buff, out);
+
   playSound();
 }
 
+
 void playSound()
 {
-  static uint32_t start = 0;
-  static bool go = false;
-  
-  if (!start) start = millis();
+  static int lastms = 0;
 
-  if (wav[0]->isRunning()) {
-    if (!wav[0]->loop()) { wav[0]->stop(); stub[0]->stop(); Serial.printf("stopping 1\n"); }
+  if (mp3->isRunning()) {
+    if (millis()-lastms > 1000) {
+      lastms = millis();
+      Serial.printf("Running for %d ms...\n", lastms);
+      Serial.flush();
+     }
+    if (!mp3->loop()) mp3->stop();
+  } else {
+    Serial.printf("MP3 done\n");
+    delay(1000);
   }
-
-  if (millis()-start > 3000) {
-    if (!go) {
-      Serial.printf("starting 2\n");
-      stub[1] = mixer->NewInput();
-      stub[1]->SetGain(0.4);
-      wav[1] = new AudioGeneratorWAV();
-      file[1] = new AudioFileSourcePROGMEM( viola, sizeof(viola) );
-      wav[1]->begin(file[1], stub[1]);
-      go = true;
-    }
-    if (wav[1]->isRunning()) {
-      if (!wav[1]->loop()) { wav[1]->stop(); stub[1]->stop(); Serial.printf("stopping 2\n");}
-    }
-  }
-
 }
-

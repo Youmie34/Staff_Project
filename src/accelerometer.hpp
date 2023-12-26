@@ -1,3 +1,8 @@
+/*audio.hpp*/
+
+#ifndef ACCELEROMETER_HPP
+#define ACCELEROMETER_HPP
+
 #include <Wire.h>
 #include <SPI.h>
 #include <Adafruit_LIS3DH.h>
@@ -17,3 +22,5 @@ extern Adafruit_LIS3DH lis;
 
 void accStart();
 void measure();
+
+#endif  // ACCELEROMETER_HPP
