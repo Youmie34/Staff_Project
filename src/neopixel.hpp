@@ -33,6 +33,7 @@ void reverseRainbow(uint8_t wait);
 void theaterChase(uint32_t c, uint8_t wait);
 void quadIncreaseBrightness(uint8_t brightness);
 void quadDecreaseBrightness(uint8_t brightness);
+void glowUp(uint8_t brightness);
 
 void colorTransition(int startR, int startG, int startB, int endR, int endG, int endB, int duration);
 void colorTransitionReverse(int startR, int startG, int startB, int endR, int endG, int endB, int duration);
