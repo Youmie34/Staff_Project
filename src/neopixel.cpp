@@ -16,7 +16,7 @@ void neopixelStart()
 {
     strip.begin();
     strip.show(); // Initialize all pixels to 'off'
-    strip.setBrightness(70);
+    strip.setBrightness(0);
 
     while (1)
     {
@@ -28,16 +28,21 @@ void neopixelStart()
         // colorWipe(strip.Color(255, 0, 0), 120);   // red
         // colorWipe(strip.Color(255, 220, 0), 50); // yellow
 
-        // healing();
-        attack();
-        //  default_LED();
+        healing();
+        // attack();
+        // default_LED();
     }
 }
 
 void healing()
 {
+    printf("healing");
+    strip.Color(255, 0, 200);
+    glowUp(minValue);
+    /*
     quadIncreaseBrightness(minValue);
     quadDecreaseBrightness(maxValue);
+    */
 }
 
 void attack()
@@ -51,6 +56,38 @@ void attack()
 
 void default_LED()
 {
+}
+
+void glowUp(uint8_t brightness)
+{
+    // Gradual increase in brightness
+    if (brightness < 250)
+    {
+        long in_Min = 0;
+        long in_Max = 250;
+        long out_Min = 1;
+        long out_Max = 250;
+
+        // Adjust the rate of increase based on the current brightness level
+        uint8_t increment = map(brightness, 0, 255, 1, 100);
+
+        brightness += increment;
+
+        // Set the brightness for the NeoPixels
+        strip.setBrightness(brightness);
+
+        // Update NeoPixels
+        strip.show();
+        printf("%d", brightness);
+        // Add a delay to control the speed of the increase
+        delay(50);
+    }
+
+    // Reset brightness to 0 after reaching maximum (optional)
+    if (brightness >= 255)
+    {
+        brightness = 0;
+    }
 }
 
 void quadIncreaseBrightness(uint8_t brightness)
