@@ -16,16 +16,16 @@ Adafruit_LIS3DH lis;
 void accStart()
 {
   Serial.begin(115200);
-  SPI.begin(LIS3DH_SCLK, LIS3DH_MISO, LIS3DH_MOSI, LIS3DH_CS);
+  //SPI.begin(LIS3DH_SCLK, LIS3DH_MISO, LIS3DH_MOSI, LIS3DH_CS);
   // Example settings (1 MHz, MSB first, SPI mode 0)
   //SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));
-  // Wire.begin(SDA_PIN, SCL_PIN, 400000);
+  Wire.begin(SDA_PIN, SCL_PIN, 400000);
 
   // SPI
-  Adafruit_LIS3DH lis = Adafruit_LIS3DH();
+  //Adafruit_LIS3DH lis = Adafruit_LIS3DH();
 
   // I2C
-  // Adafruit_LIS3DH lis = Adafruit_LIS3DH();
+  Adafruit_LIS3DH lis = Adafruit_LIS3DH();
 
   while (!Serial)
     delay(10); // will pause Zero, Leonardo, etc until serial console opens
