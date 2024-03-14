@@ -1,31 +1,20 @@
 #include <Arduino.h>
 #include "accelerometer.hpp"
 
-// SPI
-const int LIS3DH_SCLK = 18;
-const int LIS3DH_MISO = 19;
-const int LIS3DH_MOSI = 23;
-const int LIS3DH_CS = 2;
-
 // I2C
-const int SDA_PIN = 21; // Custom SDA pin
-const int SCL_PIN = 22; // Custom SCL pin
+const int SDA_PIN = 21;      // Custom SDA pin
+const int SCL_PIN = 22;      // Custom SCL pin
+const int INTERRUPT_PIN = 9; // Interrupt pin
 
 Adafruit_LIS3DH lis;
 
 void accStart()
 {
   Serial.begin(115200);
-  //SPI.begin(LIS3DH_SCLK, LIS3DH_MISO, LIS3DH_MOSI, LIS3DH_CS);
-  // Example settings (1 MHz, MSB first, SPI mode 0)
-  //SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));
   Wire.begin(SDA_PIN, SCL_PIN, 400000);
 
-  // SPI
-  //Adafruit_LIS3DH lis = Adafruit_LIS3DH();
-
   // I2C
-  Adafruit_LIS3DH lis = Adafruit_LIS3DH();
+  lis = Adafruit_LIS3DH();
 
   while (!Serial)
     delay(10); // will pause Zero, Leonardo, etc until serial console opens
@@ -40,14 +29,13 @@ void accStart()
   }
   Serial.println("LIS3DH found!");
 
-  // sensitivity
   lis.setRange(LIS3DH_RANGE_4_G); // 2, 4, 8 or 16 G!
 
   Serial.print("Range = ");
   Serial.print(2 << lis.getRange());
   Serial.println("G");
 
-  // lis.setDataRate(LIS3DH_DATARATE_50_HZ);
+  lis.setDataRate(LIS3DH_DATARATE_50_HZ);
   Serial.print("Data rate set to: ");
   switch (lis.getDataRate())
   {
@@ -86,9 +74,14 @@ void accStart()
   measure();
 }
 
+void interruptHandler()
+{
+  // This function will be called when a motion interrupt is detected
+  Serial.println("Motion detected!");
+}
+
 void measure()
 {
-
   while (1)
   {
     lis.read(); // get X Y and Z data at once
