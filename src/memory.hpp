@@ -20,5 +20,7 @@ extern int cs;
 // void readFile(fs::FS &fs, const char *path);
 void setupMemory();
 void mp3Loop();
+// free memory
+void free();
 
 #endif // MEMORY_HPP
