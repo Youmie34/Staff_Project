@@ -9,64 +9,9 @@ int cs = 2;
 const char *healP = "/heal.mp3";
 const char *attackP = "/attack.mp3";
 
-void listDir(fs::FS &fs, const char *dirname, uint8_t levels)
-{
-  Serial.printf("Listing directory: %s\n", dirname);
-
-  File root = fs.open(dirname);
-  if (!root)
-  {
-    Serial.println("Failed to open directory");
-    return;
-  }
-  if (!root.isDirectory())
-  {
-    Serial.println("Not a directory");
-    return;
-  }
-
-  File file = root.openNextFile();
-  while (file)
-  {
-    if (file.isDirectory())
-    {
-      Serial.print("  DIR : ");
-      Serial.println(file.name());
-      if (levels)
-      {
-        listDir(fs, file.path(), levels - 1);
-      }
-    }
-    else
-    {
-      Serial.print("  FILE: ");
-      Serial.print(file.name());
-      Serial.print("  SIZE: ");
-      Serial.println(file.size());
-    }
-    file = root.openNextFile();
-  }
-}
-
-void readFile(fs::FS &fs, const char *path)
-{
-  Serial.printf("Reading file: %s\n", path);
-
-  File file = fs.open(path);
-  if (!file)
-  {
-    Serial.println("Failed to open file for reading");
-    return;
-  }
-
-  Serial.print("Read from file: ");
-  while (file.available())
-  {
-    Serial.write(file.read());
-  }
-  Serial.println("Ende");
-  file.close();
-}
+AudioGeneratorMP3 *mp3;
+AudioFileSourceSD *sdFile;
+AudioOutputI2S *out;
 
 void setupMemory()
 {
@@ -84,8 +29,38 @@ void setupMemory()
     return;
   }
 
-  listDir(SD, "/", 0);
-  // readFile(SD, healP);
-  // readFile(SD, attackP);
+  if (!SPIFFS.begin())
+  {
+    Serial.println("SPIFFS konnte nicht initialisiert werden.");
+    return;
+  }
+
+  Serial.printf("Sample MP3 playback begins...\n");
+
+  sdFile = new AudioFileSourceSD("/heal.mp3"); // Öffnen der Audiodatei auf der SD
+  out = new AudioOutputI2S();                  // Initialisierung des Audioausgangs
+  mp3 = new AudioGeneratorMP3();
+  mp3->begin(sdFile, out);
+
+  mp3Loop();
+}
+
+void mp3Loop()
+{
+  while (mp3->isRunning())
+  {
+    if (!mp3->loop())
+    {
+      mp3->stop();   // Wenn die Wiedergabe abgeschlossen ist, stoppen Sie die Wiedergabe
+      delete mp3;    // Freigabe des Speicherbereichs für mp3
+      delete sdFile; // Freigabe des Speicherbereichs für sdFile
+      delete out;    // Freigabe des Speicherbereichs für out
+      Serial.println("mp3 Wiedergabe abgeschlossen");
+    }
+    else
+    {
+      Serial.println("Running");
+    }
+  }
   Serial.println("END");
 }
