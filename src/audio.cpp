@@ -2,9 +2,13 @@
 
 #include "audio.hpp"
 
+// init global variables
+AudioOutputI2S *i2s = nullptr;
+AudioGeneratorMP3 *mp3 = nullptr;
+
 void startMusic()
 {
-    i2s = new AudioOutputI2S();                           // Initialisierung des Audioausgangs
+    i2s = new AudioOutputI2S(); // Initialisierung des Audioausgangs
     mp3 = new AudioGeneratorMP3();
 
     mp3->begin(flashSource, i2s);

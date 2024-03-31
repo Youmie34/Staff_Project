@@ -8,6 +8,11 @@ int miso = 19;
 int mosi = 23;
 int cs = 2;
 
+// init global variables
+AudioFileSourceSD *sdFileHeal = nullptr;
+File flashFileHeal;
+AudioFileSourceSPIFFS *flashSource = nullptr;
+
 void setupMemory()
 {
   Serial.begin(115200);
