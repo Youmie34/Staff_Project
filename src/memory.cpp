@@ -83,16 +83,20 @@ void setupMemory()
   flashFileHeal.close();
 
   Serial.println("MP3-Datei erfolgreich von der SD-Karte ins SPIFFS kopiert");
-
-  i2s = new AudioOutputI2S(); // Initialisierung des Audioausgangs
-  mp3 = new AudioGeneratorMP3();
+  /*
+    i2s = new AudioOutputI2S(); // Initialisierung des Audioausgangs
+    mp3 = new AudioGeneratorMP3();
+    */
   // mp3->begin(sdFileHeal, i2s);
-
   // mp3Loop();
+  SPIFFS.end(); // SPIFFS-Verbindung trennen
+  // delete mp3;
+  // delete i2s;
 
   free();
 }
 
+/*
 void mp3Loop()
 {
   while (mp3->isRunning())
@@ -110,10 +114,13 @@ void mp3Loop()
     }
   }
 }
+*/
 
 void free()
 {
-  delete mp3;
-  delete sdFileHeal;
-  delete i2s;
+  //~flashFileHeal;
+  // delete mp3;
+  // delete sdFileHeal;
+  // delete i2s;
+  // SPIFFS.end(); // SPIFFS-Verbindung trennen
 }

@@ -19,8 +19,8 @@ extern int cs;
 // void listDir(fs::FS &fs, const char *dirname, uint8_t levels);
 // void readFile(fs::FS &fs, const char *path);
 void setupMemory();
-void mp3Loop();
-// free memory
+// void mp3Loop();
+//  free memory
 void free();
 
 #endif // MEMORY_HPP
