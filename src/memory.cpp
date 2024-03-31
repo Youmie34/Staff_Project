@@ -1,3 +1,5 @@
+/*memory.cpp*/
+
 #include "memory.hpp"
 
 // custom pins for the SPI communication
@@ -5,19 +7,6 @@ int sck = 18;
 int miso = 19;
 int mosi = 23;
 int cs = 2;
-
-const char *heal = "/heal.mp3";
-const char *attack = "/attack.mp3";
-
-// MP3 files on SD-Card
-AudioFileSourceSD *sdFileHeal;
-// AudioFileSourceSD *sdFileAttack;
-
-// MP3 files on flash-memory
-File flashFileHeal;
-
-AudioOutputI2S *i2s;
-AudioGeneratorMP3 *mp3;
 
 void setupMemory()
 {
@@ -46,7 +35,7 @@ void setupMemory()
   Serial.printf("Sample MP3 playback begins...\n");
 
   // SD_card
-  sdFileHeal = new AudioFileSourceSD(heal);
+  sdFileHeal = new AudioFileSourceSD("/heal.mp3");
   if (!sdFileHeal->isOpen())
   {
     Serial.println("Fehler beim Öffnen der Datei auf der SD-Karte");
@@ -55,7 +44,7 @@ void setupMemory()
   Serial.println("MP3-Datei auf der SD-Karte geöffnet");
 
   // flash-speicher
-  flashFileHeal = SPIFFS.open(heal, "w"); // Öffnen der Datei im SPIFFS zum Schreiben
+  flashFileHeal = SPIFFS.open("/heal.mp3", "w"); // Öffnen der Datei im SPIFFS zum Schreiben
   if (!flashFileHeal)
   {
     Serial.println("Fehler beim Öffnen der Datei im SPIFFS zum Schreiben");
@@ -78,49 +67,10 @@ void setupMemory()
     }
   }
 
-  // Schließen der Dateien
+  // sd-file is no longer needed, free memory!
   sdFileHeal->close();
-  flashFileHeal.close();
+
+  flashSource = new AudioFileSourceSPIFFS("/heal.mp3");
 
   Serial.println("MP3-Datei erfolgreich von der SD-Karte ins SPIFFS kopiert");
-  /*
-    i2s = new AudioOutputI2S(); // Initialisierung des Audioausgangs
-    mp3 = new AudioGeneratorMP3();
-    */
-  // mp3->begin(sdFileHeal, i2s);
-  // mp3Loop();
-  SPIFFS.end(); // SPIFFS-Verbindung trennen
-  // delete mp3;
-  // delete i2s;
-
-  free();
-}
-
-/*
-void mp3Loop()
-{
-  while (mp3->isRunning())
-  {
-
-    if (!mp3->loop())
-    {
-      mp3->stop(); // Wenn die Wiedergabe abgeschlossen ist, stoppen Sie die Wiedergabe
-      free();
-      Serial.println("mp3 Wiedergabe abgeschlossen");
-    }
-    else
-    {
-      Serial.println("Running");
-    }
-  }
-}
-*/
-
-void free()
-{
-  //~flashFileHeal;
-  // delete mp3;
-  // delete sdFileHeal;
-  // delete i2s;
-  // SPIFFS.end(); // SPIFFS-Verbindung trennen
 }
