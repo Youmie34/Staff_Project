@@ -25,7 +25,7 @@ extern File flashFileHeal;
 // Audio pointer auf MP3 files on flash-memory
 extern AudioFileSourceSPIFFS *flashSource;
 
-extern AudioOutputI2S *i2s;
+extern AudioOutputI2S *i2s_audio;
 extern AudioGeneratorMP3 *mp3;
 
 void setupMemory();
