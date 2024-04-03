@@ -24,6 +24,7 @@ extern AudioGeneratorMP3 *mp3;
 
 void startMusic();
 void mp3Decode();
+void playMusic();
 void freeFlash();
 
 #endif // AUDIO_HPP
