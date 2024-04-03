@@ -90,10 +90,9 @@ void setupMemory()
     }
   }
 
-  // sd-file is no longer needed, free memory!
+  // files no longer need to be open!
   sdFileHeal->close();
-
-  flashSource = new AudioFileSourceSPIFFS("/heal.mp3");
+  flashFileHeal.close();
 
   Serial.println("MP3-Datei erfolgreich von der SD-Karte ins SPIFFS kopiert");
 }

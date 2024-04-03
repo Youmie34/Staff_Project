@@ -23,7 +23,7 @@ extern AudioOutputI2S *i2s_audio;
 extern AudioGeneratorMP3 *mp3;
 
 void startMusic();
-void mp3Loop();
+void mp3Decode();
 void freeFlash();
 
 #endif // AUDIO_HPP

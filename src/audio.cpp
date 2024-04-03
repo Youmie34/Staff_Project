@@ -12,14 +12,16 @@ void startMusic()
     // Initialisierung des DAC-Pins
     dacWrite(DACPin, 0); // Setzen Sie den DAC-Pin auf einen Startwert
 
+    flashSource = new AudioFileSourceSPIFFS("/heal.mp3");
+
     // Öffnen der MP3-Datei im Flash-Speicher
     if (!flashSource->isOpen())
     {
         Serial.println("Fehler beim Öffnen der Datei im SPIFFS");
-        delete flashSource;
 
-        // close() frees memory!
+        delete flashSource;
         flashFileHeal.close();
+
         if (SPIFFS.remove("/heal.mp3"))
         {
             Serial.println("- file deleted");
@@ -45,59 +47,41 @@ void startMusic()
     }
 
     mp3->begin(flashSource, i2s_audio);
-    // mp3Loop();
+    mp3Decode();
 
     freeFlash();
 
     Serial.println("END");
 }
 
-void startPlayback()
-{
-    // Wiedergabe der Audiodaten
-    while (true)
-    {
-        int16_t sample[2];
-        if (i2s_audio->ConsumeSample(sample))
-        {
-            // Schreiben Sie die Audiodaten auf den I2S-Ausgang
-            i2s_audio->write(sample);
-        }
-        else
-        {
-            // Wenn keine Audiodaten mehr verfügbar sind, beenden Sie die Wiedergabe
-            Serial.println("Wiedergabe abgeschlossen");
-            break;
-        }
-    }
-}
-
-void mp3Loop()
+void mp3Decode()
 {
     while (mp3->isRunning())
     {
-
         if (!mp3->loop())
         {
             mp3->stop(); // Wenn die Wiedergabe abgeschlossen ist, stoppen Sie die Wiedergabe
             Serial.println("mp3 Wiedergabe abgeschlossen");
+            freeFlash();
             break;
         }
         else
         {
             // Lesen Sie die Audiodaten vom I2S und schreiben Sie sie auf den DAC-Pin
-            // size_t *bytes_read;
-            const size_t bufferSize = 1024; // Zum Beispiel 1024 Bytes
-            int sample = i2s_audio->read(NULL, bufferSize);
-            if (sample == 0)
+            int16_t sample[2];
+            if (!i2s_audio->ConsumeSample(sample))
             {
-                Serial.println("FEHLER beim Lesen von Audiodaten vom I2S");
-                freeFlash(); // Fehlerbehandlung und Aufräumen
-                break;       // Beenden Sie die Schleife bei einem Fehler
+                // Fehler beim Lesen der Samples
+                Serial.println("FEHLER beim Lesen von Samples vom MP3-Decodierer");
+                freeFlash();
+                break;
             }
 
+            // Konvertiere int16_t in uint8_t
+            uint8_t sample_byte = static_cast<uint8_t>((sample[0] >> 8) & 0xFF); // Beispiel für einen 8-Bit-Sample aus dem linken Kanal
+
             // Schreiben Sie die Audiodaten auf den DAC-Pin
-            dacWrite(DACPin, sample);
+            dacWrite(DACPin, sample_byte);
         }
     }
 }
