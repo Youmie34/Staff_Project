@@ -4,11 +4,10 @@
 #define MEMORY_HPP
 
 #include "AudioFileSourceSD.h"
-#include "AudioGeneratorMP3.h"
-#include "AudioOutputI2S.h"
 #include "SPIFFS.h"                //Zugriff auf esp32 Flash-Speicher
 #include "AudioFileSourceSPIFFS.h" //Zugriff auf audio-file in esp32 flash-speicher
 #include "SPI.h"
+#include "audio.hpp"
 
 // SPI
 extern int sck;
@@ -16,11 +15,19 @@ extern int miso;
 extern int mosi;
 extern int cs;
 
-// void listDir(fs::FS &fs, const char *dirname, uint8_t levels);
-// void readFile(fs::FS &fs, const char *path);
+// MP3 files on SD-Card
+extern AudioFileSourceSD *sdFileHeal;
+// AudioFileSourceSD *sdFileAttack;
+
+// MP3 files on flash-memory
+extern File flashFileHeal;
+
+// Audio pointer auf MP3 files on flash-memory
+extern AudioFileSourceSPIFFS *flashSource;
+
+extern AudioOutputI2S *i2s_audio;
+extern AudioGeneratorMP3 *mp3;
+
 void setupMemory();
-void mp3Loop();
-// free memory
-void free();
 
 #endif // MEMORY_HPP

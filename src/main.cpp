@@ -6,6 +6,7 @@
 #include "distance.hpp"
 #include "neopixel.hpp"
 #include "memory.hpp"
+#include "audio.hpp"
 
 void setup()
 {
@@ -14,6 +15,7 @@ void setup()
   // ultrasonic();
   // neopixelStart();
   setupMemory();
+  startMusic();
 }
 
 void loop()
