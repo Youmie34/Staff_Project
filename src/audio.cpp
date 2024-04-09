@@ -3,15 +3,11 @@
 #include "audio.hpp"
 
 // init global variables
-int DACPin = 26;
 AudioOutputI2S *i2s_audio = nullptr;
 AudioGeneratorMP3 *mp3 = nullptr;
 
 void startMusic()
 {
-    // Initialisierung des DAC-Pins
-    dacWrite(DACPin, 0); // Setzen Sie den DAC-Pin auf einen Startwert
-
     flashSource = new AudioFileSourceSPIFFS("/heal.mp3");
 
     // Öffnen der MP3-Datei im Flash-Speicher
@@ -50,7 +46,7 @@ void startMusic()
 
     mp3->begin(flashSource, i2s_audio);
     mp3Decode();
-    playMusic();
+    // playMusic();
 
     freeFlash();
 
@@ -92,7 +88,7 @@ void playMusic()
     uint8_t sample_byte = static_cast<uint8_t>((sample[0] >> 8) & 0xFF); // Beispiel für einen 8-Bit-Sample aus dem linken Kanal
 
     // Schreiben Sie die Audiodaten auf den DAC-Pin
-    dacWrite(DACPin, sample_byte);
+    // dacWrite(DACPin, sample_byte);
 }
 
 void freeFlash()
