@@ -10,6 +10,7 @@
             "includePath": [
                 "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/include",
                 "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/src",
+                "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/SparkFun LIS3DH Arduino Library/src",
                 "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/Adafruit LIS3DH",
                 "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/Adafruit Unified Sensor",
                 "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/Adafruit BusIO",
@@ -245,6 +246,7 @@
                 "path": [
                     "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/include",
                     "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/src",
+                    "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/SparkFun LIS3DH Arduino Library/src",
                     "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/Adafruit LIS3DH",
                     "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/Adafruit Unified Sensor",
                     "C:/Users/schwe/OneDrive/Dokumente/PlatformIO/Projects/Staff_Project/.pio/libdeps/esp32dev/Adafruit BusIO",
@@ -477,7 +479,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=60113",
+                "PLATFORMIO=60115",
                 "ARDUINO_ESP32_DEV",
                 "HAVE_CONFIG_H",
                 "MBEDTLS_CONFIG_FILE=\"mbedtls/esp_config.h\"",

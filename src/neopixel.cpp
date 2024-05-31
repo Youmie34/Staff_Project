@@ -28,9 +28,9 @@ void neopixelStart()
         // colorWipe(strip.Color(255, 0, 0), 120);   // red
         // colorWipe(strip.Color(255, 220, 0), 50); // yellow
 
-        // healing();
-        attack();
-        //  default_LED();
+        healing();
+        // attack();
+        //   default_LED();
     }
 }
 
