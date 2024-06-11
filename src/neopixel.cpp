@@ -15,8 +15,8 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(12, PIN, NEO_GRB + NEO_KHZ800);
 void neopixelStart()
 {
     strip.begin();
+    strip.setBrightness(70);
     strip.show(); // Initialize all pixels to 'off'
-    strip.setBrightness(0);
 
     while (1)
     {
@@ -28,9 +28,9 @@ void neopixelStart()
         // colorWipe(strip.Color(255, 0, 0), 120);   // red
         // colorWipe(strip.Color(255, 220, 0), 50); // yellow
 
-        healing();
-        // attack();
-        // default_LED();
+        // healing();
+        attack();
+        //  default_LED();
     }
 }
 
@@ -39,14 +39,13 @@ void healing()
     printf("healing");
     strip.Color(255, 0, 200);
     glowUp(minValue);
-    /*
     quadIncreaseBrightness(minValue);
     quadDecreaseBrightness(maxValue);
-    */
 }
 
 void attack()
 {
+    printf("attack");
     theaterChase(strip.Color(200, 0, 255), 120); // violet
     theaterChase(strip.Color(255, 0, 40), 120);  // pink
     theaterChase(strip.Color(255, 0, 0), 120);   // red
