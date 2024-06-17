@@ -15,6 +15,8 @@ extern AudioFileSourceSD *sdFileHeal;
 // MP3 files on flash-memory
 extern File flashFileHeal;
 
+extern int DACPin;
+
 // Audio pointer auf MP3 files on flash-memory
 extern AudioFileSourceSPIFFS *flashSource;
 
