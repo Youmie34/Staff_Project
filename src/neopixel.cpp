@@ -15,7 +15,7 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(12, PIN, NEO_GRB + NEO_KHZ800);
 void neopixelStart()
 {
     strip.begin();
-    strip.setBrightness(70);
+    strip.setBrightness(90);
     strip.show(); // Initialize all pixels to 'off'
 
     while (1)
@@ -28,9 +28,9 @@ void neopixelStart()
         // colorWipe(strip.Color(255, 0, 0), 120);   // red
         // colorWipe(strip.Color(255, 220, 0), 50); // yellow
 
-        // healing();
-        attack();
-        //  default_LED();
+        healing();
+        // attack();
+        //   default_LED();
     }
 }
 
@@ -113,6 +113,7 @@ void quadIncreaseBrightness(uint8_t brightness)
         colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
         delay(500);
         // Delay for visibility (adjust as needed)
+        // TODO: currentbrightness zu newbrightness per for-loop
         brightness = brightness + uint8_t(pow(2, x));
         printf("Increase2: %d\n", brightness);
 
