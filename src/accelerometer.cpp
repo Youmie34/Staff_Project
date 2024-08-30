@@ -1,3 +1,5 @@
+/*accelerometer.cpp*/
+
 #include <Arduino.h>
 #include "accelerometer.hpp"
 
