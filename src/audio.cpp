@@ -5,6 +5,7 @@
 // init global variables
 AudioOutputI2S *i2s_audio = nullptr;
 AudioGeneratorMP3 *mp3 = nullptr;
+int DACPin = 26;
 
 void startMusic()
 {
@@ -46,7 +47,7 @@ void startMusic()
 
     mp3->begin(flashSource, i2s_audio);
     mp3Decode();
-    // playMusic();
+    playMusic();
 
     freeFlash();
 
@@ -72,23 +73,26 @@ void mp3Decode()
 
 void playMusic()
 {
-    Serial.println("test1");
+    Serial.println("playMusic");
     int16_t sample[2];
 
     // TODO: write data from i2s to DAC-Pin
-    //  Lesen Sie die Audiodaten vom I2S und schreiben Sie sie auf den DAC-Pin
-    if (!i2s_audio->ConsumeSample(sample))
+    while (true)
     {
-        // Fehler beim Lesen der Samples
-        Serial.println("FEHLER beim Lesen von Samples vom MP3-Decodierer");
-        return;
+        //  Lesen Sie die Audiodaten vom I2S und schreiben Sie sie auf den DAC-Pin
+        if (!i2s_audio->ConsumeSample(sample))
+        {
+            // Fehler beim Lesen der Samples
+            Serial.println("FEHLER beim Lesen von Samples vom MP3-Decodierer");
+            break;
+        }
+
+        // Konvertiere int16_t in uint8_t
+        uint8_t sample_byte = static_cast<uint8_t>((sample[0] >> 8) & 0xFF); // Beispiel für einen 8-Bit-Sample aus dem linken Kanal
+
+        // Schreiben Sie die Audiodaten auf den DAC-Pin
+        dacWrite(DACPin, sample_byte);
     }
-
-    // Konvertiere int16_t in uint8_t
-    uint8_t sample_byte = static_cast<uint8_t>((sample[0] >> 8) & 0xFF); // Beispiel für einen 8-Bit-Sample aus dem linken Kanal
-
-    // Schreiben Sie die Audiodaten auf den DAC-Pin
-    // dacWrite(DACPin, sample_byte);
 }
 
 void freeFlash()
