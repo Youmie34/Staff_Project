@@ -7,7 +7,7 @@ void ultrasonic()
 {
     long duration = 0; // Dauer zum Berechnen der Reichweite
     long distance = 0.0;
-    Serial.begin(115200);     // Im Serialmonitor die Baudrate auf 9600 einstellen
+    Serial.begin(115200);     // Im Serialmonitor die Baudrate auf 115200 einstellen
     pinMode(trigPin, OUTPUT); // Pins werden deklariert
     pinMode(echoPin, INPUT);
     pinMode(LEDPin, OUTPUT);
