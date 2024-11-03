@@ -24,6 +24,9 @@ Source files are on the SD-Card which are passed to the flash-memory of the esp3
 ## Neopixel
 Code for the Neopixel Ring
 
+# Staff example
+![](https://imgur.com/tPuvxxh.jpg)
+
 # Disclaimer
 This code is provided "as-is" without any warranties or guarantees. Use it at your own risk. I am not responsible for any issues, damages, or data loss that may result from using this repository
 
