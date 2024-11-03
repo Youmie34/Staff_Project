@@ -1,5 +1,5 @@
 # Project Staff
-Code for Linoan's staff. Consists of a ESP32 with
+Code for a cleric staff for cosplay. Consists of a ESP32 with
 
 1) Ultrasonic-Distance-sensor HC-SR04
 2) Accelerometer
@@ -23,4 +23,8 @@ Source files are on the SD-Card which are passed to the flash-memory of the esp3
 
 ## Neopixel
 Code for the Neopixel Ring
+
+# Disclaimer
+This code is provided "as-is" without any warranties or guarantees. Use it at your own risk. I am not responsible for any issues, damages, or data loss that may result from using this repository
+
 
