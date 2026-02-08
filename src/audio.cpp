@@ -9,7 +9,7 @@ int DACPin = 26;
 
 void startMusic()
 {
-    flashSource = new AudioFileSourceSPIFFS("/heal.mp3");
+    flashSource = new AudioFileSourceSPIFFS("/heal.mp3"); // test
 
     // Öffnen der MP3-Datei im Flash-Speicher
     if (!flashSource->isOpen())
@@ -76,21 +76,26 @@ void playMusic()
     Serial.println("playMusic");
     int16_t sample[2];
 
-    // TODO: write data from i2s to DAC-Pin
-    while (true)
+    while (mp3->isRunning())
     {
-        //  Lesen Sie die Audiodaten vom I2S und schreiben Sie sie auf den DAC-Pin
-        if (!i2s_audio->ConsumeSample(sample))
+        if (!mp3->loop())
         {
-            // Fehler beim Lesen der Samples
-            Serial.println("FEHLER beim Lesen von Samples vom MP3-Decodierer");
+            mp3->stop();
+            Serial.println("mp3 Wiedergabe abgeschlossen");
             break;
         }
 
-        // Konvertiere int16_t in uint8_t
-        uint8_t sample_byte = static_cast<uint8_t>((sample[0] >> 8) & 0xFF); // Beispiel für einen 8-Bit-Sample aus dem linken Kanal
+        // Lesen der Audiodaten vom I2S
+        if (!i2s_audio->ConsumeSample(sample))
+        {
+            Serial.println("FEHLER beim Lesen von Samples vom MP3-Decodierer");
+            continue;
+        }
 
-        // Schreiben Sie die Audiodaten auf den DAC-Pin
+        // Konvertiere int16_t in uint8_t für den DAC
+        uint8_t sample_byte = static_cast<uint8_t>((sample[0] >> 8) & 0xFF); // Linker Kanal
+
+        // Schreiben der Audiodaten auf den DAC-Pin
         dacWrite(DACPin, sample_byte);
     }
 }

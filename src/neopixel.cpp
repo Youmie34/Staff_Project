@@ -6,47 +6,46 @@
 uint8_t minValue = 0;
 uint8_t maxValue = 253;
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(12, PIN, NEO_GRB + NEO_KHZ800);
-
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
 // and minimize distance between Arduino and first pixel.  Avoid connecting
 // on a live circuit...if you must, connect GND first.
 
-void neopixelStart()
+void neoSetup()
 {
     strip.begin();
+    strip.setBrightness(90);
     strip.show(); // Initialize all pixels to 'off'
-    strip.setBrightness(0);
+}
 
-    while (1)
-    {
+void neopixelStart()
+{
 
-        // Some example procedures showing how to display to the pixels:
-        // colorWipe(strip.Color(255, 0, 200), 100); // pink
-        // theaterChase(strip.Color(255, 109, 84), 120); // White
-        // theaterChase(strip.Color(255, 100, 00), 120); // yellow
-        // colorWipe(strip.Color(255, 0, 0), 120);   // red
-        // colorWipe(strip.Color(255, 220, 0), 50); // yellow
+    // Some example procedures showing how to display to the pixels:
+    // colorWipe(strip.Color(255, 0, 200), 100); // pink
+    // theaterChase(strip.Color(255, 109, 84), 120); // White
+    // theaterChase(strip.Color(255, 100, 00), 120); // yellow
+    // colorWipe(strip.Color(255, 0, 0), 120);   // red
+    // colorWipe(strip.Color(255, 220, 0), 50); // yellow
 
-        healing();
-        // attack();
-        // default_LED();
-    }
+    healing();
+    // attack();
+    //    default_LED();
+    strip.show(); // Initialize all pixels to 'off'
 }
 
 void healing()
 {
     printf("healing");
     strip.Color(255, 0, 200);
-    glowUp(minValue);
-    /*
+    // glowUp(minValue);
     quadIncreaseBrightness(minValue);
     quadDecreaseBrightness(maxValue);
-    */
 }
 
 void attack()
 {
+    printf("attack");
     theaterChase(strip.Color(200, 0, 255), 120); // violet
     theaterChase(strip.Color(255, 0, 40), 120);  // pink
     theaterChase(strip.Color(255, 0, 0), 120);   // red
@@ -56,6 +55,9 @@ void attack()
 
 void default_LED()
 {
+    printf("default");
+    strip.Color(0, 255, 255);
+    strip.show();
 }
 
 void glowUp(uint8_t brightness)
@@ -93,7 +95,7 @@ void glowUp(uint8_t brightness)
 void quadIncreaseBrightness(uint8_t brightness)
 {
     printf("Beginn Increase\n");
-    int x = 0;
+    int x = 1;
 
     while (brightness < 250)
     {
@@ -114,6 +116,7 @@ void quadIncreaseBrightness(uint8_t brightness)
         colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
         delay(500);
         // Delay for visibility (adjust as needed)
+        // TODO: currentbrightness zu newbrightness per for-loop
         brightness = brightness + uint8_t(pow(2, x));
         printf("Increase2: %d\n", brightness);
 
@@ -279,4 +282,28 @@ uint32_t Wheel(byte WheelPos)
     }
     WheelPos -= 170;
     return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+}
+
+void smoothIncreaseBrightness(uint8_t startBrightness, uint8_t targetBrightness, uint8_t stepDelay)
+{
+    while (startBrightness < targetBrightness)
+    {
+        strip.setBrightness(startBrightness);
+        strip.show();
+        delay(stepDelay); // Kleinere Verzögerung für smootheren Effekt
+        startBrightness++;
+    }
+    printf("Maximale Helligkeit erreicht: %d\n", startBrightness);
+}
+
+void smoothDecreaseBrightness(uint8_t startBrightness, uint8_t targetBrightness, uint8_t stepDelay)
+{
+    while (startBrightness > targetBrightness)
+    {
+        strip.setBrightness(startBrightness);
+        strip.show();
+        delay(stepDelay); // Kleinere Verzögerung für smootheren Effekt
+        startBrightness--;
+    }
+    printf("Minimale Helligkeit erreicht: %d\n", startBrightness);
 }

@@ -2,6 +2,7 @@
 
 #include <Arduino.h>
 #include "distance.hpp"
+#include "neopixel.hpp"
 
 void ultrasonic()
 {
@@ -35,13 +36,16 @@ void ultrasonic()
         if (distance > 0 && distance <= minimumRange)
         {
             // Signalisiert "außer Reichweite" indem -1 an den Computer ausgegeben wird und die LED aufleuchtet
-            digitalWrite(LEDPin, HIGH);
+            // digitalWrite(LEDPin, HIGH);
+            neopixelStart();
+            delay(5000);
         }
 
         else
         {
-            // Turn off the LED when distance is greater than minimumRange
-            digitalWrite(LEDPin, LOW);
+            // default_LED();
+            //  Turn off the LED when distance is greater than minimumRange
+            //  digitalWrite(LEDPin, LOW);
         }
     }
 }
