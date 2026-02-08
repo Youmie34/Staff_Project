@@ -8,6 +8,8 @@
 #include "memory.hpp"
 #include "I2S.h"
 
+const int DACPin = 25; // Pin für den DAC-Ausgang
+
 // MP3 files on SD-Card
 extern AudioFileSourceSD *sdFileHeal;
 // AudioFileSourceSD *sdFileAttack;
