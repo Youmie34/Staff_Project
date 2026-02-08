@@ -5,6 +5,7 @@
 // init global variables
 AudioOutputI2S *i2s_audio = nullptr;
 AudioGeneratorMP3 *mp3 = nullptr;
+int DACPin = 26;
 
 void startMusic()
 {
@@ -72,7 +73,7 @@ void mp3Decode()
 
 void playMusic()
 {
-    Serial.println("test1");
+    Serial.println("playMusic");
     int16_t sample[2];
 
     while (mp3->isRunning())
