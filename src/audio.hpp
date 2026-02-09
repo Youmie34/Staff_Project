@@ -28,11 +28,12 @@ extern AudioFileSourceSPIFFS *flashSourceAttack;
 extern AudioOutputI2S *i2s_audio;
 extern AudioGeneratorMP3 *mp3;
 
-void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, String filename);
+void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename);
 void mp3Decode();
 void playMusic();
 void freeFlash();
 void selectMusic();
 void setupflashSourceSelect();
+void freeResources();
 
 #endif // AUDIO_HPP

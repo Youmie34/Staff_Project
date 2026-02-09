@@ -29,25 +29,13 @@ void selectMusic()
     }
 }
 
-void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, String filename)
+void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
 {
-    // Öffnen der MP3-Datei im Flash-Speicher
+    flashSourceSelect->open(filename);
+
     if (!flashSourceSelect->isOpen())
     {
-        Serial.println("Fehler beim Öffnen der Datei im SPIFFS");
-
-        delete flashSourceSelect;
-        flashFile.close();
-
-        if (SPIFFS.remove(filename))
-        {
-            Serial.println("- file deleted");
-        }
-        else
-        {
-            Serial.println("- delete failed");
-        }
-        SPIFFS.end(); // SPIFFS-Verbindung trennen
+        Serial.println("Datei ist geschlossen.");
         return;
     }
 
@@ -68,6 +56,7 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, String filename)
     mp3->begin(flashSourceSelect, i2s_audio);
     mp3Decode();
     playMusic();
+    freeResources();
 
     Serial.println("END");
 }
@@ -80,11 +69,7 @@ void mp3Decode()
         {
             // dekodiere Dateien und schreibe sie ins i2s
             mp3->stop(); // Wenn die Wiedergabe abgeschlossen ist, stoppen Sie die Wiedergabe
-            Serial.println("mp3 Wiedergabe abgeschlossen");
-        }
-        else
-        {
-            Serial.print("Running");
+            // Serial.println("mp3 Wiedergabe abgeschlossen");
         }
     }
 }
@@ -99,7 +84,7 @@ void playMusic()
         if (!mp3->loop())
         {
             mp3->stop();
-            Serial.println("mp3 Wiedergabe abgeschlossen");
+            // Serial.println("mp3 Wiedergabe abgeschlossen");
             break;
         }
 
@@ -115,6 +100,20 @@ void playMusic()
 
         // Schreiben der Audiodaten auf den DAC-Pin
         dacWrite(DACPin, sample_byte);
+    }
+}
+
+void freeResources()
+{
+    if (mp3 != nullptr)
+    {
+        delete mp3;
+        mp3 = nullptr;
+    }
+    if (i2s_audio != nullptr)
+    {
+        delete i2s_audio;
+        i2s_audio = nullptr;
     }
 }
 
