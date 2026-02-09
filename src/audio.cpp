@@ -5,7 +5,6 @@
 // init global variables
 AudioOutputI2S *i2s_audio = nullptr;
 AudioGeneratorMP3 *mp3 = nullptr;
-int DACPin = 26;
 
 void startMusic()
 {
@@ -108,6 +107,7 @@ void freeFlash()
 
     // close() frees memory!
     flashFileHeal.close();
+
     if (SPIFFS.remove("/heal.mp3"))
     {
         Serial.println("- file deleted");
@@ -116,5 +116,6 @@ void freeFlash()
     {
         Serial.println("- delete failed");
     }
+
     SPIFFS.end(); // SPIFFS-Verbindung trennen
 }

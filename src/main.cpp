@@ -10,7 +10,7 @@
 
 void setup()
 {
-  neoSetup();
+  // neoSetup();
   // accStart();
   // ultrasonic();
   // neopixelStart();
