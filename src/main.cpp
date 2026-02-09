@@ -15,7 +15,8 @@ void setup()
   // ultrasonic();
   // neopixelStart();
   setupMemory();
-  startMusic();
+  setupflashSourceSelect();
+  selectMusic();
 }
 
 void loop()

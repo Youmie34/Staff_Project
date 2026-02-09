@@ -9,8 +9,8 @@ int mosi = 23;
 int cs = 2;
 
 // init global variables
-AudioFileSourceSD *sdFileHeal = nullptr;
-File flashFileHeal;
+AudioFileSourceSD *sdFile = nullptr;
+File flashFile;
 AudioFileSourceSPIFFS *flashSource = nullptr;
 
 void setupMemory()
@@ -37,33 +37,40 @@ void setupMemory()
     return;
   }
 
-  Serial.printf("Sample MP3 playback begins...\n");
+  Serial.printf("Sample MP3 playback can begin\n");
 
-  // SD_card
-  sdFileHeal = new AudioFileSourceSD("/heal.mp3");
-  if (!sdFileHeal->isOpen())
+  saveInSPIFFS("/heal.mp3");
+  saveInSPIFFS("/attack.mp3");
+
+  Serial.println("saved heal and attack mp3 in SPIFFS\n");
+}
+
+void saveInSPIFFS(String filename)
+{ // SD_card
+  sdFile = new AudioFileSourceSD(filename.c_str());
+  if (!sdFile->isOpen())
   {
     Serial.println("Fehler beim Öffnen der Datei auf der SD-Karte");
-    sdFileHeal->close();
+    sdFile->close();
     SPIFFS.end(); // SPIFFS-Verbindung trennen
     return;
   }
   Serial.println("MP3-Datei auf der SD-Karte geöffnet");
 
   // flash-speicher
-  flashFileHeal = SPIFFS.open("/heal.mp3", "w"); // Öffnen der Datei im SPIFFS zum Schreiben
-  if (!flashFileHeal)
+  flashFile = SPIFFS.open(filename, "w"); // Öffnen der Datei im SPIFFS zum Schreiben
+  if (!flashFile)
   {
     Serial.println("Fehler beim Öffnen der Datei im SPIFFS zum Schreiben");
-    flashFileHeal.close();
-    if (SPIFFS.remove("/heal.mp3"))
+    flashFile.close();
+    if (SPIFFS.remove(filename))
     {
       Serial.println("- file deleted");
     }
     else
     {
       Serial.println("- delete failed");
-      sdFileHeal->close();
+      sdFile->close();
       SPIFFS.end(); // SPIFFS-Verbindung trennen
       return;
     }
@@ -76,23 +83,23 @@ void setupMemory()
 
   Serial.print("writing");
 
-  while (int bytesRead = sdFileHeal->read(buffer, sizeof(buffer)))
+  while (int bytesRead = sdFile->read(buffer, sizeof(buffer)))
   {
     if (bytesRead > 0)
     {
-      flashFileHeal.write(buffer, bytesRead);
+      flashFile.write(buffer, bytesRead);
       Serial.print(".");
     }
     else
     {
-      Serial.println("finished!");
+      Serial.println("finished!\n");
       break;
     }
   }
 
   // files no longer need to be open!
-  sdFileHeal->close();
-  flashFileHeal.close();
+  sdFile->close();
+  flashFile.close();
 
   Serial.println("MP3-Datei erfolgreich von der SD-Karte ins SPIFFS kopiert");
 }

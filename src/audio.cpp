@@ -5,20 +5,41 @@
 // init global variables
 AudioOutputI2S *i2s_audio = nullptr;
 AudioGeneratorMP3 *mp3 = nullptr;
+AudioFileSourceSPIFFS *flashSourceSelect = nullptr;
+AudioFileSourceSPIFFS *flashSourceHeal = nullptr;
+AudioFileSourceSPIFFS *flashSourceAttack = nullptr;
+const char *filenameHeal = "/heal.mp3";
+const char *filenameAttack = "/attack.mp3";
 
-void startMusic()
+void setupflashSourceSelect()
 {
-    flashSource = new AudioFileSourceSPIFFS("/heal.mp3"); // test
+    flashSourceHeal = new AudioFileSourceSPIFFS(filenameHeal);
+    flashSourceAttack = new AudioFileSourceSPIFFS(filenameAttack);
+}
 
+void selectMusic()
+{
+    // test
+    while (1)
+    {
+        startMusic(flashSourceHeal, filenameHeal);
+        delay(1000);
+        startMusic(flashSourceAttack, filenameAttack);
+        delay(1000);
+    }
+}
+
+void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, String filename)
+{
     // Öffnen der MP3-Datei im Flash-Speicher
-    if (!flashSource->isOpen())
+    if (!flashSourceSelect->isOpen())
     {
         Serial.println("Fehler beim Öffnen der Datei im SPIFFS");
 
-        delete flashSource;
-        flashFileHeal.close();
+        delete flashSourceSelect;
+        flashFile.close();
 
-        if (SPIFFS.remove("/heal.mp3"))
+        if (SPIFFS.remove(filename))
         {
             Serial.println("- file deleted");
         }
@@ -44,11 +65,9 @@ void startMusic()
         return;
     }
 
-    mp3->begin(flashSource, i2s_audio);
+    mp3->begin(flashSourceSelect, i2s_audio);
     mp3Decode();
     playMusic();
-
-    freeFlash();
 
     Serial.println("END");
 }
@@ -103,14 +122,16 @@ void freeFlash()
 {
     delete mp3;
     delete i2s_audio;
-    delete flashSource;
+    delete flashSourceSelect;
+    delete flashSourceHeal;
+    delete flashSourceAttack;
 
     // close() frees memory!
-    flashFileHeal.close();
+    flashFile.close();
 
-    if (SPIFFS.remove("/heal.mp3"))
+    if ((SPIFFS.remove("/heal.mp3")) && (SPIFFS.remove("/attack.mp3")))
     {
-        Serial.println("- file deleted");
+        Serial.println("- files deleted");
     }
     else
     {
