@@ -99,7 +99,7 @@ void saveInSPIFFS(String filename)
 
   // files no longer need to be open!
   sdFile->close();
-  flashFile.close();
+  // flashFile.close();
 
   Serial.println("MP3-Datei erfolgreich von der SD-Karte ins SPIFFS kopiert");
 }

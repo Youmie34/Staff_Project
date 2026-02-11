@@ -8,12 +8,22 @@
 #include "memory.hpp"
 #include "audio.hpp"
 
+enum system_state
+{
+  INIT,
+  IDLE,
+  ACTIVE,
+  ERROR
+};
+
 void setup()
 {
+  volatile system_state currentState = INIT;
+
   // neoSetup();
-  // accStart();
-  // ultrasonic();
-  // neopixelStart();
+  //  accStart();
+  //   ultrasonic();
+  //   neopixelStart();
   setupMemory();
   setupflashSourceSelect();
   selectMusic();
