@@ -29,6 +29,8 @@ extern AudioOutputI2S *i2s_audio;
 extern AudioGeneratorMP3 *mp3;
 
 void setupMemory();
-void saveInSPIFFS(String filename);
+void saveInSPIFFS(const char *filename);
+void listSPIFFSFiles();
+void initSPIFFS();
 
 #endif // MEMORY_HPP
