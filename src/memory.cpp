@@ -42,7 +42,7 @@ void setupMemory()
   saveInSPIFFS("/heal.mp3");
   saveInSPIFFS("/attack.mp3");
 
-  Serial.println("saved heal and attack mp3 in SPIFFS\n");
+  // Serial.println("saved heal and attack mp3 in SPIFFS\n");
 }
 
 void saveInSPIFFS(String filename)
@@ -55,7 +55,7 @@ void saveInSPIFFS(String filename)
     SPIFFS.end(); // SPIFFS-Verbindung trennen
     return;
   }
-  Serial.println("MP3-Datei auf der SD-Karte geöffnet");
+  // Serial.println("MP3-Datei auf der SD-Karte geöffnet");
 
   // flash-speicher
   flashFile = SPIFFS.open(filename, "w"); // Öffnen der Datei im SPIFFS zum Schreiben
@@ -75,24 +75,24 @@ void saveInSPIFFS(String filename)
       return;
     }
   }
-  Serial.println("Datei im SPIFFS zum Schreiben geöffnet");
+  // Serial.println("Datei im SPIFFS zum Schreiben geöffnet");
 
   // Lesen von Daten von der SD-Karte und Schreiben in die Datei im SPIFFS
   // Kopieren der MP3-Datei von der SD-Karte ins SPIFFS
   byte buffer[512];
 
-  Serial.print("writing");
+  // Serial.print("writing");
 
   while (int bytesRead = sdFile->read(buffer, sizeof(buffer)))
   {
     if (bytesRead > 0)
     {
       flashFile.write(buffer, bytesRead);
-      Serial.print(".");
+      // Serial.print(".");
     }
     else
     {
-      Serial.println("finished!\n");
+      // Serial.println("finished!\n");
       break;
     }
   }
@@ -101,5 +101,5 @@ void saveInSPIFFS(String filename)
   sdFile->close();
   // flashFile.close();
 
-  Serial.println("MP3-Datei erfolgreich von der SD-Karte ins SPIFFS kopiert");
+  // Serial.println("MP3-Datei erfolgreich von der SD-Karte ins SPIFFS kopiert");
 }

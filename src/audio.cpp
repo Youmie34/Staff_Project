@@ -20,13 +20,10 @@ void setupflashSourceSelect()
 void selectMusic()
 {
     // test
-    while (1)
-    {
-        startMusic(flashSourceHeal, filenameHeal);
-        delay(1000);
-        startMusic(flashSourceAttack, filenameAttack);
-        delay(1000);
-    }
+    startMusic(flashSourceHeal, filenameHeal);
+    delay(1000);
+    startMusic(flashSourceAttack, filenameAttack);
+    delay(1000);
 }
 
 void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
@@ -76,7 +73,6 @@ void mp3Decode()
 
 void playMusic()
 {
-    Serial.println("playMusic");
     int16_t sample[2];
 
     while (mp3->isRunning())

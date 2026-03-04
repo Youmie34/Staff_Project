@@ -19,17 +19,20 @@ enum system_state
 void setup()
 {
   volatile system_state currentState = INIT;
-
+  pinMode(ENFeatherPin, OUTPUT);
+  digitalWrite(ENFeatherPin, LOW);
   // neoSetup();
   //  accStart();
   //   ultrasonic();
   //   neopixelStart();
+
   setupMemory();
+  digitalWrite(ENFeatherPin, HIGH);
   setupflashSourceSelect();
-  selectMusic();
 }
 
 void loop()
 {
   // put your main code here, to run repeatedly:
+  selectMusic();
 }
