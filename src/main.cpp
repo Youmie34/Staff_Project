@@ -8,17 +8,31 @@
 #include "memory.hpp"
 #include "audio.hpp"
 
+enum system_state
+{
+  INIT,
+  IDLE,
+  ACTIVE,
+  ERROR
+};
+
 void setup()
 {
-  // put your setup code here, to run once:
-  // accStart();
-  //  ultrasonic();
-  // // neopixelStart();
+  volatile system_state currentState = INIT;
+  pinMode(ENFeatherPin, OUTPUT);
+  digitalWrite(ENFeatherPin, LOW);
+  // neoSetup();
+  //  accStart();
+  //   ultrasonic();
+  //   neopixelStart();
+
   setupMemory();
-  startMusic();
+  digitalWrite(ENFeatherPin, HIGH);
+  setupflashSourceSelect();
 }
 
 void loop()
 {
   // put your main code here, to run repeatedly:
+  selectMusic();
 }

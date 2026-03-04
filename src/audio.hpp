@@ -7,24 +7,34 @@
 #include "AudioOutputI2S.h"
 #include "memory.hpp"
 #include "I2S.h"
+#include <string.h>
+
+const int DACPin = 25;       // Pin für den DAC-Ausgang
+const int ENFeatherPin = 15; // Pin zum Aktivieren des Feather Audio Boards
+extern const char *filenameHeal;
+extern const char *filenameAttack;
 
 // MP3 files on SD-Card
-extern AudioFileSourceSD *sdFileHeal;
-// AudioFileSourceSD *sdFileAttack;
+extern AudioFileSourceSD *sdFile;
 
 // MP3 files on flash-memory
-extern File flashFileHeal;
+extern File flashFile;
 
 // Audio pointer auf MP3 files on flash-memory
-extern AudioFileSourceSPIFFS *flashSource;
+extern AudioFileSourceSPIFFS *flashSourceSelect;
+extern AudioFileSourceSPIFFS *flashSourceHeal;
+extern AudioFileSourceSPIFFS *flashSourceAttack;
 
 // extern int DACPin;
 extern AudioOutputI2S *i2s_audio;
 extern AudioGeneratorMP3 *mp3;
 
-void startMusic();
+void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename);
 void mp3Decode();
 void playMusic();
 void freeFlash();
+void selectMusic();
+void setupflashSourceSelect();
+void freeResources();
 
 #endif // AUDIO_HPP
