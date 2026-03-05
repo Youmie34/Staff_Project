@@ -22,7 +22,11 @@ extern const int INTERRUPT_PIN;
 extern Adafruit_LIS3DH lis;
 extern sensors_event_t event;
 
+void accStart();
 void interruptHandler();
+void measure();
 void measureWithEvent();
+void scanAdresse();
+void getTapEvent();
 
 #endif // ACCELEROMETER_HPP
