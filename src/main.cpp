@@ -34,9 +34,9 @@ void setup()
 {
   volatile system_state currentState = INIT;
   pinMode(ENFeatherPin, OUTPUT);
-  // pinMode(ledPin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
   digitalWrite(ENFeatherPin, LOW);
-  // digitalWrite(ledPin, LOW);
+  digitalWrite(ledPin, HIGH);
   //   digitalWrite(ENFeatherPin, HIGH);
   //     neoSetup();
   setupAcc();
@@ -54,7 +54,7 @@ void loop()
     motionDetected = false;
 
     Serial.println("Motion detected!");
-    // digitalWrite(ledPin, LOW);
+    digitalWrite(ledPin, LOW);
     // Reading INT1_SRC clears the (latched) interrupt on INT1.
     // Only read it when we're handling an interrupt; reading it all the time can
     // create repeated re-triggers.
@@ -63,7 +63,7 @@ void loop()
   else
   {
     Serial.println("No motion detected.");
-    // digitalWrite(ledPin, LOW);
+    digitalWrite(ledPin, HIGH);
   }
   delay(1000);
 }
