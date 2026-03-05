@@ -14,7 +14,7 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(12, PIN, NEO_GRB + NEO_KHZ800);
 void neoSetup()
 {
     strip.begin();
-    strip.setBrightness(90);
+    strip.setBrightness(250);
     strip.show(); // Initialize all pixels to 'off'
 }
 
@@ -29,7 +29,7 @@ void neopixelStart()
     // colorWipe(strip.Color(255, 220, 0), 50); // yellow
 
     healing();
-    // attack();
+    attack();
     //    default_LED();
     strip.show(); // Initialize all pixels to 'off'
 }
@@ -38,9 +38,10 @@ void healing()
 {
     printf("healing");
     strip.Color(255, 0, 200);
+    healing_animation();
     // glowUp(minValue);
-    quadIncreaseBrightness(minValue);
-    quadDecreaseBrightness(maxValue);
+    // quadIncreaseBrightness(minValue);
+    // quadDecreaseBrightness(maxValue);
 }
 
 void attack()
@@ -58,6 +59,26 @@ void default_LED()
     printf("default");
     strip.Color(0, 255, 255);
     strip.show();
+}
+
+void healing_animation()
+{
+    colorTransition(255, 255, 0, 0, 255, 255, 1000); // Transition from Yellow to Teal, letzte Aktion bevor break!
+    delay(500);
+    colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
+    delay(500);
+    colorTransition(255, 0, 255, 0, 255, 255, 1000); // Transition from Pink to Teal
+    delay(500);
+    colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
+    delay(500);
+    colorTransition(255, 255, 0, 0, 255, 255, 1000); // Transition from Yellow to Teal, letzte Aktion bevor break!
+    delay(500);
+    colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
+    delay(500);
+    colorTransition(255, 0, 255, 0, 255, 255, 1000); // Transition from Pink to Teal
+    delay(500);
+    colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
+    delay(500);
 }
 
 void glowUp(uint8_t brightness)

@@ -29,6 +29,7 @@ void attack();      // if input from accelerometer
 void default_LED(); // default
 
 // animations
+void healing_animation();
 void colorWipe(uint32_t c, uint8_t wait);
 void rainbow(uint8_t wait);
 void reverseRainbow(uint8_t wait);

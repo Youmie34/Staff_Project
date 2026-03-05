@@ -5,17 +5,15 @@
 #include "accelerometer.hpp"
 #include "distance.hpp"
 #include "neopixel.hpp"
-#include "memory.hpp"
-#include "audio.hpp"
 
 void setup()
 {
   neoSetup();
   // accStart();
   // ultrasonic();
-  // neopixelStart();
-  setupMemory();
-  startMusic();
+  neopixelStart();
+  // setupMemory();
+  // startMusic();
 }
 
 void loop()
