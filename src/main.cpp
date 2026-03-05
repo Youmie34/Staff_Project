@@ -15,14 +15,18 @@ enum system_state
   ERROR
 };
 
+const int ledPin = 5;
+
 void setup()
 {
   volatile system_state currentState = INIT;
   pinMode(ENFeatherPin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
   digitalWrite(ENFeatherPin, LOW);
-  digitalWrite(ENFeatherPin, HIGH);
-  //  neoSetup();
-  accStart();
+  digitalWrite(ledPin, LOW);
+  // digitalWrite(ENFeatherPin, HIGH);
+  //   neoSetup();
+  setupAcc();
   //   ultrasonic();
   //   neopixelStart();
 
@@ -32,7 +36,15 @@ void setup()
 
 void loop()
 {
-  // put your main code here, to run repeatedly:
-  // selectMusic();
-  getTapEvent();
+  if (motionDetected)
+  {
+    motionDetected = false;
+
+    Serial.println("Motion detected!");
+    digitalWrite(ledPin, HIGH);
+    clearInterrupt();
+  }
+  Serial.println(digitalRead(INT_PIN));
+  digitalWrite(ledPin, LOW);
+  delay(1000);
 }

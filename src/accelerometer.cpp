@@ -4,34 +4,15 @@
 #include "accelerometer.hpp"
 
 // I2C
-const int SDA_PIN = 21;       // Custom SDA pin
-const int SCL_PIN = 22;       // Custom SCL pin
-const int INTERRUPT_PIN = 13; // Interrupt pin
+const int SDA_PIN = 21; // Custom SDA pin
+const int SCL_PIN = 22; // Custom SCL pin
+const int INT_PIN = 13; // Interrupt pin
+
+volatile bool motionDetected = false;
 
 Adafruit_LIS3DH lis;
-sensors_event_t event;
 
-void scanAdresse()
-{
-  Wire.begin(SDA_PIN, SCL_PIN, 400000);
-  pinMode(INTERRUPT_PIN, INPUT_PULLUP);
-  Serial.begin(115200);
-  while (!Serial)
-    ;
-  Serial.println("\nI2C Scanner");
-  for (byte address = 1; address < 127; ++address)
-  {
-    Wire.beginTransmission(address);
-    if (Wire.endTransmission() == 0)
-    {
-      Serial.print("Found I2C device at address 0x");
-      Serial.println(address, HEX);
-    }
-  }
-  Serial.println("nopes\n");
-}
-
-void accStart()
+void setupAcc()
 {
   Serial.begin(115200);
   Wire.begin(SDA_PIN, SCL_PIN, 400000);
@@ -39,52 +20,58 @@ void accStart()
   // I2C
   lis = Adafruit_LIS3DH();
 
-  while (!Serial)
-    delay(10);
-
-  Serial.println("LIS3DH test!");
-
   if (!lis.begin(0x18))
   { // change this to 0x19 for alternative i2c address
     Serial.println("Couldnt start");
   }
 
-  Serial.println("LIS3DH found!");
-
-  lis.setRange(LIS3DH_RANGE_2_G); // 2, 4, 8 or 16 G!
-
-  lis.setDataRate(LIS3DH_DATARATE_10_HZ);
-  // measureWithEvent();
-  //  measure();
-  lis.setClick(1, 100);
-}
-
-void getTapEvent()
-{
-  if (lis.getClick())
+  else
   {
-    Serial.println("Tap erkannt!");
-    Serial.println(".");
+    Serial.println("LIS3DH found!");
   }
+
+  lis.setRange(LIS3DH_RANGE_4_G); // 2, 4, 8 or 16 G!
+
+  lis.setDataRate(LIS3DH_DATARATE_100_HZ);
+
+  setMotionInterrupt();
 }
 
-void interruptHandler()
+void writeRegister(uint8_t reg, uint8_t value)
 {
-  // This function will be called when a motion interrupt is detected
-  Serial.println("Motion detected!");
+  Wire.beginTransmission(0x18);
+  Wire.write(reg);
+  Wire.write(value);
+  Wire.endTransmission();
 }
 
-void measure()
+void setMotionInterrupt()
 {
-  lis.read(); // get X Y and Z data at once
-              // Then print out the raw data
-  Serial.print("X:  ");
-  Serial.print(lis.x);
-  Serial.print("  \tY:  ");
-  Serial.print(lis.y);
-  Serial.print("  \tZ:  ");
-  Serial.print(lis.z);
-  Serial.println();
+  lis.enableDRDY(false, 1);
 
-  delay(1000);
+  writeRegister(0x30, 0b00001100); // INT1_CFG (Y high + low)
+  writeRegister(0x32, 32);         // INT1_THS
+  writeRegister(0x33, 1);          // INT1_DURATION
+  writeRegister(0x22, 0x40);       // CTRL3 -> INT1 enable
+  writeRegister(0x24, 0x08);       // latch interrupt
+
+  pinMode(INT_PIN, INPUT_PULLDOWN);
+  attachInterrupt(digitalPinToInterrupt(INT_PIN), motionISR, RISING);
+}
+
+void clearInterrupt()
+{
+  motionDetected = false;
+
+  Wire.beginTransmission(0x18);
+  Wire.write(0x31); // INT1_SRC
+  Wire.endTransmission();
+
+  Wire.requestFrom(0x18, 1);
+  Wire.read();
+}
+
+void motionISR()
+{
+  motionDetected = true;
 }

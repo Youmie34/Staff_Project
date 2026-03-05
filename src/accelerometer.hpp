@@ -17,16 +17,17 @@ extern const int LIS3DH_CS;
 // I2C
 extern const int SDA_PIN;
 extern const int SCL_PIN;
-extern const int INTERRUPT_PIN;
+extern const int INT_PIN;
+
+extern volatile bool motionDetected;
 
 extern Adafruit_LIS3DH lis;
 extern sensors_event_t event;
 
-void accStart();
-void interruptHandler();
-void measure();
-void measureWithEvent();
-void scanAdresse();
-void getTapEvent();
+void setupAcc();
+void motionISR();
+void setMotionInterrupt();
+void clearInterrupt();
+void writeRegister(uint8_t reg, uint8_t value);
 
 #endif // ACCELEROMETER_HPP
