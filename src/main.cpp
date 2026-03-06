@@ -5,8 +5,6 @@
 #include "accelerometer.hpp"
 #include "distance.hpp"
 #include "neopixel.hpp"
-#include "memory.hpp"
-#include "audio.hpp"
 
 enum system_state
 {
@@ -18,6 +16,7 @@ enum system_state
 
 void setup()
 {
+<<<<<<< HEAD
   volatile system_state currentState = INIT;
   pinMode(ENFeatherPin, OUTPUT);
   digitalWrite(ENFeatherPin, LOW);
@@ -29,6 +28,14 @@ void setup()
   setupMemory();
   digitalWrite(ENFeatherPin, HIGH);
   setupflashSourceSelect();
+=======
+  neoSetup();
+  // accStart();
+  // ultrasonic();
+  neopixelStart();
+  // setupMemory();
+  // startMusic();
+>>>>>>> neopixel
 }
 
 void loop()
