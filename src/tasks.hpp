@@ -1,24 +1,32 @@
 #ifndef TASKS_HPP
 #define TASKS_HPP
 
-#include <Arduino.h>
+#include "accelerometer.hpp"
+#include "distance.hpp"
+#include "neopixel.hpp"
+#include "memory.hpp"
+#include "audio.hpp"
+#include "states.hpp"
 
-enum task_state
-{
-    NOT_STARTED,
-    RUNNING,
-    COMPLETED,
-    ERROR
-};
+// init tasks
+extern tasks_t sensorsInit;
+extern tasks_t memoryInit;
+// idle tasks
+extern tasks_t distMeasure;
+extern tasks_t accMeasure;
+// active tasks
+extern tasks_t audioPlay;
+extern tasks_t neopixelPlay;
+// error tasks
+extern tasks_t errorHandler;
 
-TaskHandle_t sensorInitTaskHandler;
-TaskHandle_t audioInitTaskHandler;
-TaskHandle_t sensorTaskHandler;
-TaskHandle_t outputTaskHandler;
-
-volatile task_state sensorInitState;
-volatile task_state audioInitState;
-volatile task_state sensorState;
-volatile task_state outputState;
+extern TaskHandle_t SensorsInitHandle;
+extern TaskHandle_t SDInitHandle;
+extern TaskHandle_t SPIFFSInitHandle;
+extern TaskHandle_t DistMeasureHandle;
+extern TaskHandle_t AccMeasureHandle;
+extern TaskHandle_t AudioPlayHandle;
+extern TaskHandle_t NeopixelPlayHandle;
+extern TaskHandle_t ErrorHandle;
 
 #endif // TASKS_HPP

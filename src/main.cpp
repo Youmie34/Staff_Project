@@ -4,14 +4,9 @@
 #include "accelerometer.hpp"
 #include "distance.hpp"
 #include "neopixel.hpp"
-
-enum system_state
-{
-  INIT,
-  IDLE,
-  ACTIVE,
-  ERROR
-};
+#include "memory.hpp"
+#include "audio.hpp"
+#include "states.hpp"
 
 const int ledPin = 27;
 
@@ -30,30 +25,28 @@ void test_SRC()
 
 void setup()
 {
-<<<<<<< HEAD
   volatile system_state currentState = INIT;
+
   pinMode(ENFeatherPin, OUTPUT);
   pinMode(ledPin, OUTPUT);
   digitalWrite(ENFeatherPin, LOW);
   digitalWrite(ledPin, HIGH);
-  //   digitalWrite(ENFeatherPin, HIGH);
-  //     neoSetup();
-  setupAcc();
-  //   ultrasonic();
-  //   neopixelStart();
+  digitalWrite(ENFeatherPin, HIGH);
 
-  // setupMemory();
-  // setupflashSourceSelect();
+  setupMemory();
+  setupflashSourceSelect();
+  neoSetup();
+  setupAcc();
+  ultrasonicSetup();
+  // neopixelStart();
 }
 
 void loop()
 {
-  if (motionDetected)
+  if (systemFlags.motionDetected)
   {
-    motionDetected = false;
-
     Serial.println("Motion detected!");
-    digitalWrite(ledPin, LOW);
+    digitalWrite(ledPin, HIGH);
     // Reading INT1_SRC clears the (latched) interrupt on INT1.
     // Only read it when we're handling an interrupt; reading it all the time can
     // create repeated re-triggers.
@@ -62,7 +55,7 @@ void loop()
   else
   {
     Serial.println("No motion detected.");
-    digitalWrite(ledPin, HIGH);
+    digitalWrite(ledPin, LOW);
   }
   delay(1000);
 }
