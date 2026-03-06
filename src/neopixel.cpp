@@ -29,29 +29,38 @@ void neopixelStart()
     // colorWipe(strip.Color(255, 220, 0), 50); // yellow
 
     healing();
-    attack();
-    //    default_LED();
+    // attack();
+    //     default_LED();
     strip.show(); // Initialize all pixels to 'off'
 }
 
 void healing()
 {
-    printf("healing");
-    strip.Color(255, 0, 200);
-    healing_animation();
-    // glowUp(minValue);
-    // quadIncreaseBrightness(minValue);
-    // quadDecreaseBrightness(maxValue);
+    colorTransition(255, 255, 0, 0, 255, 255, 1000); // Transition from Yellow to Teal, letzte Aktion bevor break!
+    delay(500);
+    colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
+    delay(500);
+    colorTransition(255, 0, 255, 0, 255, 255, 1000); // Transition from Pink to Teal
+    delay(500);
+    colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
+    delay(500);
+    colorTransition(255, 255, 0, 0, 255, 255, 1000); // Transition from Yellow to Teal, letzte Aktion bevor break!
+    delay(500);
+    colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
+    delay(500);
+    colorTransition(255, 0, 255, 0, 255, 255, 1000); // Transition from Pink to Teal
+    delay(500);
+    colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
+    delay(500);
 }
 
 void attack()
 {
-    printf("attack");
-    theaterChase(strip.Color(200, 0, 255), 120); // violet
-    theaterChase(strip.Color(255, 0, 40), 120);  // pink
-    theaterChase(strip.Color(255, 0, 0), 120);   // red
-    theaterChase(strip.Color(200, 0, 255), 120); // violet
-    theaterChase(strip.Color(200, 0, 255), 120); // violet
+    strip.setBrightness(255);
+    theaterChase(strip.Color(200, 0, 255), 120);  // violet
+    theaterChase(strip.Color(255, 50, 100), 120); // pink
+    theaterChase(strip.Color(255, 40, 40), 120);  // red
+    theaterChase(strip.Color(200, 0, 255), 240);  // violet
 }
 
 void default_LED()
@@ -59,26 +68,6 @@ void default_LED()
     printf("default");
     strip.Color(0, 255, 255);
     strip.show();
-}
-
-void healing_animation()
-{
-    colorTransition(255, 255, 0, 0, 255, 255, 1000); // Transition from Yellow to Teal, letzte Aktion bevor break!
-    delay(500);
-    colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
-    delay(500);
-    colorTransition(255, 0, 255, 0, 255, 255, 1000); // Transition from Pink to Teal
-    delay(500);
-    colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
-    delay(500);
-    colorTransition(255, 255, 0, 0, 255, 255, 1000); // Transition from Yellow to Teal, letzte Aktion bevor break!
-    delay(500);
-    colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
-    delay(500);
-    colorTransition(255, 0, 255, 0, 255, 255, 1000); // Transition from Pink to Teal
-    delay(500);
-    colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
-    delay(500);
 }
 
 void glowUp(uint8_t brightness)
