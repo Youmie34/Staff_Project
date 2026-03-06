@@ -3,120 +3,80 @@
 #include <Arduino.h>
 #include "accelerometer.hpp"
 
-// SPI
-const int LIS3DH_SCLK = 18;
-const int LIS3DH_MISO = 19;
-const int LIS3DH_MOSI = 23;
-const int LIS3DH_CS = 2;
-
 // I2C
 const int SDA_PIN = 21; // Custom SDA pin
 const int SCL_PIN = 22; // Custom SCL pin
+const int INT_PIN = 13; // Interrupt pin
+
+volatile bool motionDetected = false;
 
 Adafruit_LIS3DH lis;
 
-void accStart()
+void setupAcc()
 {
   Serial.begin(115200);
-  SPI.begin(LIS3DH_SCLK, LIS3DH_MISO, LIS3DH_MOSI, LIS3DH_CS);
-  // Example settings (1 MHz, MSB first, SPI mode 0)
-  //SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));
-  // Wire.begin(SDA_PIN, SCL_PIN, 400000);
-
-  // SPI
-  Adafruit_LIS3DH lis = Adafruit_LIS3DH();
+  Wire.begin(SDA_PIN, SCL_PIN, 400000);
 
   // I2C
-  // Adafruit_LIS3DH lis = Adafruit_LIS3DH();
-
-  while (!Serial)
-    delay(10); // will pause Zero, Leonardo, etc until serial console opens
-
-  Serial.println("LIS3DH test!");
+  lis = Adafruit_LIS3DH();
 
   if (!lis.begin(0x18))
   { // change this to 0x19 for alternative i2c address
     Serial.println("Couldnt start");
-    while (1)
-      yield();
   }
-  Serial.println("LIS3DH found!");
 
-  // sensitivity
-  lis.setRange(LIS3DH_RANGE_4_G); // 2, 4, 8 or 16 G!
-
-  Serial.print("Range = ");
-  Serial.print(2 << lis.getRange());
-  Serial.println("G");
-
-  // lis.setDataRate(LIS3DH_DATARATE_50_HZ);
-  Serial.print("Data rate set to: ");
-  switch (lis.getDataRate())
+  else
   {
-  case LIS3DH_DATARATE_1_HZ:
-    Serial.println("1 Hz");
-    break;
-  case LIS3DH_DATARATE_10_HZ:
-    Serial.println("10 Hz");
-    break;
-  case LIS3DH_DATARATE_25_HZ:
-    Serial.println("25 Hz");
-    break;
-  case LIS3DH_DATARATE_50_HZ:
-    Serial.println("50 Hz");
-    break;
-  case LIS3DH_DATARATE_100_HZ:
-    Serial.println("100 Hz");
-    break;
-  case LIS3DH_DATARATE_200_HZ:
-    Serial.println("200 Hz");
-    break;
-  case LIS3DH_DATARATE_400_HZ:
-    Serial.println("400 Hz");
-    break;
-
-  case LIS3DH_DATARATE_POWERDOWN:
-    Serial.println("Powered Down");
-    break;
-  case LIS3DH_DATARATE_LOWPOWER_5KHZ:
-    Serial.println("5 Khz Low Power");
-    break;
-  case LIS3DH_DATARATE_LOWPOWER_1K6HZ:
-    Serial.println("16 Khz Low Power");
-    break;
+    Serial.println("LIS3DH found!");
   }
-  measure();
+
+  lis.setRange(LIS3DH_RANGE_2_G); // 2, 4, 8 or 16 G!
+
+  lis.setDataRate(LIS3DH_DATARATE_100_HZ);
+
+  setMotionInterrupt();
 }
 
-void measure()
+void writeRegister(uint8_t reg, uint8_t value)
 {
+  Wire.beginTransmission(0x18);
+  Wire.write(reg);
+  Wire.write(value);
+  Wire.endTransmission();
+}
 
-  while (1)
-  {
-    lis.read(); // get X Y and Z data at once
-    // Then print out the raw data
-    Serial.print("X:  ");
-    Serial.print(lis.x);
-    Serial.print("  \tY:  ");
-    Serial.print(lis.y);
-    Serial.print("  \tZ:  ");
-    Serial.print(lis.z);
+void setMotionInterrupt()
+{
+  lis.enableDRDY(false, 1);
 
-    /* Or....get a new sensor event, normalized */
-    sensors_event_t event;
-    lis.getEvent(&event);
+  writeRegister(0x20, 0x57); // CTRL_REG1: 100Hz data rate, all axes enabled
+  // High-pass filter for INT1 (AOI) so gravity/tilt doesn't constantly trigger.
+  // CTRL_REG2: enable HP for interrupt 1 (HPIS1=1) and set a modest cutoff (HPCF=01).
+  writeRegister(0x21, 0x11);
+  writeRegister(0x30, 0b00001000); // INT1_CFG (Y high)
+  writeRegister(0x32, 12);         // INT1_THS
+  writeRegister(0x33, 1);          // INT1_DURATION
+  writeRegister(0x24, 0x08);       // latch interrupt
+  writeRegister(0x22, 0x40);       // CTRL3 -> INT1 enable
 
-    /* Display the results (acceleration is measured in m/s^2) */
-    Serial.print("\t\tX: ");
-    Serial.print(event.acceleration.x);
-    Serial.print(" \tY: ");
-    Serial.print(event.acceleration.y);
-    Serial.print(" \tZ: ");
-    Serial.print(event.acceleration.z);
-    Serial.println(" m/s^2 ");
+  // If INT1 is configured/open-drain or the line is long, a pullup prevents a floating input.
+  pinMode(INT_PIN, INPUT_PULLUP);
 
-    Serial.println();
+  // Clear any pending/latched interrupt before enabling the ESP32 GPIO interrupt.
+  clearInterrupt();
+  attachInterrupt(digitalPinToInterrupt(INT_PIN), motionISR, RISING);
+}
 
-    delay(200);
-  }
+void clearInterrupt()
+{
+  Wire.beginTransmission(0x18);
+  Wire.write(0x31); // INT1_SRC
+  Wire.endTransmission();
+  Wire.requestFrom(0x18, 1);
+  Wire.read();
+}
+
+void IRAM_ATTR motionISR()
+{
+  motionDetected = true;
 }
