@@ -4,64 +4,87 @@
 
 flags_t systemFlags;
 
-// Define specific memory locations for task handles
-TaskHandle_t SensorsInitHandle;
-TaskHandle_t SDInitHandle;
-TaskHandle_t SPIFFSInitHandle;
-TaskHandle_t DistMeasureHandle;
-TaskHandle_t AccMeasureHandle;
-TaskHandle_t AudioPlayHandle;
-TaskHandle_t NeopixelPlayHandle;
-TaskHandle_t ErrorHandle;
-
 // init tasks
 tasks_t sensorsInit =
     {
         "SensorsInit",
-        SensorsInitHandle,
-        NOT_STARTED};
+        sens_init,
+        NOT_STARTED,
+};
 
 tasks_t sdInit =
     {
         "SDInit",
-        SDInitHandle,
+        sd_init,
         NOT_STARTED};
 
 tasks_t spiffsInit =
     {
         "SPIFFSInit",
-        SPIFFSInitHandle,
+        spiffs_init,
         NOT_STARTED};
 
 // idle tasks
 tasks_t distMeasure =
     {
         "DistMeasure",
-        DistMeasureHandle,
+        dist_measure,
         NOT_STARTED};
 
 tasks_t accMeasure =
     {
         "AccMeasure",
-        AccMeasureHandle,
+        acc_measure,
         NOT_STARTED};
 
 // active tasks
 tasks_t audioPlay =
     {
         "AudioPlay",
-        AudioPlayHandle,
+        audio_play,
         NOT_STARTED};
 
 tasks_t neopixelPlay =
     {
         "NeopixelPlay",
-        NeopixelPlayHandle,
+        neopixel_play,
         NOT_STARTED};
 
 // error tasks
 tasks_t errorHandler =
     {
         "ErrorHandler",
-        ErrorHandle,
+        error_handler,
         NOT_STARTED};
+
+void sens_init(void *parameter)
+{
+}
+
+void sd_init(void *parameter)
+{
+}
+
+void spiffs_init(void *parameter)
+{
+}
+
+void dist_measure(void *parameter)
+{
+}
+
+void acc_measure(void *parameter)
+{
+}
+
+void audio_play(void *parameter)
+{
+}
+
+void neopixel_play(void *parameter)
+{
+}
+
+void error_handler(void *parameter)
+{
+}

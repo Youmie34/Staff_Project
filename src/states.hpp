@@ -29,8 +29,8 @@ struct flags_t
 
 struct tasks_t
 {
-    char taskName[20];
-    TaskHandle_t taskHandle;
+    const char *taskName;
+    void (*taskFunction)(void *); // Function pointer for task execution
     task_state state;
 };
 

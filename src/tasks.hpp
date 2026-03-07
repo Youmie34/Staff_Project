@@ -10,7 +10,8 @@
 
 // init tasks
 extern tasks_t sensorsInit;
-extern tasks_t memoryInit;
+extern tasks_t sdInit;
+extern tasks_t spiffsInit;
 // idle tasks
 extern tasks_t distMeasure;
 extern tasks_t accMeasure;
@@ -20,13 +21,13 @@ extern tasks_t neopixelPlay;
 // error tasks
 extern tasks_t errorHandler;
 
-extern TaskHandle_t SensorsInitHandle;
-extern TaskHandle_t SDInitHandle;
-extern TaskHandle_t SPIFFSInitHandle;
-extern TaskHandle_t DistMeasureHandle;
-extern TaskHandle_t AccMeasureHandle;
-extern TaskHandle_t AudioPlayHandle;
-extern TaskHandle_t NeopixelPlayHandle;
-extern TaskHandle_t ErrorHandle;
+void sens_init(void *parameter);
+void sd_init(void *parameter);
+void spiffs_init(void *parameter);
+void dist_measure(void *parameter);
+void acc_measure(void *parameter);
+void audio_play(void *parameter);
+void neopixel_play(void *parameter);
+void error_handler(void *parameter);
 
 #endif // TASKS_HPP
