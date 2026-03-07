@@ -78,5 +78,19 @@ void clearInterrupt()
 
 void IRAM_ATTR motionISR()
 {
+  Serial.println("Motion detected!");
   motionDetected = true;
+}
+
+void test_SRC()
+{
+  uint8_t src;
+
+  Wire.beginTransmission(0x18);
+  Wire.write(0x31);
+  Wire.endTransmission();
+  Wire.requestFrom(0x18, 1);
+  src = Wire.read();
+
+  Serial.println(src, BIN);
 }

@@ -25,6 +25,8 @@ struct flags_t
 {
     volatile bool motionDetected = false;
     volatile bool distanceDetected = false;
+    volatile bool audioHealing = false;
+    volatile bool audioAttack = false;
 };
 
 struct tasks_t
@@ -34,7 +36,7 @@ struct tasks_t
     task_state state;
 };
 
-extern volatile system_state currentState;
+extern volatile system_state currentState; // Declare the variable as extern
 extern flags_t systemFlags;
 
 #endif // STATES_HPP

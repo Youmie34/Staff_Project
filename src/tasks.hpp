@@ -16,8 +16,10 @@ extern tasks_t spiffsInit;
 extern tasks_t distMeasure;
 extern tasks_t accMeasure;
 // active tasks
-extern tasks_t audioPlay;
-extern tasks_t neopixelPlay;
+extern tasks_t audioPlayHealing;
+extern tasks_t audioPlayAttack;
+extern tasks_t neopixelPlayHealing;
+extern tasks_t neopixelPlayAttack;
 // error tasks
 extern tasks_t errorHandler;
 
@@ -26,8 +28,10 @@ void sd_init(void *parameter);
 void spiffs_init(void *parameter);
 void dist_measure(void *parameter);
 void acc_measure(void *parameter);
-void audio_play(void *parameter);
-void neopixel_play(void *parameter);
+void audio_play_healing(void *parameter);
+void audio_play_attack(void *parameter);
+void neopixel_play_healing(void *parameter);
+void neopixel_play_attack(void *parameter);
 void error_handler(void *parameter);
 
 #endif // TASKS_HPP

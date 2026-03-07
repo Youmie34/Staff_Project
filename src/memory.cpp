@@ -39,8 +39,8 @@ void setupMemory()
 
   Serial.printf("Sample MP3 playback can begin\n");
 
-  saveInSPIFFS("/heal.mp3");
-  saveInSPIFFS("/attack.mp3");
+  // saveInSPIFFS("/heal.mp3");
+  // saveInSPIFFS("/attack.mp3");
 
   // Serial.println("saved heal and attack mp3 in SPIFFS\n");
 }

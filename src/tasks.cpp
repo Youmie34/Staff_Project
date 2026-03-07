@@ -38,16 +38,28 @@ tasks_t accMeasure =
         NOT_STARTED};
 
 // active tasks
-tasks_t audioPlay =
+tasks_t audioPlayHealing =
     {
-        "AudioPlay",
-        audio_play,
+        "AudioPlayHealing",
+        audio_play_healing,
         NOT_STARTED};
 
-tasks_t neopixelPlay =
+tasks_t audioPlayAttack =
+    {
+        "AudioPlayAttack",
+        audio_play_attack,
+        NOT_STARTED};
+
+tasks_t neopixelPlayHealing =
     {
         "NeopixelPlay",
-        neopixel_play,
+        neopixel_play_healing,
+        NOT_STARTED};
+
+tasks_t neopixelPlayAttack =
+    {
+        "NeopixelPlay",
+        neopixel_play_attack,
         NOT_STARTED};
 
 // error tasks
@@ -59,32 +71,80 @@ tasks_t errorHandler =
 
 void sens_init(void *parameter)
 {
+    sensorsInit.state = RUNNING;
+
+    pinMode(ENFeatherPin, OUTPUT);
+    digitalWrite(ENFeatherPin, LOW);
+    // digitalWrite(ENFeatherPin, HIGH);
+    setupAcc();
+    ultrasonicSetup();
+    neoSetup();
+
+    sensorsInit.state = COMPLETED;
 }
 
 void sd_init(void *parameter)
 {
+    sdInit.state = RUNNING;
+    setupMemory();
+    sdInit.state = COMPLETED;
 }
 
 void spiffs_init(void *parameter)
 {
+    spiffsInit.state = RUNNING;
+    saveInSPIFFS("/heal.mp3");
+    saveInSPIFFS("/attack.mp3");
+    setupflashSourceSelect();
+    spiffsInit.state = COMPLETED;
 }
 
 void dist_measure(void *parameter)
 {
+    distMeasure.state = RUNNING;
+    // Implementation for distance measurement
+    ultrasonicMeasure();
+    distMeasure.state = COMPLETED;
 }
 
 void acc_measure(void *parameter)
 {
+    accMeasure.state = RUNNING;
+    // Runs in interrupt, so no implementation here
+    accMeasure.state = COMPLETED;
 }
 
-void audio_play(void *parameter)
+void audio_play_healing(void *parameter)
 {
+    audioPlayHealing.state = RUNNING;
+    startMusic(flashSourceHeal, filenameHeal);
+    audioPlayHealing.state = COMPLETED;
 }
 
-void neopixel_play(void *parameter)
+void audio_play_attack(void *parameter)
 {
+    audioPlayAttack.state = RUNNING;
+    startMusic(flashSourceAttack, filenameAttack);
+    audioPlayAttack.state = COMPLETED;
+}
+
+void neopixel_play_healing(void *parameter)
+{
+    neopixelPlayHealing.state = RUNNING;
+    healing();
+    neopixelPlayHealing.state = COMPLETED;
+}
+
+void neopixel_play_attack(void *parameter)
+{
+    neopixelPlayAttack.state = RUNNING;
+    attack();
+    neopixelPlayAttack.state = COMPLETED;
 }
 
 void error_handler(void *parameter)
 {
+    errorHandler.state = RUNNING;
+    // Restart system
+    esp_restart(); // Perform system restart
 }

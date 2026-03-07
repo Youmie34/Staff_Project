@@ -10,6 +10,8 @@ AudioFileSourceSPIFFS *flashSourceHeal = nullptr;
 AudioFileSourceSPIFFS *flashSourceAttack = nullptr;
 const char *filenameHeal = "/heal.mp3";
 const char *filenameAttack = "/attack.mp3";
+volatile bool audioHealing = false;
+volatile bool audioAttack = false;
 
 void setupflashSourceSelect()
 {

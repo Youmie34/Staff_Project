@@ -13,6 +13,7 @@ const int minimumRange = 12; // Minimale Reichweite
 
 extern volatile long duration; // Dauer zum Berechnen der Reichweite
 extern volatile long distance; // Berechnete Entfernung
+extern volatile bool distanceDetected;
 
 void ultrasonicSetup();
 void ultrasonicMeasure();

@@ -52,6 +52,7 @@ void healing()
     delay(500);
     colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
     delay(500);
+    strip.show();
 }
 
 void attack()
@@ -61,6 +62,7 @@ void attack()
     theaterChase(strip.Color(255, 50, 100), 120); // pink
     theaterChase(strip.Color(255, 40, 40), 120);  // red
     theaterChase(strip.Color(200, 0, 255), 240);  // violet
+    strip.show();
 }
 
 void default_LED()
