@@ -83,8 +83,8 @@ void sens_init(void *parameter)
     digitalWrite(ENFeatherPin, HIGH);
 
     // Uncomment these lines if needed
-    // Serial.println("sens_init: Setting up ultrasonic sensor");
-    // ultrasonicSetup();
+    Serial.println("sens_init: Setting up ultrasonic sensor");
+    ultrasonicSetup();
     //  neoSetup();
     //   setupAcc();
 

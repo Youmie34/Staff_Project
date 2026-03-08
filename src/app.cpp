@@ -64,7 +64,7 @@ void app_main()
 bool app_init()
 {
     Serial.println(uxTaskGetStackHighWaterMark(NULL));
-    BaseType_t result = xTaskCreate(sensorsInit.taskFunction, sensorsInit.taskName, 8192, NULL, 6, NULL);
+    BaseType_t result = xTaskCreate(sensorsInit.taskFunction, sensorsInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 6, NULL);
 
     if (result == pdPASS)
     {
