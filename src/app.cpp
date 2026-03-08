@@ -4,8 +4,6 @@
 
 void app_main()
 {
-    createTasks();
-
     switch (currentState)
     {
     case INIT:
@@ -14,8 +12,18 @@ void app_main()
         break;
     case IDLE:
         Serial.println("System is idle.");
-        xTaskCreate(distMeasure.taskFunction, distMeasure.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
-        xTaskCreate(accMeasure.taskFunction, accMeasure.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
+
+        if (distanceDetected || motionDetected)
+        {
+            change_state(ACTIVE);
+        }
+
+        else
+        {
+            change_state(IDLE);
+            xTaskCreate(distMeasure.taskFunction, distMeasure.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
+            // xTaskCreate(accMeasure.taskFunction, accMeasure.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
+        }
         break;
     case ACTIVE:
         Serial.println("System is active.");
@@ -24,6 +32,7 @@ void app_main()
         {
             xTaskCreate(audioPlayHealing.taskFunction, audioPlayHealing.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
             xTaskCreate(neopixelPlayHealing.taskFunction, neopixelPlayHealing.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
+            change_state(IDLE);
         }
         else
         {
@@ -33,6 +42,7 @@ void app_main()
         {
             xTaskCreate(audioPlayAttack.taskFunction, audioPlayAttack.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
             xTaskCreate(neopixelPlayAttack.taskFunction, neopixelPlayAttack.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
+            change_state(IDLE);
         }
         else
         {
@@ -51,11 +61,21 @@ void app_main()
     vTaskStartScheduler();
 }
 
-void app_init()
+bool app_init()
 {
-    xTaskCreate(sensorsInit.taskFunction, sensorsInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
-    xTaskCreate(sdInit.taskFunction, sdInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
-    xTaskCreate(spiffsInit.taskFunction, spiffsInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
+    Serial.println(uxTaskGetStackHighWaterMark(NULL));
+    BaseType_t result = xTaskCreate(sensorsInit.taskFunction, sensorsInit.taskName, 8192, NULL, 6, NULL);
+
+    if (result == pdPASS)
+    {
+        Serial.println("Task created successfully.");
+        Serial.print("Stack high-water mark: ");
+        Serial.println(uxTaskGetStackHighWaterMark(NULL));
+    }
+
+    // xTaskCreate(sdInit.taskFunction, sdInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
+    // xTaskCreate(spiffsInit.taskFunction, spiffsInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
+    return true;
 }
 
 void change_state(system_state newState)

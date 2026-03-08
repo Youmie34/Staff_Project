@@ -9,6 +9,7 @@
 #include "SPI.h"
 #include "audio.hpp"
 #include <string.h>
+#include "app.hpp"
 
 // SPI
 extern int sck;

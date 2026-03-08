@@ -4,13 +4,14 @@
 #include "distance.hpp"
 #include "neopixel.hpp"
 
+// Define global variables for duration and distance
+volatile long duration = 0; // Dauer zum Berechnen der Reichweite
+volatile long distance = 0; // Entfernung in cm
+
 volatile bool distanceDetected = false;
 
 void ultrasonicSetup()
 {
-    long duration = 0; // Dauer zum Berechnen der Reichweite
-    long distance = 0.0;
-
     pinMode(trigPin, OUTPUT); // Pins werden deklariert
     pinMode(echoPin, INPUT);
     pinMode(LEDPin, OUTPUT);

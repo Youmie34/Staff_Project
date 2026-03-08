@@ -7,6 +7,9 @@
 #include "memory.hpp"
 #include "audio.hpp"
 #include "states.hpp"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "sdkconfig.h"
 
 // init tasks
 extern tasks_t sensorsInit;

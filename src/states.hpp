@@ -36,7 +36,7 @@ struct tasks_t
     task_state state;
 };
 
-extern volatile system_state currentState; // Declare the variable as extern
+extern volatile system_state currentState; // Correctly declare as extern
 extern flags_t systemFlags;
 
 #endif // STATES_HPP

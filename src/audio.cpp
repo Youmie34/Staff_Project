@@ -35,6 +35,7 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
     if (!flashSourceSelect->isOpen())
     {
         Serial.println("Datei ist geschlossen.");
+        change_state(ERROR);
         return;
     }
 
@@ -49,6 +50,7 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
     {
         Serial.println("Fehler beim Initialisieren des Audioausgangs über I2S");
         freeFlash();
+        change_state(ERROR);
         return;
     }
 

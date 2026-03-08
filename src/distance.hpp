@@ -3,7 +3,7 @@
 #ifndef DISTANCE_H
 #define DISTANCE_H
 
-#include "states.hpp"
+#include "app.hpp"
 
 const int echoPin = 16; // Echo Pin
 const int trigPin = 17; // Trigger Pin

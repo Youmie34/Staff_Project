@@ -71,16 +71,33 @@ tasks_t errorHandler =
 
 void sens_init(void *parameter)
 {
+    Serial.println("sens_init: Starting initialization");
+    Serial.print("sens_init: Current state before assignment: ");
+    Serial.println(sensorsInit.state);
+
     sensorsInit.state = RUNNING;
 
+    Serial.println("sens_init: Setting pin mode");
     pinMode(ENFeatherPin, OUTPUT);
-    digitalWrite(ENFeatherPin, LOW);
-    // digitalWrite(ENFeatherPin, HIGH);
-    setupAcc();
-    ultrasonicSetup();
-    neoSetup();
+    // digitalWrite(ENFeatherPin, LOW);
+    digitalWrite(ENFeatherPin, HIGH);
+
+    // Uncomment these lines if needed
+    // Serial.println("sens_init: Setting up ultrasonic sensor");
+    // ultrasonicSetup();
+    //  neoSetup();
+    //   setupAcc();
+
+    Serial.println("sens_init: Initialization complete");
+    Serial.print("sens_init: Current state after assignment: ");
+    Serial.println(sensorsInit.state);
+
+    Serial.print("sens_init: Task function pointer: ");
+    Serial.println((unsigned long)sensorsInit.taskFunction, HEX);
 
     sensorsInit.state = COMPLETED;
+    Serial.println("sens_init: Deleting task");
+    vTaskDelete(NULL);
 }
 
 void sd_init(void *parameter)
@@ -146,5 +163,5 @@ void error_handler(void *parameter)
 {
     errorHandler.state = RUNNING;
     // Restart system
-    esp_restart(); // Perform system restart
+    // esp_restart(); // Perform system restart
 }

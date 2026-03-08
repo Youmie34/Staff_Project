@@ -15,11 +15,6 @@ AudioFileSourceSPIFFS *flashSource = nullptr;
 
 void setupMemory()
 {
-  Serial.begin(115200);
-  while (!Serial)
-  {
-    delay(10);
-  }
 
   SPI.begin(sck, miso, mosi, cs);
 
@@ -27,6 +22,7 @@ void setupMemory()
   if (!SD.begin())
   {
     Serial.println("Card Mount Failed");
+    change_state(ERROR);
     return;
   }
 
@@ -34,6 +30,7 @@ void setupMemory()
   if (!SPIFFS.begin())
   {
     Serial.println("SPIFFS konnte nicht initialisiert werden.");
+    change_state(ERROR);
     return;
   }
 
@@ -53,6 +50,7 @@ void saveInSPIFFS(String filename)
     Serial.println("Fehler beim Öffnen der Datei auf der SD-Karte");
     sdFile->close();
     SPIFFS.end(); // SPIFFS-Verbindung trennen
+    change_state(ERROR);
     return;
   }
   // Serial.println("MP3-Datei auf der SD-Karte geöffnet");
@@ -63,6 +61,7 @@ void saveInSPIFFS(String filename)
   {
     Serial.println("Fehler beim Öffnen der Datei im SPIFFS zum Schreiben");
     flashFile.close();
+    change_state(ERROR);
     if (SPIFFS.remove(filename))
     {
       Serial.println("- file deleted");
