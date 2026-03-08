@@ -85,8 +85,8 @@ void sens_init(void *parameter)
     // Uncomment these lines if needed
     Serial.println("sens_init: Setting up ultrasonic sensor");
     ultrasonicSetup();
-    //  neoSetup();
-    //   setupAcc();
+    neoSetup();
+    setupAcc();
 
     Serial.println("sens_init: Initialization complete");
     Serial.print("sens_init: Current state after assignment: ");
