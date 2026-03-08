@@ -5,7 +5,7 @@
 
 #include "tasks.hpp"
 
-void app_main();
+void app_main_function();
 bool app_init();
 void change_state(system_state newState);
 

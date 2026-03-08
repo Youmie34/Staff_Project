@@ -93,13 +93,13 @@ void sd_init(void *parameter)
     sdInit.state = RUNNING;
     setupMemory();
     sdInit.state = COMPLETED;
+    vTaskDelete(NULL);
 }
 
 void spiffs_init(void *parameter)
 {
     spiffsInit.state = RUNNING;
     setupMemory();
-    Serial.println("SPIFFS initialization complete");
     saveInSPIFFS("/heal.mp3");
     saveInSPIFFS("/attack.mp3");
     setupflashSourceSelect();
@@ -111,30 +111,39 @@ void spiffs_init(void *parameter)
 void dist_measure(void *parameter)
 {
     distMeasure.state = RUNNING;
-    // Implementation for distance measurement
     ultrasonicMeasure();
     distMeasure.state = COMPLETED;
+    Serial.println("Distance task finished");
+    vTaskDelete(NULL);
 }
 
 void acc_measure(void *parameter)
 {
+    Serial.println("Acceleration task started");
     accMeasure.state = RUNNING;
     // Runs in interrupt, so no implementation here
     accMeasure.state = COMPLETED;
+    vTaskDelete(NULL);
 }
 
 void audio_play_healing(void *parameter)
 {
     audioPlayHealing.state = RUNNING;
+    Serial.println("Starting healing music");
     startMusic(flashSourceHeal, filenameHeal);
     audioPlayHealing.state = COMPLETED;
+    vTaskDelete(NULL);
+    Serial.println("Healing music finished");
 }
 
 void audio_play_attack(void *parameter)
 {
     audioPlayAttack.state = RUNNING;
+    Serial.println("Starting attack music");
     startMusic(flashSourceAttack, filenameAttack);
     audioPlayAttack.state = COMPLETED;
+    vTaskDelete(NULL);
+    Serial.println("Attack music finished");
 }
 
 void neopixel_play_healing(void *parameter)
@@ -142,6 +151,7 @@ void neopixel_play_healing(void *parameter)
     neopixelPlayHealing.state = RUNNING;
     healing();
     neopixelPlayHealing.state = COMPLETED;
+    vTaskDelete(NULL);
 }
 
 void neopixel_play_attack(void *parameter)
@@ -149,6 +159,7 @@ void neopixel_play_attack(void *parameter)
     neopixelPlayAttack.state = RUNNING;
     attack();
     neopixelPlayAttack.state = COMPLETED;
+    vTaskDelete(NULL);
 }
 
 void error_handler(void *parameter)
@@ -156,4 +167,5 @@ void error_handler(void *parameter)
     errorHandler.state = RUNNING;
     // Restart system
     // esp_restart(); // Perform system restart
+    vTaskDelete(NULL);
 }

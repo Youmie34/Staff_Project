@@ -2,7 +2,7 @@
 
 #include "app.hpp"
 
-void app_main()
+void app_main_function()
 {
     switch (currentState)
     {
@@ -21,7 +21,7 @@ void app_main()
         else
         {
             change_state(IDLE);
-            xTaskCreate(distMeasure.taskFunction, distMeasure.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
+            xTaskCreate(distMeasure.taskFunction, distMeasure.taskName, configMINIMAL_STACK_SIZE * 5, NULL, 6, NULL);
             // xTaskCreate(accMeasure.taskFunction, accMeasure.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
         }
         break;
@@ -30,8 +30,8 @@ void app_main()
 
         if (distanceDetected)
         {
-            xTaskCreate(audioPlayHealing.taskFunction, audioPlayHealing.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
-            xTaskCreate(neopixelPlayHealing.taskFunction, neopixelPlayHealing.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
+            xTaskCreate(audioPlayHealing.taskFunction, audioPlayHealing.taskName, 4095, NULL, 9, NULL);
+            xTaskCreate(neopixelPlayHealing.taskFunction, neopixelPlayHealing.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 9, NULL);
             change_state(IDLE);
         }
         else
@@ -40,8 +40,8 @@ void app_main()
 
         if (motionDetected)
         {
-            xTaskCreate(audioPlayAttack.taskFunction, audioPlayAttack.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
-            xTaskCreate(neopixelPlayAttack.taskFunction, neopixelPlayAttack.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
+            xTaskCreate(audioPlayAttack.taskFunction, audioPlayAttack.taskName, 4095, NULL, 9, NULL);
+            xTaskCreate(neopixelPlayAttack.taskFunction, neopixelPlayAttack.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 9, NULL);
             change_state(IDLE);
         }
         else
@@ -58,14 +58,14 @@ void app_main()
         break;
     }
 
-    vTaskStartScheduler();
+    // vTaskStartScheduler();
 }
 
 bool app_init()
 {
     Serial.println(uxTaskGetStackHighWaterMark(NULL));
-    BaseType_t result = xTaskCreate(sensorsInit.taskFunction, sensorsInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
-    BaseType_t result1 = xTaskCreate(spiffsInit.taskFunction, spiffsInit.taskName, configMINIMAL_STACK_SIZE * 6, NULL, 7, NULL);
+    BaseType_t result = xTaskCreate(sensorsInit.taskFunction, sensorsInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 9, NULL);
+    BaseType_t result1 = xTaskCreate(spiffsInit.taskFunction, spiffsInit.taskName, 8192, NULL, 10, NULL);
 
     /*
     if (result1 == pdPASS)

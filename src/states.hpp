@@ -23,6 +23,7 @@ enum task_state
 
 struct flags_t
 {
+    volatile bool systemInitialized = false;
     volatile bool motionDetected = false;
     volatile bool distanceDetected = false;
     volatile bool audioHealing = false;

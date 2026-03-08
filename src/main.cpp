@@ -7,6 +7,16 @@
 
 const int ledPin = 27;
 
+volatile bool systemInitialized = false;
+
+void led_test()
+{
+  digitalWrite(ledPin, LOW);
+  delay(1000);
+  digitalWrite(ledPin, HIGH);
+  delay(1000);
+}
+
 void setup()
 {
   pinMode(ledPin, OUTPUT);
@@ -26,21 +36,22 @@ void setup()
   else
   {
     Serial.println("App initialized successfully");
+    systemInitialized = true;
+    change_state(IDLE);
   }
-
-  Serial.println("Setup complete. Entering loop...");
 }
 
 void loop()
 {
-  while (1)
+  led_test();
+
+  if (systemInitialized)
   {
-    digitalWrite(ledPin, LOW);
-    delay(1000);
-    Serial.println("LED ON");
-    digitalWrite(ledPin, HIGH);
-    delay(1000);
-    Serial.println("LED OFF");
+    app_main_function();
   }
-  // app_main();
+
+  else
+  {
+    Serial.println("System not initialized yet.");
+  }
 }
