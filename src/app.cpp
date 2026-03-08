@@ -64,17 +64,18 @@ void app_main()
 bool app_init()
 {
     Serial.println(uxTaskGetStackHighWaterMark(NULL));
-    BaseType_t result = xTaskCreate(sensorsInit.taskFunction, sensorsInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 6, NULL);
+    BaseType_t result = xTaskCreate(sensorsInit.taskFunction, sensorsInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
+    BaseType_t result1 = xTaskCreate(spiffsInit.taskFunction, spiffsInit.taskName, configMINIMAL_STACK_SIZE * 6, NULL, 7, NULL);
 
-    if (result == pdPASS)
+    /*
+    if (result1 == pdPASS)
     {
         Serial.println("Task created successfully.");
         Serial.print("Stack high-water mark: ");
         Serial.println(uxTaskGetStackHighWaterMark(NULL));
     }
-
+*/
     // xTaskCreate(sdInit.taskFunction, sdInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
-    // xTaskCreate(spiffsInit.taskFunction, spiffsInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
     return true;
 }
 
