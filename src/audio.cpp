@@ -13,18 +13,15 @@ const char *filenameAttack = "/attack.mp3";
 
 void setupflashSourceSelect()
 {
-    Serial.println("Setting up flash source select");
     flashSourceHeal = new AudioFileSourceSPIFFS(filenameHeal);
     flashSourceAttack = new AudioFileSourceSPIFFS(filenameAttack);
 }
 
 void selectMusic()
 {
-    Serial.println("Selecting music");
     // test
     while (1)
     {
-        Serial.println("Testing music playback");
         startMusic(flashSourceHeal, filenameHeal);
         delay(1000);
         startMusic(flashSourceAttack, filenameAttack);
