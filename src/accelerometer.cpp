@@ -8,8 +8,6 @@ const int SDA_PIN = 21; // Custom SDA pin
 const int SCL_PIN = 22; // Custom SCL pin
 const int INT_PIN = 13; // Interrupt pin
 
-volatile bool motionDetected = false;
-
 Adafruit_LIS3DH lis;
 
 void setupAcc()
@@ -79,7 +77,7 @@ void clearInterrupt()
 void IRAM_ATTR motionISR()
 {
   Serial.println("Motion detected!");
-  motionDetected = true;
+  systemFlags.motionDetected = true;
 }
 
 void test_SRC()
@@ -93,4 +91,16 @@ void test_SRC()
   src = Wire.read();
 
   Serial.println(src, BIN);
+}
+
+void enableLIS3DHInterrupt()
+{
+  attachInterrupt(INT_PIN, motionISR, RISING); // GPIO-Interrupt aktivieren
+  Serial.println("LIS3DH Interrupt aktiviert");
+}
+
+void disableLIS3DHInterrupt()
+{
+  detachInterrupt(INT_PIN); // GPIO-Interrupt deaktivieren
+  Serial.println("LIS3DH Interrupt deaktiviert");
 }

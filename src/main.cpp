@@ -7,8 +7,6 @@
 
 const int ledPin = 27;
 
-volatile bool systemInitialized = false;
-
 void led_test()
 {
   digitalWrite(ledPin, LOW);
@@ -27,25 +25,14 @@ void setup()
   {
     delay(10);
   }
-
-  if (!app_init())
-  {
-    Serial.println("Error initializing app");
-    change_state(ERROR);
-  }
-  else
-  {
-    Serial.println("App initialized successfully");
-    systemInitialized = true;
-    change_state(IDLE);
-  }
+  app_init();
 }
 
 void loop()
 {
   led_test();
 
-  if (systemInitialized)
+  if ((systemFlags.audioInitialized && systemFlags.sensorsInitialized) == true)
   {
     app_main_function();
   }

@@ -23,13 +23,13 @@ extern const int INT_PIN;
 extern Adafruit_LIS3DH lis;
 extern sensors_event_t event;
 
-extern volatile bool motionDetected;
-
 void setupAcc();
 void motionISR();
 void setMotionInterrupt();
 void clearInterrupt();
 void writeRegister(uint8_t reg, uint8_t value);
 void test_SRC();
+void enableLIS3DHInterrupt();
+void disableLIS3DHInterrupt();
 
 #endif // ACCELEROMETER_HPP

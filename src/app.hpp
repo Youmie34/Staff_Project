@@ -6,7 +6,7 @@
 #include "tasks.hpp"
 
 void app_main_function();
-bool app_init();
+void app_init();
 void change_state(system_state newState);
 
 #endif // APP_H

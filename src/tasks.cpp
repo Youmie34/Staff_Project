@@ -2,8 +2,6 @@
 
 #include "tasks.hpp"
 
-flags_t systemFlags;
-
 // init tasks
 tasks_t sensorsInit =
     {
@@ -81,9 +79,8 @@ void sens_init(void *parameter)
     neoSetup();
     setupAcc();
 
-    Serial.println("sens_init: Initialization complete");
-
     sensorsInit.state = COMPLETED;
+    systemFlags.sensorsInitialized = true;
 
     vTaskDelete(NULL);
 }
@@ -105,16 +102,17 @@ void spiffs_init(void *parameter)
     setupflashSourceSelect();
     Serial.println("File saving complete");
     spiffsInit.state = COMPLETED;
+    systemFlags.audioInitialized = true;
     vTaskDelete(NULL);
 }
 
 void dist_measure(void *parameter)
 {
+    Serial.println("Distance task started");
     distMeasure.state = RUNNING;
     ultrasonicMeasure();
     distMeasure.state = COMPLETED;
-    Serial.println("Distance task finished");
-    vTaskDelete(NULL);
+    vTaskDelete(distMeasure.pxCreatedTask);
 }
 
 void acc_measure(void *parameter)
@@ -123,7 +121,7 @@ void acc_measure(void *parameter)
     accMeasure.state = RUNNING;
     // Runs in interrupt, so no implementation here
     accMeasure.state = COMPLETED;
-    vTaskDelete(NULL);
+    vTaskDelete(accMeasure.pxCreatedTask);
 }
 
 void audio_play_healing(void *parameter)
@@ -132,8 +130,7 @@ void audio_play_healing(void *parameter)
     Serial.println("Starting healing music");
     startMusic(flashSourceHeal, filenameHeal);
     audioPlayHealing.state = COMPLETED;
-    vTaskDelete(NULL);
-    Serial.println("Healing music finished");
+    vTaskDelete(audioPlayHealing.pxCreatedTask);
 }
 
 void audio_play_attack(void *parameter)
@@ -142,8 +139,7 @@ void audio_play_attack(void *parameter)
     Serial.println("Starting attack music");
     startMusic(flashSourceAttack, filenameAttack);
     audioPlayAttack.state = COMPLETED;
-    vTaskDelete(NULL);
-    Serial.println("Attack music finished");
+    vTaskDelete(audioPlayAttack.pxCreatedTask);
 }
 
 void neopixel_play_healing(void *parameter)
@@ -151,7 +147,7 @@ void neopixel_play_healing(void *parameter)
     neopixelPlayHealing.state = RUNNING;
     healing();
     neopixelPlayHealing.state = COMPLETED;
-    vTaskDelete(NULL);
+    vTaskDelete(neopixelPlayHealing.pxCreatedTask);
 }
 
 void neopixel_play_attack(void *parameter)
@@ -159,7 +155,7 @@ void neopixel_play_attack(void *parameter)
     neopixelPlayAttack.state = RUNNING;
     attack();
     neopixelPlayAttack.state = COMPLETED;
-    vTaskDelete(NULL);
+    vTaskDelete(neopixelPlayAttack.pxCreatedTask);
 }
 
 void error_handler(void *parameter)
@@ -167,5 +163,5 @@ void error_handler(void *parameter)
     errorHandler.state = RUNNING;
     // Restart system
     // esp_restart(); // Perform system restart
-    vTaskDelete(NULL);
+    vTaskDelete(errorHandler.pxCreatedTask);
 }

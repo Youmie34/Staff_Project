@@ -8,8 +8,6 @@
 volatile long duration = 0; // Dauer zum Berechnen der Reichweite
 volatile long distance = 0; // Entfernung in cm
 
-volatile bool distanceDetected = false;
-
 void ultrasonicSetup()
 {
     pinMode(trigPin, OUTPUT); // Pins werden deklariert
@@ -36,10 +34,10 @@ void ultrasonicMeasure()
     if (distance > 0 && distance <= minimumRange)
     {
         // Signalisiert "außer Reichweite" indem -1 an den Computer ausgegeben wird und die LED aufleuchtet
-        distanceDetected = true;
+        systemFlags.distanceDetected = true;
         // digitalWrite(LEDPin, HIGH);
         // neopixelStart();
-        // delay(5000);
+        vTaskDelay(5000 / portTICK_PERIOD_MS);
     }
 
     else
@@ -47,5 +45,6 @@ void ultrasonicMeasure()
         // default_LED();
         //  Turn off the LED when distance is greater than minimumRange
         //  digitalWrite(LEDPin, LOW);
+        systemFlags.distanceDetected = false;
     }
 }

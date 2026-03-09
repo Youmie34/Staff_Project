@@ -13,7 +13,7 @@ void app_main_function()
     case IDLE:
         Serial.println("System is idle.");
 
-        if (distanceDetected || motionDetected)
+        if ((systemFlags.distanceDetected) || (systemFlags.motionDetected))
         {
             change_state(ACTIVE);
         }
@@ -21,27 +21,30 @@ void app_main_function()
         else
         {
             change_state(IDLE);
-            xTaskCreate(distMeasure.taskFunction, distMeasure.taskName, configMINIMAL_STACK_SIZE * 5, NULL, 6, NULL);
+            xTaskCreate(distMeasure.taskFunction, distMeasure.taskName, configMINIMAL_STACK_SIZE * 5, NULL, 6, distMeasure.pxCreatedTask);
             // xTaskCreate(accMeasure.taskFunction, accMeasure.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
         }
         break;
     case ACTIVE:
         Serial.println("System is active.");
 
-        if (distanceDetected)
+        if (systemFlags.distanceDetected)
         {
-            xTaskCreate(audioPlayHealing.taskFunction, audioPlayHealing.taskName, 4095, NULL, 9, NULL);
-            xTaskCreate(neopixelPlayHealing.taskFunction, neopixelPlayHealing.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 9, NULL);
+            vTaskDelete(distMeasure.pxCreatedTask);
+            xTaskCreate(audioPlayHealing.taskFunction, audioPlayHealing.taskName, 8192, NULL, 9, NULL);
+            xTaskCreate(neopixelPlayHealing.taskFunction, neopixelPlayHealing.taskName, 8192, NULL, 8, NULL);
+
             change_state(IDLE);
         }
         else
         {
         }
 
-        if (motionDetected)
+        if (systemFlags.motionDetected)
         {
-            xTaskCreate(audioPlayAttack.taskFunction, audioPlayAttack.taskName, 4095, NULL, 9, NULL);
-            xTaskCreate(neopixelPlayAttack.taskFunction, neopixelPlayAttack.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 9, NULL);
+            xTaskCreate(audioPlayAttack.taskFunction, audioPlayAttack.taskName, 8192, NULL, 9, NULL);
+            xTaskCreate(neopixelPlayAttack.taskFunction, neopixelPlayAttack.taskName, 8192, NULL, 8, NULL);
+
             change_state(IDLE);
         }
         else
@@ -61,22 +64,10 @@ void app_main_function()
     // vTaskStartScheduler();
 }
 
-bool app_init()
+void app_init()
 {
-    Serial.println(uxTaskGetStackHighWaterMark(NULL));
     BaseType_t result = xTaskCreate(sensorsInit.taskFunction, sensorsInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 9, NULL);
     BaseType_t result1 = xTaskCreate(spiffsInit.taskFunction, spiffsInit.taskName, 8192, NULL, 10, NULL);
-
-    /*
-    if (result1 == pdPASS)
-    {
-        Serial.println("Task created successfully.");
-        Serial.print("Stack high-water mark: ");
-        Serial.println(uxTaskGetStackHighWaterMark(NULL));
-    }
-*/
-    // xTaskCreate(sdInit.taskFunction, sdInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
-    return true;
 }
 
 void change_state(system_state newState)
@@ -90,15 +81,30 @@ void change_state(system_state newState)
         break;
     case IDLE:
         Serial.println("System is idle.");
+        enableLIS3DHInterrupt();
         break;
     case ACTIVE:
         Serial.println("System is active.");
+        vTaskDelete(distMeasure.pxCreatedTask);
+        disableLIS3DHInterrupt();
         break;
     case ERROR:
         Serial.println("System error occurred!");
+        vTaskDelete(distMeasure.pxCreatedTask);
+        vTaskDelete(audioPlayHealing.pxCreatedTask);
+        vTaskDelete(audioPlayAttack.pxCreatedTask);
+        vTaskDelete(neopixelPlayHealing.pxCreatedTask);
+        vTaskDelete(neopixelPlayAttack.pxCreatedTask);
+        disableLIS3DHInterrupt();
         break;
     default:
         Serial.println("Unknown system state!");
+        vTaskDelete(distMeasure.pxCreatedTask);
+        vTaskDelete(audioPlayHealing.pxCreatedTask);
+        vTaskDelete(audioPlayAttack.pxCreatedTask);
+        vTaskDelete(neopixelPlayHealing.pxCreatedTask);
+        vTaskDelete(neopixelPlayAttack.pxCreatedTask);
+        disableLIS3DHInterrupt();
         break;
     }
 }

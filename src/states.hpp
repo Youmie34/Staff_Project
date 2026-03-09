@@ -23,6 +23,8 @@ enum task_state
 
 struct flags_t
 {
+    volatile bool sensorsInitialized = false;
+    volatile bool audioInitialized = false;
     volatile bool systemInitialized = false;
     volatile bool motionDetected = false;
     volatile bool distanceDetected = false;
@@ -35,6 +37,7 @@ struct tasks_t
     const char *taskName;
     void (*taskFunction)(void *); // Function pointer for task execution
     task_state state;
+    TaskHandle_t *pxCreatedTask;
 };
 
 extern volatile system_state currentState; // Correctly declare as extern
