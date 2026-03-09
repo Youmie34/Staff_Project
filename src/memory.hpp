@@ -30,5 +30,8 @@ extern AudioGeneratorMP3 *mp3;
 
 void setupMemory();
 void saveInSPIFFS(String filename);
+void checkSPIFFSStorage();
+void listSPIFFSFiles();
+void formatSPIFFS();
 
 #endif // MEMORY_HPP

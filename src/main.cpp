@@ -14,6 +14,7 @@ void setup()
   // accStart();
   // ultrasonic();
   // neopixelStart();
+  pinMode(DACPin, OUTPUT);
   setupMemory();
   setupflashSourceSelect();
   selectMusic();
