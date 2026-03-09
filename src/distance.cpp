@@ -5,9 +5,16 @@
 
 void ultrasonic()
 {
+    // UART-Instanz auswählen (z. B. UART2)
+    HardwareSerial mySerial(2);
+
     long duration = 0; // Dauer zum Berechnen der Reichweite
     long distance = 0.0;
-    Serial.begin(115200);     // Im Serialmonitor die Baudrate auf 115200 einstellen
+
+    Serial.begin(115200); // Im Serialmonitor die Baudrate auf 115200 einstellen
+
+    mySerial.begin(9600, SERIAL_8N1, echoPin, trigPin);
+
     pinMode(trigPin, OUTPUT); // Pins werden deklariert
     pinMode(echoPin, INPUT);
     pinMode(LEDPin, OUTPUT);
