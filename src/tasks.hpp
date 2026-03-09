@@ -37,4 +37,7 @@ void neopixel_play_healing(void *parameter);
 void neopixel_play_attack(void *parameter);
 void error_handler(void *parameter);
 
+void clear_healing();
+void clear_attack();
+
 #endif // TASKS_HPP

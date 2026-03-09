@@ -25,9 +25,10 @@ struct flags_t
 {
     volatile bool sensorsInitialized = false;
     volatile bool audioInitialized = false;
-    volatile bool systemInitialized = false;
     volatile bool motionDetected = false;
     volatile bool distanceDetected = false;
+    volatile bool neoHealing = false;
+    volatile bool neoAttack = false;
     volatile bool audioHealing = false;
     volatile bool audioAttack = false;
 };

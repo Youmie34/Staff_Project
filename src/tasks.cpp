@@ -165,3 +165,15 @@ void error_handler(void *parameter)
     // esp_restart(); // Perform system restart
     vTaskDelete(errorHandler.pxCreatedTask);
 }
+
+void clear_attack()
+{
+    audioPlayAttack.state = NOT_STARTED;
+    neopixelPlayAttack.state = NOT_STARTED;
+}
+
+void clear_healing()
+{
+    audioPlayHealing.state = NOT_STARTED;
+    neopixelPlayHealing.state = NOT_STARTED;
+}

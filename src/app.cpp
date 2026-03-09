@@ -30,11 +30,15 @@ void app_main_function()
 
         if (systemFlags.distanceDetected)
         {
-            vTaskDelete(distMeasure.pxCreatedTask);
             xTaskCreate(audioPlayHealing.taskFunction, audioPlayHealing.taskName, 8192, NULL, 9, NULL);
             xTaskCreate(neopixelPlayHealing.taskFunction, neopixelPlayHealing.taskName, 8192, NULL, 8, NULL);
 
-            change_state(IDLE);
+            if (audioPlayHealing.state == COMPLETED && neopixelPlayHealing.state == COMPLETED)
+            {
+                systemFlags.distanceDetected = false;
+                clear_healing();
+                change_state(IDLE);
+            }
         }
         else
         {
@@ -45,7 +49,12 @@ void app_main_function()
             xTaskCreate(audioPlayAttack.taskFunction, audioPlayAttack.taskName, 8192, NULL, 9, NULL);
             xTaskCreate(neopixelPlayAttack.taskFunction, neopixelPlayAttack.taskName, 8192, NULL, 8, NULL);
 
-            change_state(IDLE);
+            if ((audioPlayAttack.state == COMPLETED) && (neopixelPlayAttack.state == COMPLETED))
+            {
+                systemFlags.motionDetected = false;
+                clear_attack();
+                change_state(IDLE);
+            }
         }
         else
         {
