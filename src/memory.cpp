@@ -81,18 +81,17 @@ void saveInSPIFFS(String filename)
   // Kopieren der MP3-Datei von der SD-Karte ins SPIFFS
   byte buffer[512];
 
-  Serial.print("writing");
+  // Serial.print("writing");
 
   while (int bytesRead = sdFile->read(buffer, sizeof(buffer)))
   {
     if (bytesRead > 0)
     {
       flashFile.write(buffer, bytesRead);
-      Serial.print(".");
+      // Serial.print(".");
     }
     else
     {
-      Serial.println("finished!\n");
       break;
     }
   }
