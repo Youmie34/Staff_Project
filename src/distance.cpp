@@ -13,7 +13,7 @@ void ultrasonic()
 
     Serial.begin(115200); // Im Serialmonitor die Baudrate auf 115200 einstellen
 
-    mySerial.begin(9600, SERIAL_8N1, echoPin, trigPin);
+    mySerial.begin(115200, SERIAL_8N1, echoPin, trigPin);
 
     pinMode(trigPin, OUTPUT); // Pins werden deklariert
     pinMode(echoPin, INPUT);
