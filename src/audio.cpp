@@ -100,6 +100,7 @@ void playMusic()
 
         // Schreiben der Audiodaten auf den DAC-Pin
         dacWrite(DACPin, sample_byte);
+        Serial.printf("Sample: %d, Byte: %d\n", sample[0], sample_byte); // Debug-Ausgabe der Samples
     }
 }
 
