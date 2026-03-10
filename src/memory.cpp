@@ -48,14 +48,7 @@ void setupMemory()
   listSPIFFSFiles();
   formatSPIFFS();
 
-  listSPIFFSFiles();
-
-  // saveInSPIFFS("/heal.mp3");
-  // saveInSPIFFS("/attack.mp3");
-
-  listSPIFFSFiles();
-
-  Serial.println("saved heal and attack mp3 in SPIFFS\n");
+  // Serial.println("saved heal and attack mp3 in SPIFFS\n");
 }
 
 void saveInSPIFFS(String filename)

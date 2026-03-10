@@ -86,19 +86,15 @@ void change_state(system_state newState)
     switch (currentState)
     {
     case INIT:
-        Serial.println("System is initializing...");
         break;
     case IDLE:
-        Serial.println("System is idle.");
         enableLIS3DHInterrupt();
         break;
     case ACTIVE:
-        Serial.println("System is active.");
         vTaskDelete(distMeasure.pxCreatedTask);
         disableLIS3DHInterrupt();
         break;
     case ERROR:
-        Serial.println("System error occurred!");
         vTaskDelete(distMeasure.pxCreatedTask);
         vTaskDelete(audioPlayHealing.pxCreatedTask);
         vTaskDelete(audioPlayAttack.pxCreatedTask);
@@ -107,7 +103,6 @@ void change_state(system_state newState)
         disableLIS3DHInterrupt();
         break;
     default:
-        Serial.println("Unknown system state!");
         vTaskDelete(distMeasure.pxCreatedTask);
         vTaskDelete(audioPlayHealing.pxCreatedTask);
         vTaskDelete(audioPlayAttack.pxCreatedTask);

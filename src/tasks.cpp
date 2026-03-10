@@ -99,6 +99,7 @@ void spiffs_init(void *parameter)
     setupMemory();
     saveInSPIFFS("/heal.mp3");
     saveInSPIFFS("/attack.mp3");
+    listSPIFFSFiles();
     setupflashSourceSelect();
     Serial.println("File saving complete");
     spiffsInit.state = COMPLETED;
@@ -108,7 +109,7 @@ void spiffs_init(void *parameter)
 
 void dist_measure(void *parameter)
 {
-    Serial.println("Distance task started");
+    // Serial.println("Distance task started");
     distMeasure.state = RUNNING;
     ultrasonicMeasure();
     distMeasure.state = COMPLETED;
@@ -117,7 +118,7 @@ void dist_measure(void *parameter)
 
 void acc_measure(void *parameter)
 {
-    Serial.println("Acceleration task started");
+    // Serial.println("Acceleration task started");
     accMeasure.state = RUNNING;
     // Runs in interrupt, so no implementation here
     accMeasure.state = COMPLETED;

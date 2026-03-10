@@ -23,13 +23,13 @@ void ultrasonicMeasure()
 
     // TrigPin/echoPin Zyklus zum Berechnen der Entfernung
     digitalWrite(trigPin, LOW);
-    delayMicroseconds(2);
+    vTaskDelay(2 / portTICK_PERIOD_MS);
 
     digitalWrite(trigPin, HIGH);
-    delayMicroseconds(20);
+    vTaskDelay(2 / portTICK_PERIOD_MS);
 
     digitalWrite(trigPin, LOW);
-    delayMicroseconds(20);
+    vTaskDelay(2 / portTICK_PERIOD_MS);
     duration = pulseIn(echoPin, HIGH);
 
     // Formel zum Berechnen der Entfernung basierend auf der Schallgeschwindigkeit
@@ -45,7 +45,6 @@ void ultrasonicMeasure()
         systemFlags.distanceDetected = true;
         digitalWrite(LEDPin, HIGH);
         // neopixelStart();
-        // vTaskDelay(5000 / portTICK_PERIOD_MS);
     }
 
     else
@@ -53,6 +52,6 @@ void ultrasonicMeasure()
         // default_LED();
         //  Turn off the LED when distance is greater than minimumRange
         digitalWrite(LEDPin, LOW);
-        systemFlags.distanceDetected = false;
+        // systemFlags.distanceDetected = false;
     }
 }
