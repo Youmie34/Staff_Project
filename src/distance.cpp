@@ -26,10 +26,10 @@ void ultrasonic()
         delayMicroseconds(2);
 
         digitalWrite(trigPin, HIGH);
-        delayMicroseconds(10);
+        delayMicroseconds(20);
 
         digitalWrite(trigPin, LOW);
-        delayMicroseconds(10);
+        delayMicroseconds(20);
         duration = pulseIn(echoPin, HIGH);
 
         // Formel zum Berechnen der Entfernung basierend auf der Schallgeschwindigkeit
