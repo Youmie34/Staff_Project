@@ -17,19 +17,23 @@ void led_test()
 
 void setup()
 {
+  /*
   pinMode(ledPin, OUTPUT);
-  digitalWrite(ledPin, HIGH);
+  digitalWrite(ledPin, HIGH);*/
 
   Serial.begin(115200);
+
   while (!Serial)
   {
     delay(10);
   }
-  app_init();
+  ultrasonicSetup();
+  // app_init();
 }
 
 void loop()
 {
+  /*
   led_test();
 
   if ((systemFlags.audioInitialized && systemFlags.sensorsInitialized) == true)
@@ -41,4 +45,6 @@ void loop()
   {
     Serial.println("System not initialized yet.");
   }
+    */
+  ultrasonicMeasure();
 }

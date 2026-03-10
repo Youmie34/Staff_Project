@@ -5,14 +5,13 @@
 
 #include "app.hpp"
 
-const int echoPin = 16; // Echo Pin
-const int trigPin = 17; // Trigger Pin
-const int LEDPin = 5;   // Pin der LED
+#include "HardwareSerial.h"
 
-const int minimumRange = 12; // Minimale Reichweite
+const int echoPin = 16; // Echo Pin RX (green)
+const int trigPin = 17; // Trigger Pin TX (yellow)
+const int LEDPin = 27;  // Pin der LED
 
-extern volatile long duration; // Dauer zum Berechnen der Reichweite
-extern volatile long distance; // Berechnete Entfernung
+const int minimumRange = 20; // Minimale Reichweite
 
 void ultrasonicSetup();
 void ultrasonicMeasure();
