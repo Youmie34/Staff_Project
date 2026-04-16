@@ -9,7 +9,8 @@
 #include "I2S.h"
 #include <string.h>
 
-const int DACPin = 25; // Pin für den DAC-Ausgang
+const int DACPin = 26; // Pin für den DAC-Ausgang
+const int PWRPin = 13;
 extern const char *filenameHeal;
 extern const char *filenameAttack;
 

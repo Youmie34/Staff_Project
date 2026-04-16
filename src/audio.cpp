@@ -22,6 +22,7 @@ void selectMusic()
     // test
     while (1)
     {
+        digitalWrite(PWRPin, HIGH);
         startMusic(flashSourceHeal, filenameHeal);
         delay(1000);
         startMusic(flashSourceAttack, filenameAttack);
