@@ -15,8 +15,11 @@ void setup()
   // ultrasonic();
   // neopixelStart();
   pinMode(DACPin, OUTPUT);
+  pinMode(PWRPin, OUTPUT);
+  digitalWrite(PWRPin, LOW);
   setupMemory();
   setupflashSourceSelect();
+  digitalWrite(PWRPin, HIGH);
   selectMusic();
 }
 

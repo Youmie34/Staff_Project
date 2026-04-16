@@ -10,7 +10,7 @@
 #include <string.h>
 
 const int DACPin = 26; // Pin für den DAC-Ausgang
-const int PWRPin = 13;
+const int PWRPin = 15;
 extern const char *filenameHeal;
 extern const char *filenameAttack;
 
