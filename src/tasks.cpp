@@ -74,6 +74,12 @@ void sens_init(void *parameter)
     ultrasonicSetup();
     neoSetup();
 
+    // init lis3dh
+    pinMode(ENFeatherPin, OUTPUT);
+    digitalWrite(ENFeatherPin, HIGH);
+
+    setupAcc();
+
     sensorsInit.state = COMPLETED;
     systemFlags.sensorsInitialized = true;
 
@@ -98,12 +104,6 @@ void spiffs_init(void *parameter)
     setupflashSourceSelect();
     Serial.println("File saving complete");
     spiffsInit.state = COMPLETED;
-
-    // init lis3dh
-    pinMode(ENFeatherPin, OUTPUT);
-    digitalWrite(ENFeatherPin, HIGH);
-
-    setupAcc();
 
     systemFlags.audioInitialized = true;
     vTaskDelete(NULL);

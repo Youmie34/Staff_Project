@@ -30,8 +30,8 @@ void app_main_function()
 
         if (systemFlags.distanceDetected)
         {
-            xTaskCreate(audioPlayHealing.taskFunction, audioPlayHealing.taskName, 8192, NULL, 9, NULL);
-            xTaskCreate(neopixelPlayHealing.taskFunction, neopixelPlayHealing.taskName, 8192, NULL, 8, NULL);
+            xTaskCreatePinnedToCore(audioPlayHealing.taskFunction, audioPlayHealing.taskName, 8192, NULL, 9, NULL, 1);
+            xTaskCreatePinnedToCore(neopixelPlayHealing.taskFunction, neopixelPlayHealing.taskName, 8192, NULL, 8, NULL, 0);
 
             if (audioPlayHealing.state == COMPLETED && neopixelPlayHealing.state == COMPLETED)
             {
@@ -46,8 +46,8 @@ void app_main_function()
 
         if (systemFlags.motionDetected)
         {
-            xTaskCreate(audioPlayAttack.taskFunction, audioPlayAttack.taskName, 8192, NULL, 9, NULL);
-            xTaskCreate(neopixelPlayAttack.taskFunction, neopixelPlayAttack.taskName, 8192, NULL, 8, NULL);
+            xTaskCreatePinnedToCore(audioPlayAttack.taskFunction, audioPlayAttack.taskName, 8192, NULL, 9, NULL, 1);
+            xTaskCreatePinnedToCore(neopixelPlayAttack.taskFunction, neopixelPlayAttack.taskName, 8192, NULL, 8, NULL, 0);
 
             if ((audioPlayAttack.state == COMPLETED) && (neopixelPlayAttack.state == COMPLETED))
             {
@@ -95,7 +95,7 @@ void change_state(system_state newState)
         enableLIS3DHInterrupt();
         break;
     case ACTIVE:
-        vTaskDelete(distMeasure.pxCreatedTask);
+        // vTaskDelete(distMeasure.pxCreatedTask);
         disableLIS3DHInterrupt();
         break;
     case ERROR:

@@ -96,11 +96,11 @@ void test_SRC()
 void enableLIS3DHInterrupt()
 {
   attachInterrupt(INT_PIN, motionISR, RISING); // GPIO-Interrupt aktivieren
-  Serial.println("LIS3DH Interrupt aktiviert");
+  //Serial.println("LIS3DH Interrupt aktiviert");
 }
 
 void disableLIS3DHInterrupt()
 {
   detachInterrupt(INT_PIN); // GPIO-Interrupt deaktivieren
-  Serial.println("LIS3DH Interrupt deaktiviert");
+  //Serial.println("LIS3DH Interrupt deaktiviert");
 }
