@@ -71,13 +71,8 @@ void sens_init(void *parameter)
 {
     sensorsInit.state = RUNNING;
 
-    pinMode(ENFeatherPin, OUTPUT);
-    // digitalWrite(ENFeatherPin, LOW);
-    digitalWrite(ENFeatherPin, HIGH);
-
     ultrasonicSetup();
     neoSetup();
-    setupAcc();
 
     sensorsInit.state = COMPLETED;
     systemFlags.sensorsInitialized = true;
@@ -97,12 +92,19 @@ void spiffs_init(void *parameter)
 {
     spiffsInit.state = RUNNING;
     setupMemory();
-    saveInSPIFFS("/heal.mp3");
-    saveInSPIFFS("/attack.mp3");
-    listSPIFFSFiles();
+    // saveInSPIFFS("/heal.mp3");
+    // saveInSPIFFS("/attack.mp3");
+    // listSPIFFSFiles();
     setupflashSourceSelect();
     Serial.println("File saving complete");
     spiffsInit.state = COMPLETED;
+
+    // init lis3dh
+    pinMode(ENFeatherPin, OUTPUT);
+    digitalWrite(ENFeatherPin, HIGH);
+
+    setupAcc();
+
     systemFlags.audioInitialized = true;
     vTaskDelete(NULL);
 }

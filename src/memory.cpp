@@ -27,6 +27,11 @@ void checkSPIFFSStorage()
 
 void setupMemory()
 {
+  Serial.begin(115200);
+  while (!Serial)
+  {
+    delay(10);
+  }
 
   SPI.begin(sck, miso, mosi, cs);
 
@@ -34,7 +39,6 @@ void setupMemory()
   if (!SD.begin())
   {
     Serial.println("Card Mount Failed");
-    change_state(ERROR);
     return;
   }
 
@@ -42,13 +46,19 @@ void setupMemory()
   if (!SPIFFS.begin())
   {
     Serial.println("SPIFFS konnte nicht initialisiert werden.");
-    change_state(ERROR);
     return;
   }
   listSPIFFSFiles();
   formatSPIFFS();
 
-  // Serial.println("saved heal and attack mp3 in SPIFFS\n");
+  listSPIFFSFiles();
+
+  saveInSPIFFS("/heal.mp3");
+  saveInSPIFFS("/attack.mp3");
+
+  listSPIFFSFiles();
+
+  Serial.println("saved heal and attack mp3 in SPIFFS\n");
 }
 
 void saveInSPIFFS(String filename)
@@ -59,10 +69,9 @@ void saveInSPIFFS(String filename)
     Serial.println("Fehler beim Öffnen der Datei auf der SD-Karte");
     sdFile->close();
     SPIFFS.end(); // SPIFFS-Verbindung trennen
-    change_state(ERROR);
     return;
   }
-  // Serial.println("MP3-Datei auf der SD-Karte geöffnet");
+  Serial.println("MP3-Datei auf der SD-Karte geöffnet");
 
   // flash-speicher
   flashFile = SPIFFS.open(filename, "w"); // Öffnen der Datei im SPIFFS zum Schreiben
@@ -70,7 +79,6 @@ void saveInSPIFFS(String filename)
   {
     Serial.println("Fehler beim Öffnen der Datei im SPIFFS zum Schreiben");
     flashFile.close();
-    change_state(ERROR);
     if (SPIFFS.remove(filename))
     {
       Serial.println("- file deleted");

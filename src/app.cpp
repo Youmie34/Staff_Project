@@ -75,8 +75,12 @@ void app_main_function()
 
 void app_init()
 {
-    BaseType_t result = xTaskCreate(sensorsInit.taskFunction, sensorsInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 9, NULL);
-    BaseType_t result1 = xTaskCreate(spiffsInit.taskFunction, spiffsInit.taskName, 8192, NULL, 10, NULL);
+    // Sensor-Initialisierung auf Core 0
+    BaseType_t result1 = xTaskCreatePinnedToCore(
+        spiffsInit.taskFunction, spiffsInit.taskName, 8192, NULL, 10, NULL, 1);
+
+    BaseType_t result = xTaskCreatePinnedToCore(
+        sensorsInit.taskFunction, sensorsInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 9, NULL, 0);
 }
 
 void change_state(system_state newState)

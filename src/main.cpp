@@ -21,19 +21,11 @@ void loop()
 
   if ((systemFlags.audioInitialized && systemFlags.sensorsInitialized) == true)
   {
-    xTaskCreate(distMeasure.taskFunction, distMeasure.taskName, configMINIMAL_STACK_SIZE * 5, NULL, 6, distMeasure.pxCreatedTask);
-
-    if (systemFlags.distanceDetected)
-    {
-      xTaskCreate(neopixelPlayHealing.taskFunction, neopixelPlayHealing.taskName, 8192, NULL, 8, NULL);
-      audioPlayHealing.taskFunction(NULL);
-    }
-
-    // app_main_function();
+    app_main_function();
   }
 
   else
   {
-    Serial.println("System not initialized yet.");
+    // Serial.println("System not initialized yet.");
   }
 }
