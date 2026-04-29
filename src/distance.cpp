@@ -26,10 +26,10 @@ void ultrasonicMeasure()
     vTaskDelay(2 / portTICK_PERIOD_MS);
 
     digitalWrite(trigPin, HIGH);
-    vTaskDelay(2 / portTICK_PERIOD_MS);
+    vTaskDelay(10 / portTICK_PERIOD_MS);
 
     digitalWrite(trigPin, LOW);
-    vTaskDelay(2 / portTICK_PERIOD_MS);
+    vTaskDelay(10 / portTICK_PERIOD_MS);
     duration = pulseIn(echoPin, HIGH);
 
     // Formel zum Berechnen der Entfernung basierend auf der Schallgeschwindigkeit

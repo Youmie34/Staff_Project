@@ -11,7 +11,7 @@ void app_main_function()
         change_state(IDLE);
         break;
     case IDLE:
-        Serial.println("System is idle.");
+        // Serial.println("System is idle.");
 
         if ((systemFlags.distanceDetected) || (systemFlags.motionDetected))
         {
@@ -21,7 +21,7 @@ void app_main_function()
         else
         {
             change_state(IDLE);
-            xTaskCreate(distMeasure.taskFunction, distMeasure.taskName, configMINIMAL_STACK_SIZE * 5, NULL, 6, distMeasure.pxCreatedTask);
+            xTaskCreate(distMeasure.taskFunction, distMeasure.taskName, configMINIMAL_STACK_SIZE * 5, NULL, 8, NULL);
             // xTaskCreate(accMeasure.taskFunction, accMeasure.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
         }
         break;
@@ -95,7 +95,7 @@ void change_state(system_state newState)
         enableLIS3DHInterrupt();
         break;
     case ACTIVE:
-        // vTaskDelete(distMeasure.pxCreatedTask);
+        vTaskDelete(distMeasure.pxCreatedTask);
         disableLIS3DHInterrupt();
         break;
     case ERROR:
