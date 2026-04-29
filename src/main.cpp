@@ -7,25 +7,13 @@
 
 void setup()
 {
-  Serial.begin(115200);
+  ultrasonicSetup();
 
-  while (!Serial)
-  {
-    delay(10);
-  }
-  app_init();
+  // app_init();
 }
 
 void loop()
 {
-
-  if ((systemFlags.audioInitialized && systemFlags.sensorsInitialized) == true)
-  {
-    app_main_function();
-  }
-
-  else
-  {
-    // Serial.println("System not initialized yet.");
-  }
+  ultrasonicMeasure();
+  // app_main_function();
 }

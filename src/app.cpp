@@ -11,19 +11,7 @@ void app_main_function()
         change_state(IDLE);
         break;
     case IDLE:
-        // Serial.println("System is idle.");
-
-        if ((systemFlags.distanceDetected) || (systemFlags.motionDetected))
-        {
-            change_state(ACTIVE);
-        }
-
-        else
-        {
-            change_state(IDLE);
-            xTaskCreate(distMeasure.taskFunction, distMeasure.taskName, configMINIMAL_STACK_SIZE * 5, NULL, 8, NULL);
-            // xTaskCreate(accMeasure.taskFunction, accMeasure.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
-        }
+        xTaskCreatePinnedToCore(distMeasure.taskFunction, distMeasure.taskName, configMINIMAL_STACK_SIZE * 5, NULL, 8, NULL, 0);
         break;
     case ACTIVE:
         Serial.println("System is active.");
@@ -75,10 +63,6 @@ void app_main_function()
 
 void app_init()
 {
-    // Sensor-Initialisierung auf Core 0
-    BaseType_t result1 = xTaskCreatePinnedToCore(
-        spiffsInit.taskFunction, spiffsInit.taskName, 8192, NULL, 10, NULL, 1);
-
     BaseType_t result = xTaskCreatePinnedToCore(
         sensorsInit.taskFunction, sensorsInit.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 9, NULL, 0);
 }

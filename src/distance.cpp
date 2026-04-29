@@ -4,32 +4,37 @@
 #include "distance.hpp"
 #include "neopixel.hpp"
 
+long duration;
+long distance;
+
 void ultrasonicSetup()
 {
     // UART-Instanz auswählen (z. B. UART2)
     HardwareSerial mySerial(2);
 
+    long duration = 0; // Dauer zum Berechnen der Reichweite
+    long distance = 0.0;
+
+    Serial.begin(115200); // Im Serialmonitor die Baudrate auf 115200 einstellen
+
     mySerial.begin(115200, SERIAL_8N1, echoPin, trigPin);
 
     pinMode(trigPin, OUTPUT); // Pins werden deklariert
     pinMode(echoPin, INPUT);
-    pinMode(LEDPin, OUTPUT);
 }
 
 void ultrasonicMeasure()
 {
-    long duration = 0; // Dauer zum Berechnen der Reichweite
-    long distance = 0.0;
-
     // TrigPin/echoPin Zyklus zum Berechnen der Entfernung
     digitalWrite(trigPin, LOW);
-    vTaskDelay(2 / portTICK_PERIOD_MS);
+    esp_rom_delay_us(2);
 
     digitalWrite(trigPin, HIGH);
-    vTaskDelay(10 / portTICK_PERIOD_MS);
+    esp_rom_delay_us(10);
 
     digitalWrite(trigPin, LOW);
-    vTaskDelay(10 / portTICK_PERIOD_MS);
+    esp_rom_delay_us(10);
+
     duration = pulseIn(echoPin, HIGH);
 
     // Formel zum Berechnen der Entfernung basierend auf der Schallgeschwindigkeit
