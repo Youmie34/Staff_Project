@@ -11,7 +11,7 @@ void app_main_function()
         change_state(IDLE);
         break;
     case IDLE:
-        Serial.println("System is idle.");
+        // Serial.println("System is idle.");
 
         if ((systemFlags.distanceDetected) || (systemFlags.motionDetected))
         {
@@ -30,7 +30,7 @@ void app_main_function()
         }
         break;
     case ACTIVE:
-        Serial.println("System is active.");
+        // Serial.println("System is active.");
 
         if (systemFlags.distanceDetected)
         {

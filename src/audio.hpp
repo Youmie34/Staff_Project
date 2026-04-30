@@ -31,7 +31,6 @@ extern AudioGeneratorMP3 *mp3;
 
 void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename);
 void mp3Decode();
-void playMusic();
 void freeFlash();
 void selectMusic();
 void setupflashSourceSelect();

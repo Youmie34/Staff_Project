@@ -56,7 +56,6 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
 
     mp3->begin(flashSourceSelect, i2s_audio);
     mp3Decode();
-    playMusic();
     freeResources();
     flashFile.close();
     Serial.println("END");
@@ -72,35 +71,7 @@ void mp3Decode()
             mp3->stop(); // Wenn die Wiedergabe abgeschlossen ist, stoppen Sie die Wiedergabe
             // Serial.println("mp3 Wiedergabe abgeschlossen");
         }
-    }
-}
-
-void playMusic()
-{
-    int16_t sample[2];
-
-    while (mp3->isRunning())
-    {
-        if (!mp3->loop())
-        {
-            mp3->stop();
-            // Serial.println("mp3 Wiedergabe abgeschlossen");
-            break;
-        }
-
-        // Lesen der Audiodaten vom I2S
-        if (!i2s_audio->ConsumeSample(sample))
-        {
-            Serial.println("FEHLER beim Lesen von Samples vom MP3-Decodierer");
-            continue;
-        }
-
-        // Konvertiere int16_t in uint8_t für den DAC
-        uint8_t sample_byte = static_cast<uint8_t>((sample[0] >> 8) & 0xFF); // Linker Kanal
-
-        // Schreiben der Audiodaten auf den DAC-Pin
-        dacWrite(DACPin, sample_byte);
-        // Serial.printf("Sample: %d, Byte: %d\n", sample[0], sample_byte); // Debug-Ausgabe der Samples
+        vTaskDelay(1);
     }
 }
 
