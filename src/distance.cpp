@@ -21,6 +21,7 @@ void ultrasonicSetup()
 
     pinMode(trigPin, OUTPUT); // Pins werden deklariert
     pinMode(echoPin, INPUT);
+    pinMode(LEDPin, OUTPUT);
 }
 
 void ultrasonicMeasure()
