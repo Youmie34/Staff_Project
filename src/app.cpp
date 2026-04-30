@@ -20,8 +20,9 @@ void app_main_function()
 
         else
         {
-            change_state(IDLE);
-            xTaskCreate(distMeasure.taskFunction, distMeasure.taskName, configMINIMAL_STACK_SIZE * 5, NULL, 8, NULL);
+            // change_state(IDLE);
+            // xTaskCreate(distMeasure.taskFunction, distMeasure.taskName, configMINIMAL_STACK_SIZE * 5, NULL, 8, NULL);
+            ultrasonicMeasure();
             // xTaskCreate(accMeasure.taskFunction, accMeasure.taskName, configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
         }
         break;

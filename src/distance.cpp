@@ -13,7 +13,6 @@ void ultrasonicSetup()
 
     pinMode(trigPin, OUTPUT); // Pins werden deklariert
     pinMode(echoPin, INPUT);
-    pinMode(LEDPin, OUTPUT);
 }
 
 void ultrasonicMeasure()
@@ -23,19 +22,17 @@ void ultrasonicMeasure()
 
     // TrigPin/echoPin Zyklus zum Berechnen der Entfernung
     digitalWrite(trigPin, LOW);
-    vTaskDelay(2 / portTICK_PERIOD_MS);
+    delayMicroseconds(2);
 
     digitalWrite(trigPin, HIGH);
-    vTaskDelay(10 / portTICK_PERIOD_MS);
+    delayMicroseconds(10);
 
     digitalWrite(trigPin, LOW);
-    vTaskDelay(10 / portTICK_PERIOD_MS);
+    delayMicroseconds(10);
     duration = pulseIn(echoPin, HIGH);
 
     // Formel zum Berechnen der Entfernung basierend auf der Schallgeschwindigkeit
     distance = duration / 58.2;
-    Serial.print("Duration: ");
-    Serial.println(duration);
     Serial.print("Distanz: ");
     Serial.println(distance);
 
@@ -43,7 +40,6 @@ void ultrasonicMeasure()
     {
         // Signalisiert "außer Reichweite" indem -1 an den Computer ausgegeben wird und die LED aufleuchtet
         systemFlags.distanceDetected = true;
-        digitalWrite(LEDPin, HIGH);
         // neopixelStart();
     }
 
@@ -51,7 +47,6 @@ void ultrasonicMeasure()
     {
         // default_LED();
         //  Turn off the LED when distance is greater than minimumRange
-        digitalWrite(LEDPin, LOW);
         // systemFlags.distanceDetected = false;
     }
 }
