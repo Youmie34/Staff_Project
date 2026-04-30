@@ -9,7 +9,7 @@
 
 const int echoPin = 16; // Echo Pin RX (green)
 const int trigPin = 17; // Trigger Pin TX (yellow)
-const int LEDPin = 2;   // Pin der LED
+const int LEDPin = 0;   // Pin der LED
 
 const int minimumRange = 20; // Minimale Reichweite
 
