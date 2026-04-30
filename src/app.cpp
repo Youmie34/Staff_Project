@@ -58,7 +58,7 @@ void app_main_function()
         {
             if (neopixelPlayAttack.state == NOT_STARTED && neopixelPlayAttack.pxCreatedTask == NULL)
             {
-                xTaskCreatePinnedToCore(neopixelPlayAttack.taskFunction, neopixelPlayAttack.taskName, 8192, NULL, 8, &neopixelPlayAttack.pxCreatedTask, 0);
+                xTaskCreate(neopixelPlayAttack.taskFunction, neopixelPlayAttack.taskName, 8192, NULL, 8, &neopixelPlayAttack.pxCreatedTask);
             }
 
             if (audioPlayAttack.state == NOT_STARTED && audioPlayAttack.pxCreatedTask == NULL)
