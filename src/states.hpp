@@ -38,7 +38,7 @@ struct tasks_t
     const char *taskName;
     void (*taskFunction)(void *); // Function pointer for task execution
     task_state state;
-    TaskHandle_t *pxCreatedTask;
+    TaskHandle_t pxCreatedTask;
 };
 
 extern volatile system_state currentState; // Correctly declare as extern

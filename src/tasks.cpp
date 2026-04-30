@@ -8,64 +8,74 @@ tasks_t sensorsInit =
         "SensorsInit",
         sens_init,
         NOT_STARTED,
+        NULL,
 };
 
 tasks_t sdInit =
     {
         "SDInit",
         sd_init,
-        NOT_STARTED};
+        NOT_STARTED,
+        NULL};
 
 tasks_t spiffsInit =
     {
         "SPIFFSInit",
         spiffs_init,
-        NOT_STARTED};
+        NOT_STARTED,
+        NULL};
 
 // idle tasks
 tasks_t distMeasure =
     {
         "DistMeasure",
         dist_measure,
-        NOT_STARTED};
+        NOT_STARTED,
+        NULL};
 
 tasks_t accMeasure =
     {
         "AccMeasure",
         acc_measure,
-        NOT_STARTED};
+        NOT_STARTED,
+        NULL};
 
 // active tasks
 tasks_t audioPlayHealing =
     {
         "AudioPlayHealing",
         audio_play_healing,
-        NOT_STARTED};
+        NOT_STARTED,
+        NULL};
 
 tasks_t audioPlayAttack =
     {
         "AudioPlayAttack",
         audio_play_attack,
-        NOT_STARTED};
+        NOT_STARTED,
+        NULL};
 
 tasks_t neopixelPlayHealing =
     {
         "NeopixelPlay",
         neopixel_play_healing,
-        NOT_STARTED};
+        NOT_STARTED,
+        NULL};
 
 tasks_t neopixelPlayAttack =
     {
         "NeopixelPlay",
         neopixel_play_attack,
-        NOT_STARTED};
+        NOT_STARTED,
+        NULL};
 
 // error tasks
 tasks_t errorHandler =
     {
         "ErrorHandler",
         error_handler,
-        NOT_STARTED};
+        NOT_STARTED,
+        NULL};
 
 void sens_init(void *parameter)
 {
@@ -82,7 +92,7 @@ void sens_init(void *parameter)
 
     sensorsInit.state = COMPLETED;
     systemFlags.sensorsInitialized = true;
-
+    sensorsInit.pxCreatedTask = NULL;
     vTaskDelete(NULL);
 }
 
@@ -91,6 +101,7 @@ void sd_init(void *parameter)
     sdInit.state = RUNNING;
     setupMemory();
     sdInit.state = COMPLETED;
+    sdInit.pxCreatedTask = NULL;
     vTaskDelete(NULL);
 }
 
@@ -106,6 +117,7 @@ void spiffs_init(void *parameter)
     spiffsInit.state = COMPLETED;
 
     systemFlags.audioInitialized = true;
+    spiffsInit.pxCreatedTask = NULL;
     vTaskDelete(NULL);
 }
 
@@ -115,7 +127,8 @@ void dist_measure(void *parameter)
     distMeasure.state = RUNNING;
     ultrasonicMeasure();
     distMeasure.state = COMPLETED;
-    vTaskDelete(distMeasure.pxCreatedTask);
+    distMeasure.pxCreatedTask = NULL;
+    vTaskDelete(NULL);
 }
 
 void acc_measure(void *parameter)
@@ -124,7 +137,8 @@ void acc_measure(void *parameter)
     accMeasure.state = RUNNING;
     // Runs in interrupt, so no implementation here
     accMeasure.state = COMPLETED;
-    vTaskDelete(accMeasure.pxCreatedTask);
+    accMeasure.pxCreatedTask = NULL;
+    vTaskDelete(NULL);
 }
 
 void audio_play_healing(void *parameter)
@@ -133,7 +147,8 @@ void audio_play_healing(void *parameter)
     Serial.println("Starting healing music");
     startMusic(flashSourceHeal, filenameHeal);
     audioPlayHealing.state = COMPLETED;
-    vTaskDelete(audioPlayHealing.pxCreatedTask);
+    audioPlayHealing.pxCreatedTask = NULL;
+    vTaskDelete(NULL);
 }
 
 void audio_play_attack(void *parameter)
@@ -142,23 +157,28 @@ void audio_play_attack(void *parameter)
     Serial.println("Starting attack music");
     startMusic(flashSourceAttack, filenameAttack);
     audioPlayAttack.state = COMPLETED;
-    vTaskDelete(audioPlayAttack.pxCreatedTask);
+    audioPlayAttack.pxCreatedTask = NULL;
+    vTaskDelete(NULL);
 }
 
 void neopixel_play_healing(void *parameter)
 {
     neopixelPlayHealing.state = RUNNING;
+    Serial.println("Starting healing animation");
     healing();
     neopixelPlayHealing.state = COMPLETED;
-    vTaskDelete(neopixelPlayHealing.pxCreatedTask);
+    neopixelPlayHealing.pxCreatedTask = NULL;
+    vTaskDelete(NULL);
 }
 
 void neopixel_play_attack(void *parameter)
 {
     neopixelPlayAttack.state = RUNNING;
+    Serial.println("Starting attack animation");
     attack();
     neopixelPlayAttack.state = COMPLETED;
-    vTaskDelete(neopixelPlayAttack.pxCreatedTask);
+    neopixelPlayAttack.pxCreatedTask = NULL;
+    vTaskDelete(NULL);
 }
 
 void error_handler(void *parameter)
@@ -166,7 +186,8 @@ void error_handler(void *parameter)
     errorHandler.state = RUNNING;
     // Restart system
     // esp_restart(); // Perform system restart
-    vTaskDelete(errorHandler.pxCreatedTask);
+    errorHandler.pxCreatedTask = NULL;
+    vTaskDelete(NULL);
 }
 
 void clear_attack()
