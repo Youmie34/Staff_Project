@@ -14,8 +14,8 @@ void setup()
   // // accStart();
   ultrasonic();
   // // neopixelStart();
-  setupMemory();
-  startMusic();
+  // setupMemory();
+  // startMusic();
 }
 
 void loop()
