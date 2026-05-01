@@ -14,7 +14,7 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(12, PIN, NEO_GRB + NEO_KHZ800);
 void neoSetup()
 {
     strip.begin();
-    strip.setBrightness(250);
+    strip.setBrightness(80);
     strip.show(); // Initialize all pixels to 'off'
 }
 
@@ -57,11 +57,11 @@ void healing()
 
 void attack()
 {
-    strip.setBrightness(255);
-    theaterChase(strip.Color(200, 0, 255), 120);  // violet
-    theaterChase(strip.Color(255, 50, 100), 120); // pink
-    theaterChase(strip.Color(255, 40, 40), 120);  // red
-    theaterChase(strip.Color(200, 0, 255), 240);  // violet
+    theaterChase(strip.Color(150, 0, 150), 120);  // violet
+    theaterChase(strip.Color(150, 50, 100), 120); // pink
+    theaterChase(strip.Color(150, 40, 40), 120);  // red
+    theaterChase(strip.Color(150, 0, 150), 240);  // violet
+    strip.Color(0, 0, 0);
     strip.show();
 }
 

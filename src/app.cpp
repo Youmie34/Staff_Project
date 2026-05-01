@@ -50,20 +50,16 @@ void app_main_function()
                 change_state(IDLE);
             }
         }
-        else
+        else if (systemFlags.motionDetected)
         {
-        }
-
-        if (systemFlags.motionDetected)
-        {
-            if (neopixelPlayAttack.state == NOT_STARTED && neopixelPlayAttack.pxCreatedTask == NULL)
-            {
-                xTaskCreate(neopixelPlayAttack.taskFunction, neopixelPlayAttack.taskName, 8192, NULL, 8, &neopixelPlayAttack.pxCreatedTask);
-            }
-
             if (audioPlayAttack.state == NOT_STARTED && audioPlayAttack.pxCreatedTask == NULL)
             {
                 xTaskCreatePinnedToCore(audioPlayAttack.taskFunction, audioPlayAttack.taskName, 8192, NULL, 9, &audioPlayAttack.pxCreatedTask, 1);
+            }
+
+            if (neopixelPlayAttack.state == NOT_STARTED && neopixelPlayAttack.pxCreatedTask == NULL)
+            {
+                xTaskCreatePinnedToCore(neopixelPlayAttack.taskFunction, neopixelPlayAttack.taskName, 8192, NULL, 8, &neopixelPlayAttack.pxCreatedTask, 0);
             }
 
             if ((audioPlayAttack.state == COMPLETED) && (neopixelPlayAttack.state == COMPLETED))
@@ -72,9 +68,6 @@ void app_main_function()
                 clear_attack();
                 change_state(IDLE);
             }
-        }
-        else
-        {
         }
         break;
     case ERROR:

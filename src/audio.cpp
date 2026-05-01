@@ -42,6 +42,7 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
     // Initialisierung des Audioausgangs über I2S
     i2s_audio = new AudioOutputI2S(0, 1, 8, -1); // Initialisierung des Audioausgangs
     i2s_audio->SetOutputModeMono(true);
+    i2s_audio->SetGain(0.2f);
 
     mp3 = new AudioGeneratorMP3();
 
@@ -63,6 +64,11 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
 
 void mp3Decode()
 {
+    const TickType_t startTick = xTaskGetTickCount();
+    TickType_t lastHeartbeat = startTick;
+    const TickType_t heartbeatInterval = pdMS_TO_TICKS(3000);
+    const TickType_t timeout = pdMS_TO_TICKS(20000);
+
     while (mp3->isRunning())
     {
         if (!mp3->loop())
@@ -70,7 +76,24 @@ void mp3Decode()
             // dekodiere Dateien und schreibe sie ins i2s
             mp3->stop(); // Wenn die Wiedergabe abgeschlossen ist, stoppen Sie die Wiedergabe
             // Serial.println("mp3 Wiedergabe abgeschlossen");
+            break;
         }
+
+        const TickType_t now = xTaskGetTickCount();
+        if ((now - lastHeartbeat) >= heartbeatInterval)
+        {
+            const unsigned int elapsedMs = static_cast<unsigned int>((now - startTick) * portTICK_PERIOD_MS);
+            Serial.printf("heartbeat=%u ms\n", elapsedMs);
+            lastHeartbeat = now;
+        }
+
+        if ((now - startTick) >= timeout)
+        {
+            Serial.println("Audio timeout");
+            mp3->stop();
+            break;
+        }
+
         vTaskDelay(1);
     }
 }
