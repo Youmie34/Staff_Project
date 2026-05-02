@@ -42,7 +42,7 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
     // Initialisierung des Audioausgangs über I2S
     i2s_audio = new AudioOutputI2S(0, 1, 8, -1); // Initialisierung des Audioausgangs
     i2s_audio->SetOutputModeMono(true);
-    i2s_audio->SetGain(0.2f);
+    i2s_audio->SetGain(0.4f);
 
     mp3 = new AudioGeneratorMP3();
 
