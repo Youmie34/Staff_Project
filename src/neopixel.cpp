@@ -57,7 +57,7 @@ void healing()
     delay(500);
     colorTransition(0, 150, 150, 150, 0, 150, 1000); // Transition from Teal to Pink
     delay(500);
-    // colorTransition(150, 0, 150, 0, 150, 150, 1000); // Transition from Pink to Teal
+    colorTransition(150, 0, 150, 0, 150, 150, 1000); // Transition from Pink to Teal
     delay(500);
     strip.clear();
     strip.show();
