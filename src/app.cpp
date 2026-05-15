@@ -32,13 +32,14 @@ void app_main_function()
     case ACTIVE:
         // Serial.println("System is active.");
 
-        if (systemFlags.distanceDetected)
+        if (systemFlags.motionDetected)
         {
             if (audioPlayHealing.state == NOT_STARTED && audioPlayHealing.pxCreatedTask == NULL)
             {
                 xTaskCreatePinnedToCore(audioPlayHealing.taskFunction, audioPlayHealing.taskName, 8192, NULL, 9, &audioPlayHealing.pxCreatedTask, 1);
                 vTaskDelay(150 / portTICK_PERIOD_MS);
             }
+
             if (neopixelPlayHealing.state == NOT_STARTED && neopixelPlayHealing.pxCreatedTask == NULL)
             {
                 xTaskCreatePinnedToCore(neopixelPlayHealing.taskFunction, neopixelPlayHealing.taskName, 8192, NULL, 8, &neopixelPlayHealing.pxCreatedTask, 0);
@@ -46,12 +47,12 @@ void app_main_function()
 
             if (audioPlayHealing.state == COMPLETED && neopixelPlayHealing.state == COMPLETED)
             {
-                systemFlags.distanceDetected = false;
+                systemFlags.motionDetected = false;
                 clear_healing();
                 change_state(IDLE);
             }
         }
-        else if (systemFlags.motionDetected)
+        else if (systemFlags.distanceDetected)
         {
             if (audioPlayAttack.state == NOT_STARTED && audioPlayAttack.pxCreatedTask == NULL)
             {
@@ -66,7 +67,7 @@ void app_main_function()
 
             if ((audioPlayAttack.state == COMPLETED) && (neopixelPlayAttack.state == COMPLETED))
             {
-                systemFlags.motionDetected = false;
+                systemFlags.distanceDetected = false;
                 clear_attack();
                 change_state(IDLE);
             }

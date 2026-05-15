@@ -13,6 +13,7 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(12, PIN, NEO_GRB + NEO_KHZ800);
 
 void neoSetup()
 {
+    strip.clear();
     strip.begin();
     strip.setBrightness(80);
     strip.show(); // Initialize all pixels to 'off'
@@ -22,11 +23,11 @@ void neopixelStart()
 {
 
     // Some example procedures showing how to display to the pixels:
-    // colorWipe(strip.Color(255, 0, 200), 100); // pink
-    // theaterChase(strip.Color(255, 109, 84), 120); // White
-    // theaterChase(strip.Color(255, 100, 00), 120); // yellow
-    // colorWipe(strip.Color(255, 0, 0), 120);   // red
-    // colorWipe(strip.Color(255, 220, 0), 50); // yellow
+    // colorWipe(strip.Color(150, 0, 200), 100); // pink
+    // theaterChase(strip.Color(150, 109, 84), 120); // White
+    // theaterChase(strip.Color(150, 100, 00), 120); // yellow
+    // colorWipe(strip.Color(150, 0, 0), 120);   // red
+    // colorWipe(strip.Color(150, 220, 0), 50); // yellow
 
     healing();
     // attack();
@@ -36,23 +37,31 @@ void neopixelStart()
 
 void healing()
 {
-    colorTransition(255, 255, 0, 0, 255, 255, 1000); // Transition from Yellow to Teal, letzte Aktion bevor break!
+    colorTransition(150, 150, 0, 0, 150, 150, 1000); // Transition from Yellow to Teal, letzte Aktion bevor break!
     delay(500);
-    colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
+    colorTransition(0, 150, 150, 150, 0, 150, 1000); // Transition from Teal to Pink
     delay(500);
-    colorTransition(255, 0, 255, 0, 255, 255, 1000); // Transition from Pink to Teal
+    colorTransition(150, 0, 150, 0, 150, 150, 1000); // Transition from Pink to Teal
     delay(500);
-    colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
+    colorTransition(0, 150, 150, 150, 150, 0, 1000); // Transition from Teal to Yellow
     delay(500);
-    colorTransition(255, 255, 0, 0, 255, 255, 1000); // Transition from Yellow to Teal, letzte Aktion bevor break!
+    colorTransition(150, 150, 0, 0, 150, 150, 1000); // Transition from Yellow to Teal, letzte Aktion bevor break!
     delay(500);
-    colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
+    colorTransition(0, 150, 150, 150, 0, 150, 1000); // Transition from Teal to Pink
     delay(500);
-    colorTransition(255, 0, 255, 0, 255, 255, 1000); // Transition from Pink to Teal
+    colorTransition(150, 0, 150, 0, 150, 150, 1000); // Transition from Pink to Teal
     delay(500);
-    colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
+    colorTransition(0, 150, 150, 150, 150, 0, 1000); // Transition from Teal to Yellow
     delay(500);
+    colorTransition(150, 150, 0, 0, 150, 150, 1000); // Transition from Yellow to Teal,
+    delay(500);
+    colorTransition(0, 150, 150, 150, 0, 150, 1000); // Transition from Teal to Pink
+    delay(500);
+    colorTransition(150, 0, 150, 0, 150, 150, 1000); // Transition from Pink to Teal
+    delay(500);
+    strip.clear();
     strip.show();
+    Serial.println("lights off");
 }
 
 void attack()
@@ -61,14 +70,14 @@ void attack()
     theaterChase(strip.Color(150, 50, 100), 120); // pink
     theaterChase(strip.Color(150, 40, 40), 120);  // red
     theaterChase(strip.Color(150, 0, 150), 240);  // violet
-    strip.Color(0, 0, 0);
+    strip.clear();
     strip.show();
 }
 
 void default_LED()
 {
     printf("default");
-    strip.Color(0, 255, 255);
+    strip.Color(0, 150, 150);
     strip.show();
 }
 
@@ -83,7 +92,7 @@ void glowUp(uint8_t brightness)
         long out_Max = 250;
 
         // Adjust the rate of increase based on the current brightness level
-        uint8_t increment = map(brightness, 0, 255, 1, 100);
+        uint8_t increment = map(brightness, 0, 150, 1, 100);
 
         brightness += increment;
 
@@ -98,7 +107,7 @@ void glowUp(uint8_t brightness)
     }
 
     // Reset brightness to 0 after reaching maximum (optional)
-    if (brightness >= 255)
+    if (brightness >= 150)
     {
         brightness = 0;
     }
@@ -112,7 +121,7 @@ void quadIncreaseBrightness(uint8_t brightness)
     while (brightness < 250)
     {
         strip.setBrightness(brightness);
-        colorTransition(255, 255, 0, 0, 255, 255, 1000); // Transition from Yellow to Teal, letzte Aktion bevor break!
+        colorTransition(150, 150, 0, 0, 150, 150, 1000); // Transition from Yellow to Teal, letzte Aktion bevor break!
         delay(500);
         // Delay for visibility (adjust as needed)
         brightness = brightness + uint8_t(pow(2, x));
@@ -125,7 +134,7 @@ void quadIncreaseBrightness(uint8_t brightness)
         }
 
         strip.setBrightness(brightness);
-        colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
+        colorTransition(0, 150, 150, 150, 0, 150, 1000); // Transition from Teal to Pink
         delay(500);
         // Delay for visibility (adjust as needed)
         // TODO: currentbrightness zu newbrightness per for-loop
@@ -138,7 +147,7 @@ void quadIncreaseBrightness(uint8_t brightness)
         }
 
         strip.setBrightness(brightness);
-        colorTransition(255, 0, 255, 0, 255, 255, 1000); // Transition from Pink to Teal
+        colorTransition(150, 0, 150, 0, 150, 150, 1000); // Transition from Pink to Teal
         delay(500);
         // Delay for visibility (adjust as needed)
         brightness = brightness + uint8_t(pow(2, x));
@@ -151,7 +160,7 @@ void quadIncreaseBrightness(uint8_t brightness)
         }
 
         strip.setBrightness(brightness);
-        colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
+        colorTransition(0, 150, 150, 150, 150, 0, 1000); // Transition from Teal to Yellow
         delay(500);
         // Delay for visibility (adjust as needed)
         brightness = brightness + uint8_t(pow(2, x));
@@ -173,7 +182,7 @@ void quadDecreaseBrightness(uint8_t brightness)
     while (brightness >= 1)
     {
         strip.setBrightness(brightness);
-        colorTransition(0, 255, 255, 255, 0, 255, 1000); // Transition from Teal to Pink
+        colorTransition(0, 150, 150, 150, 0, 150, 1000); // Transition from Teal to Pink
         delay(500);
         // Delay for visibility (adjust as needed)
         brightness = brightness - uint8_t(pow(2, x));
@@ -185,7 +194,7 @@ void quadDecreaseBrightness(uint8_t brightness)
         }
 
         strip.setBrightness(brightness);
-        colorTransition(255, 0, 255, 0, 255, 255, 1000); // Transition from Pink to Teal
+        colorTransition(150, 0, 150, 0, 150, 150, 1000); // Transition from Pink to Teal
         delay(500);
         // Delay for visibility (adjust as needed)
         brightness = brightness - uint8_t(pow(2, x));
@@ -198,7 +207,7 @@ void quadDecreaseBrightness(uint8_t brightness)
         }
 
         strip.setBrightness(brightness);
-        colorTransition(0, 255, 255, 255, 255, 0, 1000); // Transition from Teal to Yellow
+        colorTransition(0, 150, 150, 150, 150, 0, 1000); // Transition from Teal to Yellow
         delay(500);
         // Delay for visibility (adjust as needed)
         brightness = brightness - uint8_t(pow(2, x));
@@ -210,7 +219,7 @@ void quadDecreaseBrightness(uint8_t brightness)
         }
 
         strip.setBrightness(brightness);
-        colorTransition(255, 255, 0, 0, 255, 255, 1000); // Transition from Yellow to Teal
+        colorTransition(150, 150, 0, 0, 150, 150, 1000); // Transition from Yellow to Teal
         delay(500);
         // Delay for visibility (adjust as needed)
         brightness = brightness - uint8_t(pow(2, x));
@@ -278,22 +287,22 @@ void theaterChase(uint32_t c, uint8_t wait)
     }
 }
 
-// Input a value 0 to 255 to get a color value.
+// Input a value 0 to 150 to get a color value.
 // The colours are a transition r - g - b - back to r.
 uint32_t Wheel(byte WheelPos)
 {
-    WheelPos = 255 - WheelPos;
+    WheelPos = 150 - WheelPos;
     if (WheelPos < 85)
     {
-        return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+        return strip.Color(150 - WheelPos * 3, 0, WheelPos * 3);
     }
     if (WheelPos < 170)
     {
         WheelPos -= 85;
-        return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+        return strip.Color(0, WheelPos * 3, 150 - WheelPos * 3);
     }
     WheelPos -= 170;
-    return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+    return strip.Color(WheelPos * 3, 150 - WheelPos * 3, 0);
 }
 
 void smoothIncreaseBrightness(uint8_t startBrightness, uint8_t targetBrightness, uint8_t stepDelay)
