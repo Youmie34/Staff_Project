@@ -37,6 +37,7 @@ void app_main_function()
             if (audioPlayHealing.state == NOT_STARTED && audioPlayHealing.pxCreatedTask == NULL)
             {
                 xTaskCreatePinnedToCore(audioPlayHealing.taskFunction, audioPlayHealing.taskName, 8192, NULL, 9, &audioPlayHealing.pxCreatedTask, 1);
+                vTaskDelay(150 / portTICK_PERIOD_MS);
             }
             if (neopixelPlayHealing.state == NOT_STARTED && neopixelPlayHealing.pxCreatedTask == NULL)
             {
@@ -55,6 +56,7 @@ void app_main_function()
             if (audioPlayAttack.state == NOT_STARTED && audioPlayAttack.pxCreatedTask == NULL)
             {
                 xTaskCreatePinnedToCore(audioPlayAttack.taskFunction, audioPlayAttack.taskName, 8192, NULL, 9, &audioPlayAttack.pxCreatedTask, 1);
+                vTaskDelay(150 / portTICK_PERIOD_MS);
             }
 
             if (neopixelPlayAttack.state == NOT_STARTED && neopixelPlayAttack.pxCreatedTask == NULL)
