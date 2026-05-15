@@ -48,15 +48,10 @@ void setupMemory()
     Serial.println("SPIFFS konnte nicht initialisiert werden.");
     return;
   }
-  listSPIFFSFiles();
   formatSPIFFS();
-
-  listSPIFFSFiles();
 
   saveInSPIFFS("/heal.mp3");
   saveInSPIFFS("/attack.mp3");
-
-  listSPIFFSFiles();
 
   Serial.println("saved heal and attack mp3 in SPIFFS\n");
 }
@@ -71,13 +66,11 @@ void saveInSPIFFS(String filename)
     SPIFFS.end(); // SPIFFS-Verbindung trennen
     return;
   }
-  Serial.println("MP3-Datei auf der SD-Karte geöffnet");
 
   // flash-speicher
   flashFile = SPIFFS.open(filename, "w"); // Öffnen der Datei im SPIFFS zum Schreiben
   if (!flashFile)
   {
-    Serial.println("Fehler beim Öffnen der Datei im SPIFFS zum Schreiben");
     flashFile.close();
     if (SPIFFS.remove(filename))
     {

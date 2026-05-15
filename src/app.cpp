@@ -32,7 +32,7 @@ void app_main_function()
     case ACTIVE:
         // Serial.println("System is active.");
 
-        if (systemFlags.motionDetected)
+        if (systemFlags.distanceDetected)
         {
             if (audioPlayHealing.state == NOT_STARTED && audioPlayHealing.pxCreatedTask == NULL)
             {
@@ -47,12 +47,12 @@ void app_main_function()
 
             if (audioPlayHealing.state == COMPLETED && neopixelPlayHealing.state == COMPLETED)
             {
-                systemFlags.motionDetected = false;
+                systemFlags.distanceDetected = false;
                 clear_healing();
                 change_state(IDLE);
             }
         }
-        else if (systemFlags.distanceDetected)
+        else if (systemFlags.motionDetected)
         {
             if (audioPlayAttack.state == NOT_STARTED && audioPlayAttack.pxCreatedTask == NULL)
             {
@@ -67,7 +67,7 @@ void app_main_function()
 
             if ((audioPlayAttack.state == COMPLETED) && (neopixelPlayAttack.state == COMPLETED))
             {
-                systemFlags.distanceDetected = false;
+                systemFlags.motionDetected = false;
                 clear_attack();
                 change_state(IDLE);
             }
