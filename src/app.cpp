@@ -34,15 +34,15 @@ void app_main_function()
 
         if (systemFlags.distanceDetected)
         {
-            if (audioPlayHealing.state == NOT_STARTED && audioPlayHealing.pxCreatedTask == NULL)
-            {
-                xTaskCreatePinnedToCore(audioPlayHealing.taskFunction, audioPlayHealing.taskName, 8192, NULL, 9, &audioPlayHealing.pxCreatedTask, 1);
-                vTaskDelay(150 / portTICK_PERIOD_MS);
-            }
-
             if (neopixelPlayHealing.state == NOT_STARTED && neopixelPlayHealing.pxCreatedTask == NULL)
             {
-                xTaskCreatePinnedToCore(neopixelPlayHealing.taskFunction, neopixelPlayHealing.taskName, 8192, NULL, 8, &neopixelPlayHealing.pxCreatedTask, 0);
+                xTaskCreatePinnedToCore(neopixelPlayHealing.taskFunction, neopixelPlayHealing.taskName, 8192, NULL, 9, &neopixelPlayHealing.pxCreatedTask, 0);
+                vTaskDelay(50 / portTICK_PERIOD_MS);
+            }
+
+            if (audioPlayHealing.state == NOT_STARTED && audioPlayHealing.pxCreatedTask == NULL)
+            {
+                xTaskCreatePinnedToCore(audioPlayHealing.taskFunction, audioPlayHealing.taskName, 8192, NULL, 7, &audioPlayHealing.pxCreatedTask, 1);
             }
 
             if (audioPlayHealing.state == COMPLETED && neopixelPlayHealing.state == COMPLETED)
@@ -54,15 +54,15 @@ void app_main_function()
         }
         else if (systemFlags.motionDetected)
         {
-            if (audioPlayAttack.state == NOT_STARTED && audioPlayAttack.pxCreatedTask == NULL)
-            {
-                xTaskCreatePinnedToCore(audioPlayAttack.taskFunction, audioPlayAttack.taskName, 8192, NULL, 9, &audioPlayAttack.pxCreatedTask, 1);
-                vTaskDelay(150 / portTICK_PERIOD_MS);
-            }
-
             if (neopixelPlayAttack.state == NOT_STARTED && neopixelPlayAttack.pxCreatedTask == NULL)
             {
-                xTaskCreatePinnedToCore(neopixelPlayAttack.taskFunction, neopixelPlayAttack.taskName, 8192, NULL, 8, &neopixelPlayAttack.pxCreatedTask, 0);
+                xTaskCreatePinnedToCore(neopixelPlayAttack.taskFunction, neopixelPlayAttack.taskName, 8192, NULL, 9, &neopixelPlayAttack.pxCreatedTask, 0);
+                vTaskDelay(50 / portTICK_PERIOD_MS);
+            }
+
+            if (audioPlayAttack.state == NOT_STARTED && audioPlayAttack.pxCreatedTask == NULL)
+            {
+                xTaskCreatePinnedToCore(audioPlayAttack.taskFunction, audioPlayAttack.taskName, 8192, NULL, 7, &audioPlayAttack.pxCreatedTask, 1);
             }
 
             if ((audioPlayAttack.state == COMPLETED) && (neopixelPlayAttack.state == COMPLETED))
@@ -106,6 +106,7 @@ void change_state(system_state newState)
         break;
     case IDLE:
         enableLIS3DHInterrupt();
+        neoForceOff();
         break;
     case ACTIVE:
         disableLIS3DHInterrupt();
@@ -137,6 +138,7 @@ void change_state(system_state newState)
             neopixelPlayAttack.pxCreatedTask = NULL;
         }
         disableLIS3DHInterrupt();
+        neoForceOff();
         break;
     default:
         if (distMeasure.pxCreatedTask != NULL)
@@ -165,6 +167,7 @@ void change_state(system_state newState)
             neopixelPlayAttack.pxCreatedTask = NULL;
         }
         disableLIS3DHInterrupt();
+        neoForceOff();
         break;
     }
 }

@@ -25,6 +25,7 @@ void neopixelStart();
 
 // power management
 void neoSetBrightnessForPower(bool audioActive);
+void neoForceOff();
 
 // functions for animation start
 void healing();     // if input from distance

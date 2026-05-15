@@ -57,6 +57,12 @@ void neoSetBrightnessForPower(bool audioActive)
     currentBrightness = target;
 }
 
+void neoForceOff()
+{
+    strip.clear();
+    strip.show();
+}
+
 void neopixelStart()
 {
 

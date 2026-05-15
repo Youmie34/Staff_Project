@@ -46,7 +46,6 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
     if (flashSourceSelect == nullptr)
     {
         Serial.println("Audio source is null");
-        change_state(ERROR);
         return;
     }
 
@@ -55,7 +54,7 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
     if (!flashSourceSelect->isOpen())
     {
         Serial.println("Datei ist geschlossen.");
-        change_state(ERROR);
+        flashSourceSelect->close();
         return;
     }
 
@@ -72,7 +71,6 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
         Serial.println("Fehler beim Initialisieren des Audioausgangs über I2S");
         freeResources();
         flashSourceSelect->close();
-        change_state(ERROR);
         return;
     }
 

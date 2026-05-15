@@ -201,6 +201,7 @@ void clear_attack()
     audioPlayAttack.state = NOT_STARTED;
     neopixelPlayAttack.state = NOT_STARTED;
     systemFlags.audioAttack = false;
+    neoForceOff();
 }
 
 void clear_healing()
@@ -208,4 +209,5 @@ void clear_healing()
     audioPlayHealing.state = NOT_STARTED;
     neopixelPlayHealing.state = NOT_STARTED;
     systemFlags.audioHealing = false;
+    neoForceOff();
 }
