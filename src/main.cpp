@@ -1,24 +1,31 @@
 /*main.cpp*/
 
 #include <Arduino.h>
-#include "accelerometer.hpp"
-#include "accelerometer.hpp"
 #include "distance.hpp"
-#include "neopixel.hpp"
-#include "memory.hpp"
-#include "audio.hpp"
+#include "states.hpp"
+#include "app.hpp"
 
 void setup()
 {
-  neoSetup();
-  // accStart();
-  // ultrasonic();
-  // neopixelStart();
-  setupMemory();
-  startMusic();
+  Serial.begin(115200);
+
+  while (!Serial)
+  {
+    delay(10);
+  }
+  app_init();
 }
 
 void loop()
 {
-  // put your main code here, to run repeatedly:
+
+  if ((systemFlags.audioInitialized && systemFlags.sensorsInitialized) == true)
+  {
+    app_main_function();
+  }
+
+  else
+  {
+    // Serial.println("System not initialized yet.");
+  }
 }

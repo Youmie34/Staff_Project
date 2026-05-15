@@ -30,4 +30,6 @@ Code for the Neopixel Ring
 # Disclaimer
 This code is provided "as-is" without any warranties or guarantees. Use it at your own risk. I am not responsible for any issues, damages, or data loss that may result from using this repository
 
+## SPIFFS
 
+- https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/storage/spiffs.html
