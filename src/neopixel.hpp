@@ -23,6 +23,9 @@ void neoSetup();
 // start
 void neopixelStart();
 
+// power management
+void neoSetBrightnessForPower(bool audioActive);
+
 // functions for animation start
 void healing();     // if input from distance
 void attack();      // if input from accelerometer

@@ -5,6 +5,10 @@
 
 uint8_t minValue = 0;
 uint8_t maxValue = 253;
+static const uint8_t kBrightnessNormal = 80;
+static const uint8_t kBrightnessWithAudio = 30;
+static const uint8_t kBrightnessStepDelayMs = 4;
+static uint8_t currentBrightness = kBrightnessNormal;
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(12, PIN, NEO_GRB + NEO_KHZ800);
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
@@ -15,8 +19,42 @@ void neoSetup()
 {
     strip.clear();
     strip.begin();
-    strip.setBrightness(80);
+    currentBrightness = kBrightnessNormal;
+    strip.setBrightness(currentBrightness);
     strip.show(); // Initialize all pixels to 'off'
+}
+
+void neoSetBrightnessForPower(bool audioActive)
+{
+    const uint8_t target = audioActive ? kBrightnessWithAudio : kBrightnessNormal;
+    if (currentBrightness == target)
+    {
+        return;
+    }
+
+    // Soft-ramp brightness to avoid sudden current spikes.
+    if (currentBrightness < target)
+    {
+        for (uint8_t level = currentBrightness; level < target; ++level)
+        {
+            strip.setBrightness(level);
+            strip.show();
+            delay(kBrightnessStepDelayMs);
+        }
+    }
+    else
+    {
+        for (uint8_t level = currentBrightness; level > target; --level)
+        {
+            strip.setBrightness(level);
+            strip.show();
+            delay(kBrightnessStepDelayMs);
+        }
+    }
+
+    strip.setBrightness(target);
+    strip.show();
+    currentBrightness = target;
 }
 
 void neopixelStart()

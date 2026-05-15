@@ -30,6 +30,26 @@ void selectMusic()
 
 void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
 {
+    if (flashSourceSelect == nullptr)
+    {
+        setupflashSourceSelect();
+        if (strcmp(filename, filenameHeal) == 0)
+        {
+            flashSourceSelect = flashSourceHeal;
+        }
+        else if (strcmp(filename, filenameAttack) == 0)
+        {
+            flashSourceSelect = flashSourceAttack;
+        }
+    }
+
+    if (flashSourceSelect == nullptr)
+    {
+        Serial.println("Audio source is null");
+        change_state(ERROR);
+        return;
+    }
+
     flashSourceSelect->open(filename);
 
     if (!flashSourceSelect->isOpen())
@@ -42,7 +62,7 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
     // Initialisierung des Audioausgangs über I2S
     i2s_audio = new AudioOutputI2S(0, 1, 8, -1); // Initialisierung des Audioausgangs
     i2s_audio->SetOutputModeMono(true);
-    i2s_audio->SetGain(0.4f);
+    i2s_audio->SetGain(0.7f);
 
     mp3 = new AudioGeneratorMP3();
 
@@ -50,7 +70,8 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
     if (!i2s_audio->begin())
     {
         Serial.println("Fehler beim Initialisieren des Audioausgangs über I2S");
-        freeFlash();
+        freeResources();
+        flashSourceSelect->close();
         change_state(ERROR);
         return;
     }
@@ -58,7 +79,7 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
     mp3->begin(flashSourceSelect, i2s_audio);
     mp3Decode();
     freeResources();
-    flashFile.close();
+    flashSourceSelect->close();
     Serial.println("END");
 }
 

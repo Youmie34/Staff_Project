@@ -144,8 +144,10 @@ void acc_measure(void *parameter)
 void audio_play_healing(void *parameter)
 {
     audioPlayHealing.state = RUNNING;
+    systemFlags.audioHealing = true;
     Serial.println("Starting healing music");
     startMusic(flashSourceHeal, filenameHeal);
+    systemFlags.audioHealing = false;
     audioPlayHealing.state = COMPLETED;
     audioPlayHealing.pxCreatedTask = NULL;
     vTaskDelete(NULL);
@@ -154,8 +156,10 @@ void audio_play_healing(void *parameter)
 void audio_play_attack(void *parameter)
 {
     audioPlayAttack.state = RUNNING;
+    systemFlags.audioAttack = true;
     Serial.println("Starting attack music");
     startMusic(flashSourceAttack, filenameAttack);
+    systemFlags.audioAttack = false;
     audioPlayAttack.state = COMPLETED;
     audioPlayAttack.pxCreatedTask = NULL;
     vTaskDelete(NULL);
@@ -165,6 +169,7 @@ void neopixel_play_healing(void *parameter)
 {
     neopixelPlayHealing.state = RUNNING;
     Serial.println("Starting healing animation");
+    neoSetBrightnessForPower(systemFlags.audioHealing || systemFlags.audioAttack);
     healing();
     neopixelPlayHealing.state = COMPLETED;
     neopixelPlayHealing.pxCreatedTask = NULL;
@@ -175,6 +180,7 @@ void neopixel_play_attack(void *parameter)
 {
     neopixelPlayAttack.state = RUNNING;
     Serial.println("Starting attack animation");
+    neoSetBrightnessForPower(systemFlags.audioHealing || systemFlags.audioAttack);
     attack();
     neopixelPlayAttack.state = COMPLETED;
     neopixelPlayAttack.pxCreatedTask = NULL;
@@ -194,10 +200,12 @@ void clear_attack()
 {
     audioPlayAttack.state = NOT_STARTED;
     neopixelPlayAttack.state = NOT_STARTED;
+    systemFlags.audioAttack = false;
 }
 
 void clear_healing()
 {
     audioPlayHealing.state = NOT_STARTED;
     neopixelPlayHealing.state = NOT_STARTED;
+    systemFlags.audioHealing = false;
 }
