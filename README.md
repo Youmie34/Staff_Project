@@ -1,5 +1,7 @@
 # Project Cosplay Staff 👗🪄
 
+<img src="wip/cosplay_2.jpg" alt="Cosplay2" width="65%">
+
 ## Overview
 This repository contains the firmware for an interactive Cleric Staff designed as a prop for cosplay. 
 The system is built around an **ESP32** microcontroller and integrates the following components:
