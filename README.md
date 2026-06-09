@@ -1,4 +1,4 @@
-# Project Cosplay Staff 👗🪄
+# Project Cosplay Staff 🧵🪄
 
 <img src="wip/cosplay_2.jpg" alt="Cosplay2" width="65%">
 
