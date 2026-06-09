@@ -1,7 +1,5 @@
 # Project Cosplay Staff 👗🪄
 
-<img src="documentation/wip/cosplay.jpg" alt="Example" width="75%">
-
 ## Overview
 This repository contains the firmware for an interactive Cleric Staff designed as a prop for cosplay. 
 The system is built around an **ESP32** microcontroller and integrates the following components:
@@ -11,7 +9,7 @@ The system is built around an **ESP32** microcontroller and integrates the follo
 3.  **SD-Card Module + Class D Audio Amplifier** – Stores and plays MP3 audio tracks (Healing & Attack).
 4.  **Neopixel Ring** – Provides visual feedback with dynamic animations.
 
-<img src="documentation/wip/Breadboard_1.jpg" alt="Breadboard Setup" width="85%">
+<img src="wip/Breadboard_1.jpg" alt="Breadboard Setup" width="85%">
 
 ## Key Technical Features
 *   **Language:** C++ (Ported from original CircuitPython).
