@@ -10,7 +10,7 @@
 #include <string.h>
 
 const int DACPin = 25;       // Pin für den DAC-Ausgang
-const int ENFeatherPin = 15; // Pin zum Aktivieren des Feather Audio Boards
+const int ENFeatherPin = 21; // Pin zum Aktivieren des Feather Audio Boards
 extern const char *filenameHeal;
 extern const char *filenameAttack;
 

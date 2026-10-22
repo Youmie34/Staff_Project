@@ -4,13 +4,13 @@
 #include "accelerometer.hpp"
 
 // SPI
-const int LIS3DH_SCLK = 18;
-const int LIS3DH_MISO = 19;
-const int LIS3DH_MOSI = 23;
-const int LIS3DH_CS = 2;
+// const int LIS3DH_SCLK = 18;
+// const int LIS3DH_MISO = 19;
+// const int LIS3DH_MOSI = 23;
+// const int LIS3DH_CS = 2;
 
 // I2C
-const int SDA_PIN = 21; // Custom SDA pin
+const int SDA_PIN = 23; // Custom SDA pin
 const int SCL_PIN = 22; // Custom SCL pin
 
 Adafruit_LIS3DH lis;
@@ -20,7 +20,7 @@ void accStart()
   Serial.begin(115200);
   SPI.begin(LIS3DH_SCLK, LIS3DH_MISO, LIS3DH_MOSI, LIS3DH_CS);
   // Example settings (1 MHz, MSB first, SPI mode 0)
-  //SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));
+  // SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));
   // Wire.begin(SDA_PIN, SCL_PIN, 400000);
 
   // SPI

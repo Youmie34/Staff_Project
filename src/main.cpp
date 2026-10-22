@@ -20,14 +20,14 @@ void setup()
 {
   volatile system_state currentState = INIT;
   pinMode(ENFeatherPin, OUTPUT);
-  digitalWrite(ENFeatherPin, LOW);
+  digitalWrite(ENFeatherPin, HIGH);
   // neoSetup();
   //  accStart();
   //   ultrasonic();
   //   neopixelStart();
 
   setupMemory();
-  digitalWrite(ENFeatherPin, HIGH);
+  // digitalWrite(ENFeatherPin, HIGH);
   setupflashSourceSelect();
 }
 
