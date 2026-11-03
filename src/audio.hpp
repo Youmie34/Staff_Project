@@ -9,8 +9,8 @@
 #include "I2S.h"
 #include <string.h>
 
-const int DACPin = 25;       // Pin für den DAC-Ausgang
-const int ENFeatherPin = 21; // Pin zum Aktivieren des Feather Audio Boards
+const int DACPin = 25;      // Pin für den DAC-Ausgang
+const int ENFeatherPin = 5; // Pin zum Aktivieren des Feather Audio Boards
 extern const char *filenameHeal;
 extern const char *filenameAttack;
 
@@ -31,7 +31,6 @@ extern AudioGeneratorMP3 *mp3;
 
 void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename);
 void mp3Decode();
-void playMusic();
 void freeFlash();
 void selectMusic();
 void setupflashSourceSelect();

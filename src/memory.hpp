@@ -9,6 +9,7 @@
 #include "SPI.h"
 #include "audio.hpp"
 #include <string.h>
+#include "app.hpp"
 
 // SPI
 extern int sck;
@@ -30,5 +31,8 @@ extern AudioGeneratorMP3 *mp3;
 
 void setupMemory();
 void saveInSPIFFS(String filename);
+void checkSPIFFSStorage();
+void listSPIFFSFiles();
+void formatSPIFFS();
 
 #endif // MEMORY_HPP

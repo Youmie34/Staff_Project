@@ -10,6 +10,8 @@ AudioFileSourceSPIFFS *flashSourceHeal = nullptr;
 AudioFileSourceSPIFFS *flashSourceAttack = nullptr;
 const char *filenameHeal = "/heal.mp3";
 const char *filenameAttack = "/attack.mp3";
+volatile bool audioHealing = false;
+volatile bool audioAttack = false;
 
 void setupflashSourceSelect()
 {
@@ -33,12 +35,14 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
     if (!flashSourceSelect->isOpen())
     {
         Serial.println("Datei ist geschlossen.");
+        change_state(ERROR);
         return;
     }
 
     // Initialisierung des Audioausgangs über I2S
     i2s_audio = new AudioOutputI2S(0, 1, 8, -1); // Initialisierung des Audioausgangs
     i2s_audio->SetOutputModeMono(true);
+    i2s_audio->SetGain(0.4f);
 
     mp3 = new AudioGeneratorMP3();
 
@@ -47,12 +51,12 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
     {
         Serial.println("Fehler beim Initialisieren des Audioausgangs über I2S");
         freeFlash();
+        change_state(ERROR);
         return;
     }
 
     mp3->begin(flashSourceSelect, i2s_audio);
     mp3Decode();
-    playMusic();
     freeResources();
     // flashFile.close();
     Serial.println("END");
@@ -60,6 +64,11 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
 
 void mp3Decode()
 {
+    const TickType_t startTick = xTaskGetTickCount();
+    TickType_t lastHeartbeat = startTick;
+    const TickType_t heartbeatInterval = pdMS_TO_TICKS(3000);
+    const TickType_t timeout = pdMS_TO_TICKS(20000);
+
     while (mp3->isRunning())
     {
         if (!mp3->loop())
@@ -67,35 +76,25 @@ void mp3Decode()
             // dekodiere Dateien und schreibe sie ins i2s
             mp3->stop(); // Wenn die Wiedergabe abgeschlossen ist, stoppen Sie die Wiedergabe
             // Serial.println("mp3 Wiedergabe abgeschlossen");
-        }
-    }
-}
-
-void playMusic()
-{
-    int16_t sample[2];
-
-    while (mp3->isRunning())
-    {
-        if (!mp3->loop())
-        {
-            mp3->stop();
-            // Serial.println("mp3 Wiedergabe abgeschlossen");
             break;
         }
 
-        // Lesen der Audiodaten vom I2S
-        if (!i2s_audio->ConsumeSample(sample))
+        const TickType_t now = xTaskGetTickCount();
+        if ((now - lastHeartbeat) >= heartbeatInterval)
         {
-            Serial.println("FEHLER beim Lesen von Samples vom MP3-Decodierer");
-            continue;
+            const unsigned int elapsedMs = static_cast<unsigned int>((now - startTick) * portTICK_PERIOD_MS);
+            Serial.printf("heartbeat=%u ms\n", elapsedMs);
+            lastHeartbeat = now;
         }
 
-        // Konvertiere int16_t in uint8_t für den DAC
-        uint8_t sample_byte = static_cast<uint8_t>((sample[0] >> 8) & 0xFF); // Linker Kanal
+        if ((now - startTick) >= timeout)
+        {
+            Serial.println("Audio timeout");
+            mp3->stop();
+            break;
+        }
 
-        // Schreiben der Audiodaten auf den DAC-Pin
-        dacWrite(DACPin, sample_byte);
+        vTaskDelay(1);
     }
 }
 

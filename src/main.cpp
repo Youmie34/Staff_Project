@@ -1,38 +1,31 @@
 /*main.cpp*/
 
 #include <Arduino.h>
-#include "accelerometer.hpp"
-#include "accelerometer.hpp"
 #include "distance.hpp"
-#include "neopixel.hpp"
-#include "memory.hpp"
-#include "audio.hpp"
-
-enum system_state
-{
-  INIT,
-  IDLE,
-  ACTIVE,
-  ERROR
-};
+#include "states.hpp"
+#include "app.hpp"
 
 void setup()
 {
-  volatile system_state currentState = INIT;
-  pinMode(ENFeatherPin, OUTPUT);
-  digitalWrite(ENFeatherPin, HIGH);
-  // neoSetup();
-  //  accStart();
-  //   ultrasonic();
-  //   neopixelStart();
+  Serial.begin(115200);
 
-  setupMemory();
-  // digitalWrite(ENFeatherPin, HIGH);
-  setupflashSourceSelect();
+  while (!Serial)
+  {
+    delay(10);
+  }
+  app_init();
 }
 
 void loop()
 {
-  // put your main code here, to run repeatedly:
-  selectMusic();
+
+  if ((systemFlags.audioInitialized && systemFlags.sensorsInitialized) == true)
+  {
+    app_main_function();
+  }
+
+  else
+  {
+    // Serial.println("System not initialized yet.");
+  }
 }
