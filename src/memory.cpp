@@ -102,7 +102,7 @@ void setupMemory()
   Serial.begin(115200);
 
   // 1. Mount SPIFFS
-  if (!SPIFFS.begin(false))
+  if (!SPIFFS.begin(true))
   {
     Serial.println("SPIFFS mount failed!");
     return;
