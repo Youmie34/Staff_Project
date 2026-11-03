@@ -4,7 +4,7 @@
 #include "accelerometer.hpp"
 
 // I2C
-const int SDA_PIN = 21; // Custom SDA pin
+const int SDA_PIN = 23; // Custom SDA pin
 const int SCL_PIN = 22; // Custom SCL pin
 const int INT_PIN = 13; // Interrupt pin
 

@@ -58,7 +58,7 @@ void startMusic(AudioFileSourceSPIFFS *flashSourceSelect, const char *filename)
     mp3->begin(flashSourceSelect, i2s_audio);
     mp3Decode();
     freeResources();
-    flashFile.close();
+    // flashFile.close();
     Serial.println("END");
 }
 
@@ -121,7 +121,7 @@ void freeFlash()
     delete flashSourceAttack;
 
     // close() frees memory!
-    flashFile.close();
+    // flashFile.close();
     /*
         if ((SPIFFS.remove("/heal.mp3")) && (SPIFFS.remove("/attack.mp3")))
         {
@@ -132,5 +132,4 @@ void freeFlash()
             Serial.println("- delete failed");
         }
     */
-    SPIFFS.end(); // SPIFFS-Verbindung trennen
 }
