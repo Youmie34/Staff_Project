@@ -88,6 +88,7 @@ void app_main_function()
 
 void app_init()
 {
+    init_gpios();
     // Sensor-Initialisierung auf Core 0
     BaseType_t result1 = xTaskCreatePinnedToCore(
         spiffsInit.taskFunction, spiffsInit.taskName, 8192, NULL, 10, &spiffsInit.pxCreatedTask, 1);

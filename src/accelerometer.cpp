@@ -3,11 +3,6 @@
 #include <Arduino.h>
 #include "accelerometer.hpp"
 
-// I2C
-const int SDA_PIN = 23; // Custom SDA pin
-const int SCL_PIN = 22; // Custom SCL pin
-const int INT_PIN = 13; // Interrupt pin
-
 Adafruit_LIS3DH lis;
 
 void setupAcc()
@@ -58,11 +53,9 @@ void setMotionInterrupt()
   writeRegister(0x22, 0x40);       // CTRL3 -> INT1 enable
 
   // If INT1 is configured/open-drain or the line is long, a pullup prevents a floating input.
-  pinMode(INT_PIN, INPUT_PULLUP);
 
   // Clear any pending/latched interrupt before enabling the ESP32 GPIO interrupt.
   clearInterrupt();
-  attachInterrupt(digitalPinToInterrupt(INT_PIN), motionISR, RISING);
 }
 
 void clearInterrupt()

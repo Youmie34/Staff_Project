@@ -8,9 +8,8 @@
 #include "memory.hpp"
 #include "I2S.h"
 #include <string.h>
+#include "pins.hpp"
 
-const int DACPin = 25;      // Pin für den DAC-Ausgang
-const int ENFeatherPin = 5; // Pin zum Aktivieren des Feather Audio Boards
 extern const char *filenameHeal;
 extern const char *filenameAttack;
 

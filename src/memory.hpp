@@ -10,12 +10,7 @@
 #include "audio.hpp"
 #include <string.h>
 #include "app.hpp"
-
-// SPI
-extern int sck;
-extern int miso;
-extern int mosi;
-extern int cs;
+#include "pins.hpp"
 
 // MP3 files on SD-Card
 extern AudioFileSourceSD *sdFile;

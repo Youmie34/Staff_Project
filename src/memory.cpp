@@ -5,12 +5,6 @@
 #include <SD.h>
 #include <SPIFFS.h>
 
-// Your existing SPI pins
-int sck = 27;
-int miso = 13;
-int mosi = 14;
-int cs = 4;
-
 bool saveInSPIFFS(const char *filename)
 {
   // 1. Check flash first: no SD access if file already exists

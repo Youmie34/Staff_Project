@@ -2,6 +2,7 @@
 #define NEOPIXEL_H
 
 #include <Adafruit_NeoPixel.h>
+#include "pins.hpp"
 #include <cmath>
 #ifdef __AVR__
 #include <avr/power.h>
@@ -15,7 +16,7 @@ extern uint8_t maxValue;
 
 // Declare the NeoPixel object globally
 extern Adafruit_NeoPixel strip;
-const int PIN = 4; // Pin on ESP32
+
 uint32_t Wheel(byte WheelPos);
 
 // setup

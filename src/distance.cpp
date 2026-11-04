@@ -16,9 +16,6 @@ void ultrasonicSetup()
     long distance = 0.0;
 
     mySerial.begin(115200, SERIAL_8N1, echoPin, trigPin);
-
-    pinMode(trigPin, OUTPUT); // Pins werden deklariert
-    pinMode(echoPin, INPUT);
 }
 
 void ultrasonicMeasure()

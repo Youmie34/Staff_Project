@@ -4,6 +4,7 @@
 #define APP_H
 
 #include "tasks.hpp"
+#include "pins.hpp"
 
 void app_main_function();
 void app_init();

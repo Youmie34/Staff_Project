@@ -7,18 +7,7 @@
 #include <Adafruit_LIS3DH.h>
 #include <Adafruit_Sensor.h>
 #include "states.hpp"
-
-// I2C
-// SPI
-extern const int LIS3DH_SCLK;
-extern const int LIS3DH_MISO;
-extern const int LIS3DH_MOSI;
-extern const int LIS3DH_CS;
-
-// I2C
-extern const int SDA_PIN;
-extern const int SCL_PIN;
-extern const int INT_PIN;
+#include "pins.hpp"
 
 extern Adafruit_LIS3DH lis;
 extern sensors_event_t event;
